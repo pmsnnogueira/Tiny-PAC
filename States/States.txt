@@ -1,0 +1,61 @@
+Maquina de Estados: JOGO
+
+- Start state
+- Moving State
+- Vulnerable Ghost State
+- Level Complete State
+- Paused State
+- Finish State
+
+
+Maquina de estados: Comportamento dos Fantasmas Ghost Behavior
+
+- Chasing State
+- Vulnerable State 
+- Eaten State
+- Waiting State
+
+
+//Notas
+	Ver se quero que quando passa o nivel ele vai para o menu de pausa para sair e guardar o jogo, ou se faz quando inicia o nivel
+	Ver se os fantasmas tmb fogem quando o PacMan está no estado VulnerableGhost
+
+
+Máquina de Estados do Jogo:
+
+Start State: O labirinto e o seu conteúdo são apresentados no ecrã, mas sem qualquer ação ou movimento.
+Moving State: Inicia-se quando o jogador pressiona uma tecla de direção, e o Pac-Man começa a movimentar-se na direção escolhida pelo user.
+//Estado dos Fantasmas: Inicia-se após 5 segundos (ou outro valor definido pelo aluno) a partir do Estado de Movimento. Os fantasmas começam a movimentar-se e o jogo entra no estado .
+Vulnerable State: O jogo entra neste estado quando quando ele come uma bola de poder. O jogo entra então em um novo estado de tempo limitado, onde os fantasmas ficam vulneráveis.
+Level Complete State: O nivel é completado e passa para o estado inicial com um novo nivel.
+Dead State: Este estado é iniciado quando o pacman é morto, perde uma vida e se as vidas forem maiores que 0 recomeça o jogo, se forem == 0 vai para o estado de finish State
+Pause State: Inicia-se quando o utilizador clicar no botao de pausa, onde poderá retomar o jogo, sair sem salvar ou sair e guardar o jogo.
+Finish State: O jogo entra neste estado quando o jogador perdeu todas as suas vidas ou terminou todos os níveis.
+
+
+Máquina de Estados dos Fantasmas:
+Chasing State: Os fantasmas perseguem o Pac-Man.
+Vulnerable State: Os fantasmas ficam vulneráveis e podem ser comidos.
+Eaten State: Os fantasmas vao para as celas.
+Waiting State: Os fantasmas ficam à espera para sairem da cela, ficam a agurdar até começarem a perseguir o PacMan .
+//Fanstamas parados: Inicia quando o jogo é pausado.
+
+
+
+Start State: Este é o estado inicial da máquina de estados e representa o momento em que o jogo é iniciado.
+
+Moving State: Este estado representa o comportamento do Pac-Man e dos fantasmas enquanto o jogo está em andamento, ou seja, o Pac-Man se movimentando pelo labirinto e os fantasmas o perseguindo.
+
+Vulnerable Ghost State: Este estado representa o comportamento dos fantasmas quando estão vulneráveis, após serem atingidos por uma superpílula. Neste estado, os fantasmas ficam azuis e podem ser comidos pelo Pac-Man.
+
+Level Complete State: Este estado representa o momento em que o Pac-Man completa um nível do jogo e passa para o próximo.
+
+Paused State: Este estado representa o momento em que o jogo é pausado, seja pelo jogador ou por algum outro evento no jogo.
+
+Finish State: Este estado representa o final do jogo, seja pela conclusão de todos os níveis ou pela derrota do jogador.
+
+Chasing State: Este estado representa o comportamento dos fantasmas quando estão perseguindo o Pac-Man pelo labirinto.
+
+Vulnerable State: Este estado representa o comportamento dos fantasmas quando estão vulneráveis, após serem atingidos por uma superpílula. Neste estado, os fantasmas ficam mais lentos e podem ser comidos pelo Pac-Man.
+
+Waiting State: Este estado representa o momento em que os fantasmas estão esperando em sua posição inicial no labirinto, antes de começar a perseguir o Pac-Man.
