@@ -17,6 +17,6 @@ public class Blinky extends Ghost {
 
     @Override
     public char getSymbol() {
-        return 'G';
+        return 'B';
     }
 }

@@ -1,6 +1,9 @@
 package pt.isec.pa.tinypac.model.data;
 
 import pt.isec.pa.tinypac.model.data.ghosts.Blinky;
+import pt.isec.pa.tinypac.model.data.ghosts.Clyde;
+import pt.isec.pa.tinypac.model.data.ghosts.Inky;
+import pt.isec.pa.tinypac.model.data.ghosts.Pinky;
 import pt.isec.pa.tinypac.model.data.obstacles.*;
 
 import java.io.*;
@@ -21,7 +24,7 @@ public class Game {
         this.points = 0;
         this.maze = null;
         this.ghosts = new ArrayList<>();
-        this.pacman = new Pacman();
+        this.pacman = null;
         newMapLevel();
     }
 
@@ -112,7 +115,7 @@ public class Game {
 
     private boolean setCharInMap(StringBuilder sb){
 
-        ArrayList<Integer> ghostCave = new ArrayList<>();
+        ArrayList<Integer[]> ghostCave = new ArrayList<>();
 
         for(int i = 0 ; i < mazeRows ; i++) {
             sb.deleteCharAt(sb.indexOf("\n",i * mazeColumns));
@@ -133,29 +136,56 @@ public class Game {
                         break;
                     case 'M':   //LocalPacmanInicial
                         maze.set(i, a, new PacmanInitialPosition());
-                        this.pacman.setPos(i , a);
+                        this.pacman = new Pacman(i , a);
                         break;
                     case 'O':   //Bola com Poderes
                         maze.set(i, a, new Power());
                         break;
                     case 'Y': {   //Portal
                         maze.set(i, a, new Portal());
-                        int pos = (i * mazeColumns) + a;
-                        Blinky blinky = new Blinky(1,2);
-                        if(pos < sb.length() ){
-                            ghosts.add(blinky);
-                            //maze.set((pos)/mazeColumns , (pos)%mazeColumns , blinky);
-                        }
                         break;
                     }
                     case 'y':   //Caverna dos Fantasmas
-
+                        maze.set(i,a, new GhostCave());
+                        ghostCave.add(new Integer[]{i,a});
                         break;
                     default:
                         return false; //Character Invalid
                 }
             }
         }
+
+
+        int numPositions = 0;
+        Integer[] randomPosition;
+        Ghost ghost = null;
+        for(int i = 1; i <= 4;i++){
+
+            do {
+                numPositions = ghostCave.size();
+                int randomIndex = (int) (Math.random() * numPositions);
+                randomPosition = ghostCave.get(randomIndex);
+            } while (maze.get(randomPosition[0], randomPosition[1]).getSymbol() != 'y');
+
+            switch (i){
+                case 1:
+                    ghost = new Blinky(randomPosition[0] , randomPosition[1]);
+                    break;
+                case 2:
+                    ghost = new Clyde(randomPosition[0] , randomPosition[1]);
+                    break;
+                case 3:
+                    ghost = new Inky(randomPosition[0] , randomPosition[1]);
+                    break;
+                case 4:
+                    ghost = new Pinky(randomPosition[0] , randomPosition[1]);
+                    break;
+            }
+            ghosts.add(ghost);
+            maze.set(randomPosition[0] , randomPosition[1] , ghost);
+            ghostCave.remove(randomPosition);
+        }
+
 
         //System.out.println(ghostCave.toString());
         return true;

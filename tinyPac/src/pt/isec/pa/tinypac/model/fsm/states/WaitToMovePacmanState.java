@@ -11,11 +11,12 @@ public class WaitToMovePacmanState extends StateAdapter {
         super(context, data);
     }
 
-
     @Override
     public State getState() {
         return State.WAIT_TO_MOVE_PACMAN;
     }
+
+
 
 
 

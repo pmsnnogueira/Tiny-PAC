@@ -16,6 +16,6 @@ public class Clyde extends Ghost {
 
     @Override
     public char getSymbol() {
-        return 'G';
+        return 'C';
     }
 }

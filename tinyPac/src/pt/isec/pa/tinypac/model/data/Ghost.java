@@ -2,7 +2,6 @@ package pt.isec.pa.tinypac.model.data;
 
 public abstract class Ghost implements IGhost{
     private Boolean lock;
-
     private Integer posX;
     private Integer posY;
 

@@ -17,6 +17,6 @@ public class Inky extends Ghost{
 
     @Override
     public char getSymbol() {
-        return 'G';
+        return 'I';
     }
 }

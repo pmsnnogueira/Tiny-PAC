@@ -6,9 +6,9 @@ public class Pacman {
     private int lives;
     private boolean power;
 
-    public Pacman(){
-        this.posX = 0;
-        this.posY = 0;
+    public Pacman(Integer posX, Integer posY){
+        this.posX = posX;
+        this.posY = posY;
         this.lives = 3;
         this.power = false;
     }
