@@ -15,6 +15,8 @@ public class Context {
     }
 
     public State getState(){
+        if(state == null)
+            return null;
         return state.getState();
     }
 
@@ -23,6 +25,9 @@ public class Context {
         this.state = newState;
     }
 
+    public boolean startGame(){
+        return state.startGame();
+    }
 
 
 }

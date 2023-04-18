@@ -12,6 +12,7 @@ import java.util.ArrayList;
 public class Game {
     private final static String LEVELS_PATH = "src/pt/isec/pa/tinypac/levels/";
     private Integer level;
+    private Integer lives;
     private Integer points;
     private Maze maze;
     private Integer mazeRows;
@@ -21,11 +22,11 @@ public class Game {
 
     public Game(){
         this.level = 1;
+        this.lives = 3;
         this.points = 0;
         this.maze = null;
         this.ghosts = new ArrayList<>();
         this.pacman = null;
-        newMapLevel();
     }
 
     private ArrayList<String> filesinFolder(String folderName){
@@ -45,7 +46,7 @@ public class Game {
         return null;
     }
 
-    public boolean newMapLevel(){
+    public boolean generateMapLevel(){
         //verificar se existem ficheiros dos mapas
         ArrayList<String> listOfFiles = filesinFolder(LEVELS_PATH);
         StringBuilder fileName = new StringBuilder();
@@ -66,8 +67,6 @@ public class Game {
         //Verificar para todos os ficheiros com o directory.listFiles
         if(!buildMap(fileName.toString()))
             return false;
-
-
 
         // insertGhosts();
 
@@ -122,35 +121,30 @@ public class Game {
             for(int a = 0; a < mazeColumns; a++) {
                 char c = sb.charAt((i * mazeColumns) + a);
                 switch (c) {
-                    case 'x':   //Parede
-                        maze.set(i, a, new Wall());
-                        break;
-                    case 'W':   //Zona Warp
-                        maze.set(i, a, new Warp());
-                        break;
-                    case 'o':   //Comida
-                        maze.set(i, a, new Ball());
-                        break;
-                    case 'F':   //fruta
-                        maze.set(i, a, new Fruit());
-                        break;
-                    case 'M':   //LocalPacmanInicial
+                    case 'x' ->   //Parede
+                            maze.set(i, a, new Wall());
+                    case 'W' ->   //Zona Warp
+                            maze.set(i, a, new Warp());
+                    case 'o' ->   //Comida
+                            maze.set(i, a, new Ball());
+                    case 'F' ->   //fruta
+                            maze.set(i, a, new Fruit());
+                    case 'M' -> {   //LocalPacmanInicial
                         maze.set(i, a, new PacmanInitialPosition());
-                        this.pacman = new Pacman(i , a);
-                        break;
-                    case 'O':   //Bola com Poderes
-                        maze.set(i, a, new Power());
-                        break;
-                    case 'Y': {   //Portal
-                        maze.set(i, a, new Portal());
-                        break;
+                        this.pacman = new Pacman(i, a);
                     }
-                    case 'y':   //Caverna dos Fantasmas
-                        maze.set(i,a, new GhostCave());
-                        ghostCave.add(new Integer[]{i,a});
-                        break;
-                    default:
+                    case 'O' ->   //Bola com Poderes
+                            maze.set(i, a, new Power());
+                    case 'Y' -> {   //Portal
+                        maze.set(i, a, new Portal());
+                    }
+                    case 'y' -> {   //Caverna dos Fantasmas
+                        maze.set(i, a, new GhostCave());
+                        ghostCave.add(new Integer[]{i, a});
+                    }
+                    default -> {
                         return false; //Character Invalid
+                    }
                 }
             }
         }

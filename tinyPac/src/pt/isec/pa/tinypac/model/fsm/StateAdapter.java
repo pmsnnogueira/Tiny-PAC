@@ -16,6 +16,12 @@ public abstract class StateAdapter implements IState {
         newState.createState(context, data);
     }
 
+
+    @Override
+    public boolean startGame() {
+        return false;
+    }
+
     @Override
     public IState move() {
         return null;

@@ -16,9 +16,12 @@ public class WaitToMovePacmanState extends StateAdapter {
         return State.WAIT_TO_MOVE_PACMAN;
     }
 
+    @Override
+    public boolean startGame() {
+        if(!data.generateMapLevel())
+            return false;
 
-
-
-
-
+        changeState(State.GAME);
+        return true;
+    }
 }

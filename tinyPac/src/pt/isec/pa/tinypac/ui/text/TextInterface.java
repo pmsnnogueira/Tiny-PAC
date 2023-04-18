@@ -14,10 +14,13 @@ public class TextInterface {
     public void start() {
 
         do{
-            System.out.println("**** Tiny-PAC ****");
-            switch (PAInput.chooseOption("Menu" , "Play Game" , "Top5" , "Exit")){
+            switch (PAInput.chooseOption("**** Tiny-PAC ****" , "Play Game" , "Top5" , "Exit")){
                 case 1 -> {
-
+                    if(!fsm.startGame())
+                        System.out.println("Cant start the game\n");
+                    /*switch (fsm.getState()){
+                        case
+                    }*/
                 }
                 case 2 -> {
                 }

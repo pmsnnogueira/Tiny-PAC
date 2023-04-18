@@ -4,6 +4,8 @@ public interface IState {
 
     State getState();
 
+    boolean startGame();
+
     //WaitToMovePacman
     IState move();
 

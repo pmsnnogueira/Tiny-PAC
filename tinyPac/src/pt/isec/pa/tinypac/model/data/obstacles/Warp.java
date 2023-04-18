@@ -1,13 +1,14 @@
 package pt.isec.pa.tinypac.model.data.obstacles;
 
 import pt.isec.pa.tinypac.model.data.IMazeElement;
+import utils.Obstacles;
 
 public class Warp implements IMazeElement {
 
-    private char symbol;
+    private final char symbol;
 
     public Warp(){
-        this.symbol = 'W';
+        this.symbol = Obstacles.WARP.getSymbol();
     }
 
     @Override

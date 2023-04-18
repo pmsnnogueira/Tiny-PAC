@@ -1,13 +1,14 @@
 package pt.isec.pa.tinypac.model.data.obstacles;
 
 import pt.isec.pa.tinypac.model.data.IMazeElement;
+import utils.Obstacles;
 
 public class Wall implements IMazeElement {
 
-    private char symbol;
+    private final char symbol;
 
     public Wall(){
-        this.symbol = 'X';
+        this.symbol = Obstacles.WALL.getSymbol();
     }
 
     @Override
