@@ -12,6 +12,11 @@ public abstract class Ghost implements IGhost{
     }
 
 
+    public void setPos(int posX , int posY){
+        this.posX = posX;
+        this.posY = posY;
+    }
+
     public Integer getPosX() {
         return posX;
     }

@@ -16,6 +16,15 @@ public class Pacman implements IMazeElement{
         this.posY = posY;
     }
 
+
+    public int getPosX() {
+        return posX;
+    }
+
+    public int getPosY() {
+        return posY;
+    }
+
     @Override
     public char getSymbol() {
         return '*';

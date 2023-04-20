@@ -5,6 +5,7 @@ import pt.isec.pa.tinypac.model.data.ghosts.Clyde;
 import pt.isec.pa.tinypac.model.data.ghosts.Inky;
 import pt.isec.pa.tinypac.model.data.ghosts.Pinky;
 import pt.isec.pa.tinypac.model.data.obstacles.*;
+import utils.Obstacles;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -116,9 +117,9 @@ public class Game {
 
         ArrayList<Integer[]> ghostCave = new ArrayList<>();
 
-        for(int i = 0 ; i < mazeRows ; i++) {
+        for(int i = 0 ; i < mazeRows ; i++) {       //Y
             sb.deleteCharAt(sb.indexOf("\n",i * mazeColumns));
-            for(int a = 0; a < mazeColumns; a++) {
+            for(int a = 0; a < mazeColumns; a++) {      //X
                 char c = sb.charAt((i * mazeColumns) + a);
                 switch (c) {
                     case 'x' ->   //Parede
@@ -131,7 +132,7 @@ public class Game {
                             maze.set(i, a, new Fruit());
                     case 'M' -> {   //LocalPacmanInicial
                         maze.set(i, a, new PacmanInitialPosition());
-                        this.pacman = new Pacman(i, a);
+                        this.pacman = new Pacman(a, i);
                     }
                     case 'O' ->   //Bola com Poderes
                             maze.set(i, a, new Power());
@@ -140,7 +141,7 @@ public class Game {
                     }
                     case 'y' -> {   //Caverna dos Fantasmas
                         maze.set(i, a, new GhostCave());
-                        ghostCave.add(new Integer[]{i, a});
+                        ghostCave.add(new Integer[]{a, i});//x , y
                     }
                     default -> {
                         return false; //Character Invalid
@@ -153,8 +154,27 @@ public class Game {
         int numPositions = 0;
         Integer[] randomPosition;
         Ghost ghost = null;
-        for(int i = 1; i <= 4;i++){
 
+        //Posicionar o Blinky por tras da porta, pois ele so anda para a frente
+        for(int i = 0; i < ghostCave.size() ; i++){
+            randomPosition = ghostCave.get(i);
+            IMazeElement element = maze.get(randomPosition[1] - 1, randomPosition[0]);
+            if(element == null)
+                continue;
+
+            if(element.getSymbol() == Obstacles.PORTAL.getSymbol()) {
+                ghost = new Blinky(randomPosition[0], randomPosition[1]);
+                ghosts.add(ghost);
+                ghostCave.remove(randomPosition);
+                break;
+            }
+
+            if(i == ghostCave.size())
+                return false;
+        }
+
+
+        for(int i = 0; i < 3;i++){
             do {
                 numPositions = ghostCave.size();
                 int randomIndex = (int) (Math.random() * numPositions);
@@ -162,21 +182,18 @@ public class Game {
             } while (maze.get(randomPosition[0], randomPosition[1]).getSymbol() != 'y');
 
             switch (i){
-                case 1:
-                    ghost = new Blinky(randomPosition[0] , randomPosition[1]);
-                    break;
-                case 2:
+                case 0:
                     ghost = new Clyde(randomPosition[0] , randomPosition[1]);
                     break;
-                case 3:
+                case 1:
                     ghost = new Inky(randomPosition[0] , randomPosition[1]);
                     break;
-                case 4:
+                case 2:
                     ghost = new Pinky(randomPosition[0] , randomPosition[1]);
                     break;
             }
             ghosts.add(ghost);
-            maze.set(randomPosition[0] , randomPosition[1] , ghost);
+            //maze.set(randomPosition[0] , randomPosition[1] , ghost);
             ghostCave.remove(randomPosition);
         }
 
@@ -186,18 +203,33 @@ public class Game {
     }
 
 
-    public void printMaze(){
-        char[][]gameBoard;
+    public void printMaze() {
+        char[][] gameBoard;
         gameBoard = maze.getMaze();
 
-        for(int i = 0 ; i < mazeRows; i++) {
+        for (int i = 0; i < mazeRows; i++) {
             for (int a = 0; a < mazeColumns; a++) {
+
+                if(i == pacman.getPosY() && a == pacman.getPosX())
+                    gameBoard[i][a] = pacman.getSymbol();
+
+                for (Ghost aux : ghosts) {
+                    if (aux.getPosY() == i && aux.getPosX() == a) {
+                        gameBoard[i][a] = aux.getSymbol();
+                    }
+                }
+
+                if (gameBoard[i][a] == Obstacles.GHOST_CAVE.getSymbol()
+                        || gameBoard[i][a] == Obstacles.PACMAN_INITIAL_POSITION.getSymbol()) {
+                    System.out.print(' ');
+                    continue;
+                }
+
                 System.out.print(gameBoard[i][a]);
             }
             System.out.println();
         }
     }
-    
 
     private boolean insertGhosts(int posX, int posY){
 
@@ -206,6 +238,12 @@ public class Game {
 
 
         return true;
+    }
+
+    public void makeGhostMovements(){
+        for(Ghost a : ghosts){
+            a.move(maze,mazeRows,mazeColumns);
+        }
     }
 
     public void setLevel(Integer level){

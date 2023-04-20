@@ -5,6 +5,8 @@ import pt.isec.pa.tinypac.model.fsm.Context;
 import pt.isec.pa.tinypac.model.fsm.State;
 import pt.isec.pa.tinypac.model.fsm.StateAdapter;
 
+import java.util.ArrayList;
+
 public class WaitToMovePacmanState extends StateAdapter {
 
     public WaitToMovePacmanState(Context context, Game data){
@@ -21,7 +23,10 @@ public class WaitToMovePacmanState extends StateAdapter {
         if(!data.generateMapLevel())
             return false;
 
-        changeState(State.GAME);
+        data.makeGhostMovements();
+
+
+        //changeState(State.GAME);
         return true;
     }
 }
