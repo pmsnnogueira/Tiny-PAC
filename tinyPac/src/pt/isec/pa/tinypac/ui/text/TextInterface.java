@@ -1,12 +1,13 @@
 package pt.isec.pa.tinypac.ui.text;
 
+import pt.isec.pa.tinypac.gameengine.IGameEngine;
 import pt.isec.pa.tinypac.gameengine.IGameEngineEvolve;
 import pt.isec.pa.tinypac.model.fsm.Context;
 import utils.PAInput;
 
 import java.io.IOException;
 
-public class TextInterface {
+public class TextInterface implements IGameEngineEvolve{
 
     private Context fsm;
     boolean finish = false;
@@ -16,20 +17,47 @@ public class TextInterface {
        // this.fsm = null;
     }
 
-    public void game(){
+    public void gameMenu() throws InterruptedException {
         while (!finish){
             switch (fsm.getState()){
-                case WAIT_TO_MOVE_PACMAN -> waitToMovePacman();
+                case WAIT_TO_MOVE_PACMAN -> waitToMovePacmaUI();
+                case GAME -> gameUI();
             }
         }
     }
 
-    private void waitToMovePacman() {
+    private void waitToMovePacmaUI() {
 
         fsm.startGame();
     }
 
-    public void start() throws IOException {
+
+    public static void clearConsole() {
+        System.out.print("\033[H\033[2J");
+        System.out.flush();
+    }
+    public void gameUI() throws InterruptedException {
+
+
+        printBoard();
+        finish = true;
+
+    }
+
+    private void printBoard(){
+        char[][] maze = fsm.showMaze();
+        if(maze == null)
+            return;
+
+        for(int i = 0; i < maze.length;i++){
+            for(int a = 0; a < maze[0].length; a++){
+                System.out.print(maze[i][a]);
+            }
+            System.out.println();
+        }
+    }
+
+    public void start() throws IOException, InterruptedException {
 
         do{
             switch (PAInput.chooseOption("**** Tiny-PAC ****" , "Play Game" , "Top5" , "Exit")){
@@ -37,8 +65,7 @@ public class TextInterface {
                     //GameLanternaUI gameLanternaUI = new GameLanternaUI();
 
                     this.fsm = new Context();
-                    if(!fsm.startGame())
-                        System.out.println("Cant start the game\n");
+                    gameMenu();
                     /*switch (fsm.getState()){
                         case
                     }*/
@@ -51,5 +78,10 @@ public class TextInterface {
                 }
             }
         }while (true);
+    }
+
+    @Override
+    public void evolve(IGameEngine gameEngine, long currentTime) {
+
     }
 }

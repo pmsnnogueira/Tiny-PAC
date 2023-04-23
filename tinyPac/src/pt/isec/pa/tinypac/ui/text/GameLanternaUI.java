@@ -49,7 +49,7 @@ public class GameLanternaUI implements IGameEngineEvolve {
 
     private void show() throws IOException {
 
-        char[][] env = fsm.maze();
+      /*  char[][] env = fsm.maze();
         screen.startScreen();
         for (int y = 0; y < env.length; y++) {
             for (int x = 0; x < env[0].length; x++) {
@@ -66,7 +66,7 @@ public class GameLanternaUI implements IGameEngineEvolve {
                 screen.setCharacter(x,y, TextCharacter.fromCharacter(env[y][x],tc,bc)[0]);
             }
         }
-        screen.refresh();
+        screen.refresh();*/
     }
 }
 

@@ -15,11 +15,11 @@ public abstract class StateAdapter implements IState {
     }
 
     protected void changeState(State newState){
-        newState.createState(context, data);
+        context.changeState(newState.createState(context,data));
     }
 
     @Override
-    public Maze maze() {
+    public char[][] showMaze() {
         return null;
     }
 
@@ -29,7 +29,7 @@ public abstract class StateAdapter implements IState {
     }
 
     @Override
-    public IState move() {
+    public IState evolve() {
         return null;
     }
 

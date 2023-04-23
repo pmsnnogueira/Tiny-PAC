@@ -16,4 +16,9 @@ public class VulnerableGhostState extends StateAdapter {
     public State getState() {
         return State.VULNERABLE_GHOSTS;
     }
+
+    @Override
+    public char[][] showMaze() {
+        return data.showMaze();
+    }
 }

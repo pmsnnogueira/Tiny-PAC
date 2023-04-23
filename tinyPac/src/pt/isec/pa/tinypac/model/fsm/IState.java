@@ -9,10 +9,10 @@ public interface IState {
     boolean startGame();
 
     //WaitToMovePacman
-    IState move();
+    IState evolve();
 
     //WaitToMovePacman
-    Maze maze();
+    char[][] showMaze();
 
     //GAME
     IState touchGhost();

@@ -4,6 +4,7 @@ import pt.isec.pa.tinypac.model.data.Game;
 import pt.isec.pa.tinypac.model.data.GameManager;
 import pt.isec.pa.tinypac.model.data.Maze;
 import pt.isec.pa.tinypac.model.fsm.Context;
+import pt.isec.pa.tinypac.model.fsm.IState;
 import pt.isec.pa.tinypac.model.fsm.State;
 import pt.isec.pa.tinypac.model.fsm.StateAdapter;
 
@@ -27,13 +28,19 @@ public class WaitToMovePacmanState extends StateAdapter {
 
         //data.makeGhostMovements();
 
-
+        evolve();
         //changeState(State.GAME);
         return true;
     }
 
     @Override
-    public Maze maze() {
-        return data.getMaze();
+    public IState evolve() {
+        changeState(State.GAME);
+        return null;
+    }
+
+    @Override
+    public char[][] showMaze() {
+        return data.showMaze();
     }
 }

@@ -17,7 +17,10 @@ public class GameState extends StateAdapter {
         return State.GAME;
     }
 
-
+    @Override
+    public char[][] showMaze() {
+        return data.showMaze();
+    }
 
 
 }

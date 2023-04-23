@@ -209,19 +209,9 @@ public class GameManager implements IGameEngineEvolve {
     }
 
 
-    /*public void printMaze(){
-        char[][] gameBoard;
-        gameBoard = getMaze();
-        if(gameBoard == null)
-            return;
-
-        for (int i = 0; i < game.getMazeRows(); i++) {
-            for (int a = 0; a < game.getMazeColumns(); a++) {
-                System.out.print(gameBoard[i][a]);
-            }
-            System.out.println();
-        }
-    }*/
+    public char[][] showMaze(){
+       return game.showMaze();
+    }
 
 
     public void tick(){

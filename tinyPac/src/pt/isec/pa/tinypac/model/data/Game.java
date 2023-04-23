@@ -67,7 +67,7 @@ public class Game {
         return maze;
     }
 
-    /*public char[][] getMaze() {
+    public char[][] showMaze() {
         char[][] gameBoard;
         gameBoard = maze.getMaze();
         if(gameBoard == null)
@@ -96,7 +96,7 @@ public class Game {
             //System.out.println();
         }
         return gameBoard;
-    }*/
+    }
 
     private boolean insertGhosts(int posX, int posY){
 
