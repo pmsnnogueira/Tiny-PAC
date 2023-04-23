@@ -1,6 +1,8 @@
 package pt.isec.pa.tinypac.model.fsm.states;
 
 import pt.isec.pa.tinypac.model.data.Game;
+import pt.isec.pa.tinypac.model.data.GameManager;
+import pt.isec.pa.tinypac.model.data.Maze;
 import pt.isec.pa.tinypac.model.fsm.Context;
 import pt.isec.pa.tinypac.model.fsm.State;
 import pt.isec.pa.tinypac.model.fsm.StateAdapter;
@@ -9,7 +11,7 @@ import java.util.ArrayList;
 
 public class WaitToMovePacmanState extends StateAdapter {
 
-    public WaitToMovePacmanState(Context context, Game data){
+    public WaitToMovePacmanState(Context context, GameManager data){
         super(context, data);
     }
 
@@ -23,10 +25,15 @@ public class WaitToMovePacmanState extends StateAdapter {
         if(!data.generateMapLevel())
             return false;
 
-        data.makeGhostMovements();
+        //data.makeGhostMovements();
 
 
         //changeState(State.GAME);
         return true;
+    }
+
+    @Override
+    public Maze maze() {
+        return data.getMaze();
     }
 }

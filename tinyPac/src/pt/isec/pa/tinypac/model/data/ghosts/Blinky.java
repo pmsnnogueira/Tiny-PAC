@@ -1,21 +1,22 @@
 package pt.isec.pa.tinypac.model.data.ghosts;
 
+import pt.isec.pa.tinypac.model.data.Game;
 import pt.isec.pa.tinypac.model.data.Ghost;
 import pt.isec.pa.tinypac.model.data.IMazeElement;
 import pt.isec.pa.tinypac.model.data.Maze;
 import utils.Obstacles;
 
-public class Blinky extends Ghost {
+public class Blinky extends Ghost{
 
 
-    public Blinky(int posX, int posY){
-        super(posX, posY);
+    public Blinky(Game game,int posX, int posY){
+        super(game,posX, posY);
     }
 
 
     @Override
-    public boolean move(Maze maze, int numberRows, int numberColumns) {
-
+    public boolean evolve(){
+        Maze maze = game.getMaze();
         IMazeElement front = maze.get(getPosY() - 1 ,getPosX());
         IMazeElement left = null;
         IMazeElement right = null;
@@ -67,8 +68,12 @@ public class Blinky extends Ghost {
         return false;
     }
 
+
+
+
     @Override
     public char getSymbol() {
         return 'B';
     }
+
 }

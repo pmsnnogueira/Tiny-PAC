@@ -9,9 +9,10 @@ import utils.Obstacles;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 public class Game {
-    private final static String LEVELS_PATH = "src/pt/isec/pa/tinypac/levels/";
+
     private Integer level;
     private Integer lives;
     private Integer points;
@@ -30,182 +31,47 @@ public class Game {
         this.pacman = null;
     }
 
-    private ArrayList<String> filesinFolder(String folderName){
-
-        File fileFolder = new File(folderName);
-        ArrayList<String> listOfFiles = new ArrayList<>();
-
-        if(fileFolder.exists() && fileFolder.isDirectory()){
-           File[] a = fileFolder.listFiles();
-           if(a != null && a.length > 0){
-               for(File obj : a){
-                   listOfFiles.add(obj.getName());
-               }
-               return listOfFiles;
-           }
-        }
-        return null;
+    public Integer getLevel() {
+        return level;
     }
 
-    public boolean generateMapLevel(){
-        //verificar se existem ficheiros dos mapas
-        ArrayList<String> listOfFiles = filesinFolder(LEVELS_PATH);
-        StringBuilder fileName = new StringBuilder();
-        int counter = level;
-
-        if(listOfFiles == null)
-            return false;
-
-        do {
-            fileName.delete(0, fileName.length());
-            fileName.append("Level").append((counter < 10) ? "0" + counter : + counter).append(".txt");
-            counter--;
-        } while (!listOfFiles.contains(fileName.toString()));
-
-
-        fileName.insert(0 , LEVELS_PATH);
-
-        //Verificar para todos os ficheiros com o directory.listFiles
-        if(!buildMap(fileName.toString()))
-            return false;
-
-        // insertGhosts();
-
-        printMaze();
-
-
-        return true;
+    public Integer getMazeRows() {
+        return mazeRows;
     }
 
-
-    private Boolean buildMap(String fileName){
-
-        int rows = 0, columns = 0;
-        StringBuilder stringBuilder = new StringBuilder();
-
-        try (BufferedReader bufferedReader = new BufferedReader(new FileReader(fileName))) {
-            String line;
-            int counter = 0;
-
-            while ((line = bufferedReader.readLine()) != null) {
-                stringBuilder.append(line);
-                stringBuilder.append("\n");
-
-                if (counter != 0 && columns != line.length()) {
-                    return false;
-                }
-                rows = ++counter;
-                columns = line.length();
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-            return false;
-        }
-
-        this.mazeRows = rows ;
-        this.mazeColumns = columns;
-        maze = new Maze(rows ,columns);
-
-        if(!setCharInMap(stringBuilder))
-            return false;
-
-        System.out.println("Game Rows: " + rows + " Columns: " + columns);
-        return true;
+    public Integer getMazeColumns() {
+        return mazeColumns;
     }
 
-    private boolean setCharInMap(StringBuilder sb){
-
-        ArrayList<Integer[]> ghostCave = new ArrayList<>();
-
-        for(int i = 0 ; i < mazeRows ; i++) {       //Y
-            sb.deleteCharAt(sb.indexOf("\n",i * mazeColumns));
-            for(int a = 0; a < mazeColumns; a++) {      //X
-                char c = sb.charAt((i * mazeColumns) + a);
-                switch (c) {
-                    case 'x' ->   //Parede
-                            maze.set(i, a, new Wall());
-                    case 'W' ->   //Zona Warp
-                            maze.set(i, a, new Warp());
-                    case 'o' ->   //Comida
-                            maze.set(i, a, new Ball());
-                    case 'F' ->   //fruta
-                            maze.set(i, a, new Fruit());
-                    case 'M' -> {   //LocalPacmanInicial
-                        maze.set(i, a, new PacmanInitialPosition());
-                        this.pacman = new Pacman(a, i);
-                    }
-                    case 'O' ->   //Bola com Poderes
-                            maze.set(i, a, new Power());
-                    case 'Y' -> {   //Portal
-                        maze.set(i, a, new Portal());
-                    }
-                    case 'y' -> {   //Caverna dos Fantasmas
-                        maze.set(i, a, new GhostCave());
-                        ghostCave.add(new Integer[]{a, i});//x , y
-                    }
-                    default -> {
-                        return false; //Character Invalid
-                    }
-                }
-            }
-        }
-
-
-        int numPositions = 0;
-        Integer[] randomPosition;
-        Ghost ghost = null;
-
-        //Posicionar o Blinky por tras da porta, pois ele so anda para a frente
-        for(int i = 0; i < ghostCave.size() ; i++){
-            randomPosition = ghostCave.get(i);
-            IMazeElement element = maze.get(randomPosition[1] - 1, randomPosition[0]);
-            if(element == null)
-                continue;
-
-            if(element.getSymbol() == Obstacles.PORTAL.getSymbol()) {
-                ghost = new Blinky(randomPosition[0], randomPosition[1]);
-                ghosts.add(ghost);
-                ghostCave.remove(randomPosition);
-                break;
-            }
-
-            if(i == ghostCave.size())
-                return false;
-        }
-
-
-        for(int i = 0; i < 3;i++){
-            do {
-                numPositions = ghostCave.size();
-                int randomIndex = (int) (Math.random() * numPositions);
-                randomPosition = ghostCave.get(randomIndex);
-            } while (maze.get(randomPosition[0], randomPosition[1]).getSymbol() != 'y');
-
-            switch (i){
-                case 0:
-                    ghost = new Clyde(randomPosition[0] , randomPosition[1]);
-                    break;
-                case 1:
-                    ghost = new Inky(randomPosition[0] , randomPosition[1]);
-                    break;
-                case 2:
-                    ghost = new Pinky(randomPosition[0] , randomPosition[1]);
-                    break;
-            }
-            ghosts.add(ghost);
-            //maze.set(randomPosition[0] , randomPosition[1] , ghost);
-            ghostCave.remove(randomPosition);
-        }
-
-
-        //System.out.println(ghostCave.toString());
-        return true;
+    public void setMazeRows(Integer mazeRows) {
+        this.mazeRows = mazeRows;
     }
 
+    public void setMazeColumns(Integer mazeColumns) {
+        this.mazeColumns = mazeColumns;
+    }
 
-    public void printMaze() {
+    public void setMaze(Maze maze) {
+        this.maze = maze;
+    }
+
+    public void setPacman(Pacman pacman) {
+        this.pacman = pacman;
+    }
+
+    public void setGhosts(ArrayList<Ghost> ghosts) {
+        this.ghosts = ghosts;
+    }
+
+    public Maze getMaze() {
+        return maze;
+    }
+
+    /*public char[][] getMaze() {
         char[][] gameBoard;
         gameBoard = maze.getMaze();
+        if(gameBoard == null)
+            return null;
 
         for (int i = 0; i < mazeRows; i++) {
             for (int a = 0; a < mazeColumns; a++) {
@@ -221,15 +87,16 @@ public class Game {
 
                 if (gameBoard[i][a] == Obstacles.GHOST_CAVE.getSymbol()
                         || gameBoard[i][a] == Obstacles.PACMAN_INITIAL_POSITION.getSymbol()) {
-                    System.out.print(' ');
+                    gameBoard[i][a] = ' ';
                     continue;
                 }
 
-                System.out.print(gameBoard[i][a]);
+               //System.out.print(gameBoard[i][a]);
             }
-            System.out.println();
+            //System.out.println();
         }
-    }
+        return gameBoard;
+    }*/
 
     private boolean insertGhosts(int posX, int posY){
 
@@ -242,7 +109,7 @@ public class Game {
 
     public void makeGhostMovements(){
         for(Ghost a : ghosts){
-            a.move(maze,mazeRows,mazeColumns);
+            //a.move(maze,mazeRows,mazeColumns);
         }
     }
 

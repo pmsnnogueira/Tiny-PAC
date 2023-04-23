@@ -1,13 +1,15 @@
 package pt.isec.pa.tinypac.model.fsm;
 
 import pt.isec.pa.tinypac.model.data.Game;
+import pt.isec.pa.tinypac.model.data.GameManager;
+import pt.isec.pa.tinypac.model.data.Maze;
 
 public abstract class StateAdapter implements IState {
 
     protected Context context;
-    protected Game data;
+    protected GameManager data;
 
-    protected StateAdapter(Context context, Game data){
+    protected StateAdapter(Context context, GameManager data){
         this.context = context;
         this.data = data;
     }
@@ -16,6 +18,10 @@ public abstract class StateAdapter implements IState {
         newState.createState(context, data);
     }
 
+    @Override
+    public Maze maze() {
+        return null;
+    }
 
     @Override
     public boolean startGame() {

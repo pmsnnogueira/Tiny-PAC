@@ -1,16 +1,22 @@
 package pt.isec.pa.tinypac.model.fsm;
 
+import pt.isec.pa.tinypac.gameengine.GameEngine;
 import pt.isec.pa.tinypac.model.data.Game;
+import pt.isec.pa.tinypac.model.data.GameManager;
 import pt.isec.pa.tinypac.model.fsm.states.WaitToMovePacmanState;
 
 
 public class Context {
     private IState state;
-    private Game data;
+    private GameManager data;
+
+    private GameEngine gameEngine;
 
     public Context(){
         //Read the first level
-        data = new Game();
+        this.data = new GameManager();
+        this.gameEngine = new GameEngine();
+        gameEngine.start(500);
         state = new WaitToMovePacmanState(this, data);
     }
 
@@ -27,6 +33,10 @@ public class Context {
 
     public boolean startGame(){
         return state.startGame();
+    }
+
+    public char[][] maze(){
+        return state.maze();
     }
 
 

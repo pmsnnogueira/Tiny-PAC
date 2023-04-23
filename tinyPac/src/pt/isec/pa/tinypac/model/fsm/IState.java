@@ -1,5 +1,7 @@
 package pt.isec.pa.tinypac.model.fsm;
 
+import pt.isec.pa.tinypac.model.data.Maze;
+
 public interface IState {
 
     State getState();
@@ -8,6 +10,9 @@ public interface IState {
 
     //WaitToMovePacman
     IState move();
+
+    //WaitToMovePacman
+    Maze maze();
 
     //GAME
     IState touchGhost();

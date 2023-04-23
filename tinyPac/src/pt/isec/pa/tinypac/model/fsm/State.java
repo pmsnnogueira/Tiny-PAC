@@ -1,6 +1,7 @@
 package pt.isec.pa.tinypac.model.fsm;
 
 import pt.isec.pa.tinypac.model.data.Game;
+import pt.isec.pa.tinypac.model.data.GameManager;
 import pt.isec.pa.tinypac.model.fsm.states.*;
 
 public enum State {
@@ -12,7 +13,7 @@ public enum State {
     PAUSE,
     GAME_OVER;
 
-    IState createState(Context context, Game data){
+    IState createState(Context context, GameManager data){
         return switch (this){
             case WAIT_TO_MOVE_PACMAN -> new WaitToMovePacmanState(context, data);
             case GAME -> new GameState(context, data);
