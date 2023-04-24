@@ -1,5 +1,6 @@
 package pt.isec.pa.tinypac.model.data;
 
+import pt.isec.pa.tinypac.gameengine.GameEngine;
 import pt.isec.pa.tinypac.gameengine.IGameEngine;
 import pt.isec.pa.tinypac.gameengine.IGameEngineEvolve;
 import pt.isec.pa.tinypac.model.data.ghosts.Blinky;
@@ -18,10 +19,14 @@ import java.util.Scanner;
 
 public class GameManager implements IGameEngineEvolve {
     private Game game;
+    private GameEngine gameEngine;
     private final static String LEVELS_PATH = "src/pt/isec/pa/tinypac/levels/";
 
-    public GameManager(){
+    public GameManager(GameEngine gameEngine){
         this.game = new Game();
+        //this.gameEngine = gameEngine;
+        //gameEngine.registerClient(this);
+        //gameEngine.start(2000);
     }
 
     private ArrayList<String> filesinFolder(String folderName){

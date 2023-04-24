@@ -13,7 +13,9 @@ import java.util.ArrayList;
 public class WaitToMovePacmanState extends StateAdapter {
 
     public WaitToMovePacmanState(Context context, GameManager data){
+
         super(context, data);
+        loadGame();
     }
 
     @Override
@@ -21,22 +23,10 @@ public class WaitToMovePacmanState extends StateAdapter {
         return State.WAIT_TO_MOVE_PACMAN;
     }
 
-    @Override
-    public boolean startGame() {
-        if(!data.generateMapLevel())
-            return false;
 
-        //data.makeGhostMovements();
-
-        evolve();
-        //changeState(State.GAME);
-        return true;
-    }
-
-    @Override
-    public IState evolve() {
+    private void loadGame(){
+        data.generateMapLevel();
         changeState(State.GAME);
-        return null;
     }
 
     @Override

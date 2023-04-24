@@ -22,22 +22,26 @@ import java.io.IOException;
 public class GameLanternaUI implements IGameEngineEvolve {
     Context fsm;
     Screen screen;
+    GameEngine gameEngine;
 
     public GameLanternaUI() throws IOException {
-        this.fsm = new Context();
+
+        this.gameEngine= new GameEngine();
+        //gameEngine.registerClient(fsm.getData());
+        gameEngine.registerClient(this);
+
+
+        this.fsm = new Context(gameEngine);
         screen = new DefaultTerminalFactory().createScreen();
         screen.setCursorPosition(null);
-        fsm.startGame();
 
-        GameEngine gameEngine= new GameEngine();
         gameEngine.registerClient(fsm.getData());
-        gameEngine.registerClient(this);
-        gameEngine.start(2000);
-        gameEngine.waitForTheEnd();
-
 
 
         show();
+
+        gameEngine.start(500);
+        gameEngine.waitForTheEnd();
     }
 
     @Override
@@ -50,19 +54,23 @@ public class GameLanternaUI implements IGameEngineEvolve {
                                     (key.getKeyType() == KeyType.Character &&
                                             key.getCharacter().equals('q'))))
             ){
+
                 gameEngine.stop();
                 gameEngine.registerClient(this);
                 screen.close();
+
             }
         } catch (IOException e) { }
     }
 
 
-
     private void show() throws IOException {
 
         char[][] env = fsm.showMaze();
+        if(env == null)
+            return;
         screen.startScreen();
+        screen.doResizeIfNecessary();
         for (int y = 0; y < env.length; y++) {
             for (int x = 0; x < env[0].length; x++) {
                 TextColor tc = switch(env[y][x]) {
@@ -79,7 +87,6 @@ public class GameLanternaUI implements IGameEngineEvolve {
             }
         }
         screen.refresh();
-       // screen.doResizeIfNecessary();
     }
 }
 

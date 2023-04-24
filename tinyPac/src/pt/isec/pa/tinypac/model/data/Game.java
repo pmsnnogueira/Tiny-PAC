@@ -99,21 +99,6 @@ public class Game {
         return gameBoard;
     }
 
-    private boolean insertGhosts(int posX, int posY){
-
-        //BLINKY
-
-
-
-        return true;
-    }
-
-    public void makeGhostMovements(){
-        for(Ghost a : ghosts){
-            //a.move(maze,mazeRows,mazeColumns);
-        }
-    }
-
     public void setLevel(Integer level){
         this.level = level;
     }

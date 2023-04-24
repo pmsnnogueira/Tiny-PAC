@@ -9,9 +9,6 @@ public interface IState {
     boolean startGame();            //Isto vou ter de tirar
 
     //WaitToMovePacman
-    IState evolve();
-
-    //WaitToMovePacman
     char[][] showMaze();        //Retirar
 
     //GAME

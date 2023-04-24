@@ -28,7 +28,6 @@ public class TextInterface implements IGameEngineEvolve{
 
     private void waitToMovePacmaUI() {
 
-        fsm.startGame();
     }
 
 
@@ -63,7 +62,7 @@ public class TextInterface implements IGameEngineEvolve{
             switch (PAInput.chooseOption("**** Tiny-PAC ****" , "Play Game" , "Top5" , "Exit")){
                 case 1 -> {
                     GameLanternaUI gameLanternaUI = new GameLanternaUI();
-                    this.fsm = new Context();
+                   // this.fsm = new Context();
                     //gameMenu();
 
 

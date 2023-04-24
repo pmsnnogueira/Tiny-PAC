@@ -28,10 +28,6 @@ public abstract class StateAdapter implements IState {
         return false;
     }
 
-    @Override
-    public IState evolve() {
-        return null;
-    }
 
     @Override
     public IState touchGhost() {
