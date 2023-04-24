@@ -27,77 +27,71 @@ public class Blinky extends Ghost{
     @Override
     public boolean evolve(){
         Maze maze = game.getMaze();
-        IMazeElement top = maze.get(getPosY() - 1 ,getPosX());
-        IMazeElement left = maze.get(getPosY(), getPosX() - 1);
-        IMazeElement right = maze.get(getPosY(), getPosX() + 1);
-        IMazeElement bottom = maze.get(getPosY() + 1, getPosX());
-        float random = (float) Math.random();
         int nextX = getPosX();
         int nextY = getPosY();
 
 
+
+        if(cruzamento(maze,direction)) {
+            int[] possibleDirections = getValidDirections(maze, direction);
+            for (int i = 0; i < possibleDirections.length; i++) {
+                switch (possibleDirections[i]) {
+                    case TOP -> System.out.println("Top");
+                    case BOTTOM -> System.out.println("Bottom");
+                    case LEFT -> System.out.println("Left");
+                    case RIGHT -> System.out.println("Right");
+                }
+            }
+
+            direction = possibleDirections[new Random().nextInt(possibleDirections.length)];
+            switch (direction) {
+                case TOP -> System.out.println("New Direction: Top");
+                case BOTTOM -> System.out.println("New Direction: Bottom");
+                case LEFT -> System.out.println("New Direction: Left");
+                case RIGHT -> System.out.println("New Direction: RIGHT");
+            }
+
+           // return false;
+        }
+
+
         switch (direction){
             case TOP :
-                --nextY;
-                break;
-            case RIGHT:
-                ++nextX;
-                break;
-            case LEFT:
-                --nextX;
+                nextY--;
                 break;
             case BOTTOM:
-                ++nextY;
+                nextY++;
+                break;
+            case LEFT:
+                nextX--;
+                break;
+            case RIGHT:
+                nextX++;
                 break;
         }
 
-        //Chegar a uma interseção
-        if(getValidDirections(maze,direction).length > 1){
-            int[] possibleDirections = getValidDirections(maze, direction);
-            if(possibleDirections.length == 0)
-                return false;
-            direction = possibleDirections[new Random().nextInt(possibleDirections.length)];
-        }else{
-            setPos(nextX , nextY);
-        }
-
+        setPos(nextX , nextY);
         return false;
     }
 
-    private boolean mazeIntersection(Maze maze) {
+    private boolean cruzamento(Maze maze, int direction){
 
         IMazeElement top = maze.get(getPosY() - 1 ,getPosX());
         IMazeElement left = maze.get(getPosY(), getPosX() - 1);
         IMazeElement right = maze.get(getPosY(), getPosX() + 1);
         IMazeElement bottom = maze.get(getPosY() + 1, getPosX());
 
-        if(top.getSymbol() != Obstacles.WALL.getSymbol()){
-            if(left.getSymbol() != Obstacles.WALL.getSymbol() &&
-                right.getSymbol() != Obstacles.WALL.getSymbol() &&
-                    bottom.getSymbol() != Obstacles.WALL.getSymbol()
-            )
+        if(direction == TOP || direction == BOTTOM){
+            if(left.getSymbol() != Obstacles.WALL.getSymbol() ||
+                    right.getSymbol() != Obstacles.WALL.getSymbol()){
                 return true;
+            }
         }
-        if(right.getSymbol() != Obstacles.WALL.getSymbol()){
+        if(direction == RIGHT || direction == LEFT){
             if(top.getSymbol() != Obstacles.WALL.getSymbol() ||
-                    left.getSymbol() != Obstacles.WALL.getSymbol() ||
-                    bottom.getSymbol() != Obstacles.WALL.getSymbol()
-            )
+                    bottom.getSymbol() != Obstacles.WALL.getSymbol()){
                 return true;
-        }
-        if(left.getSymbol() != Obstacles.WALL.getSymbol()){
-            if(top.getSymbol() != Obstacles.WALL.getSymbol() ||
-                    right.getSymbol() != Obstacles.WALL.getSymbol() ||
-                    bottom.getSymbol() != Obstacles.WALL.getSymbol()
-            )
-                return true;
-        }
-        if(bottom.getSymbol() != Obstacles.WALL.getSymbol()){
-            if(top.getSymbol() != Obstacles.WALL.getSymbol() ||
-                    left.getSymbol() != Obstacles.WALL.getSymbol() ||
-                    right.getSymbol() != Obstacles.WALL.getSymbol()
-            )
-                return true;
+            }
         }
 
         return false;
@@ -107,21 +101,60 @@ public class Blinky extends Ghost{
         int[] possibleDirections = new int[4];
         int count = 0;
 
-        // verifica se pode ir para a direita
-        if (maze.get(getPosY(), getPosX() + 1).getSymbol() != Obstacles.WALL.getSymbol() && direction != RIGHT) {
-            possibleDirections[count++] = RIGHT;
+
+        if(direction == TOP){
+            // verifica se pode ir para cima
+            if (maze.get(getPosY() - 1,getPosX()).getSymbol() != Obstacles.WALL.getSymbol()) {
+                possibleDirections[count++] = TOP;
+            }
+            // verifica se pode ir para a direita
+            if (maze.get(getPosY(), getPosX() + 1).getSymbol() != Obstacles.WALL.getSymbol()) {
+                possibleDirections[count++] = RIGHT;
+            }
+            // verifica se pode ir para a esquerda
+            if (maze.get(getPosY(), getPosX() - 1).getSymbol() != Obstacles.WALL.getSymbol()) {
+                possibleDirections[count++] = LEFT;
+            }
+        }else if(direction == LEFT){
+            // verifica se pode ir para a esquerda
+            if (maze.get(getPosY(), getPosX() - 1).getSymbol() != Obstacles.WALL.getSymbol()) {
+                possibleDirections[count++] = LEFT;
+            }
+            // verifica se pode ir para cima
+            if (maze.get(getPosY() - 1,getPosX()).getSymbol() != Obstacles.WALL.getSymbol()) {
+                possibleDirections[count++] = TOP;
+            }
+            // verifica se pode ir para baixo
+            if (maze.get(getPosY() + 1 , getPosX()).getSymbol() != Obstacles.WALL.getSymbol()) {
+                possibleDirections[count++] = BOTTOM;
+            }
         }
-        // verifica se pode ir para baixo
-        if (maze.get(getPosY() + 1 , getPosX()).getSymbol() != Obstacles.WALL.getSymbol() && direction != BOTTOM) {
-            possibleDirections[count++] = BOTTOM;
-        }
-        // verifica se pode ir para a esquerda
-        if (maze.get(getPosY(), getPosX() - 1).getSymbol() != Obstacles.WALL.getSymbol() && direction != LEFT) {
-            possibleDirections[count++] = LEFT;
-        }
-        // verifica se pode ir para cima
-        if (maze.get(getPosY() - 1,getPosX()).getSymbol() != Obstacles.WALL.getSymbol() && direction != TOP) {
-            possibleDirections[count++] = TOP;
+        else if(direction == RIGHT){
+            // verifica se pode ir para a direita
+            if (maze.get(getPosY(), getPosX() + 1).getSymbol() != Obstacles.WALL.getSymbol()) {
+                possibleDirections[count++] = RIGHT;
+            }
+            // verifica se pode ir para cima
+            if (maze.get(getPosY() - 1,getPosX()).getSymbol() != Obstacles.WALL.getSymbol()) {
+                possibleDirections[count++] = TOP;
+            }
+            // verifica se pode ir para baixo
+            if (maze.get(getPosY() + 1 , getPosX()).getSymbol() != Obstacles.WALL.getSymbol()) {
+                possibleDirections[count++] = BOTTOM;
+            }
+        }else if(direction == BOTTOM){
+            // verifica se pode ir para a esquerda
+            if (maze.get(getPosY(), getPosX() - 1).getSymbol() != Obstacles.WALL.getSymbol()) {
+                possibleDirections[count++] = LEFT;
+            }
+            // verifica se pode ir para a direita
+            if (maze.get(getPosY(), getPosX() + 1).getSymbol() != Obstacles.WALL.getSymbol()) {
+                possibleDirections[count++] = RIGHT;
+            }
+            // verifica se pode ir para baixo
+            if (maze.get(getPosY() + 1 , getPosX()).getSymbol() != Obstacles.WALL.getSymbol()) {
+                possibleDirections[count++] = BOTTOM;
+            }
         }
 
         // retorna um novo array com as direções possíveis

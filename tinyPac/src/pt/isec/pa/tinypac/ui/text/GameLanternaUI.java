@@ -32,7 +32,7 @@ public class GameLanternaUI implements IGameEngineEvolve {
         GameEngine gameEngine= new GameEngine();
         gameEngine.registerClient(fsm.getData());
         gameEngine.registerClient(this);
-        gameEngine.start(500);
+        gameEngine.start(2000);
         gameEngine.waitForTheEnd();
 
 
