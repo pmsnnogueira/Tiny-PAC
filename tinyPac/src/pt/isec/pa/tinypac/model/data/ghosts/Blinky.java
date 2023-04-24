@@ -7,6 +7,7 @@ import pt.isec.pa.tinypac.model.data.IMazeElement;
 import pt.isec.pa.tinypac.model.data.Maze;
 import utils.Obstacles;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 public class Blinky extends Ghost{
@@ -29,45 +30,47 @@ public class Blinky extends Ghost{
         Maze maze = game.getMaze();
         int nextX = getPosX();
         int nextY = getPosY();
-
-
-
+        
         if(cruzamento(maze,direction)) {
-            int[] possibleDirections = getValidDirections(maze, direction);
-            for (int i = 0; i < possibleDirections.length; i++) {
-                switch (possibleDirections[i]) {
+            ArrayList<Integer> possibleDirections = new ArrayList(getValidDirections(maze , direction));
+            for (int i = 0; i < possibleDirections.size(); i++) {
+                switch (possibleDirections.get(i)) {
                     case TOP -> System.out.println("Top");
                     case BOTTOM -> System.out.println("Bottom");
                     case LEFT -> System.out.println("Left");
                     case RIGHT -> System.out.println("Right");
                 }
             }
+            System.out.println(possibleDirections.size());
+            if(possibleDirections.size() == 0){
+                System.out.println("Zero movimentos");
+                if(direction == TOP)
+                    direction = BOTTOM;
+                else if(direction == BOTTOM)
+                    direction = TOP;
+                else if(direction == RIGHT)
+                    direction = LEFT;
+                else if(direction == LEFT)
+                    direction = RIGHT;
 
-            direction = possibleDirections[new Random().nextInt(possibleDirections.length)];
-            switch (direction) {
-                case TOP -> System.out.println("New Direction: Top");
-                case BOTTOM -> System.out.println("New Direction: Bottom");
-                case LEFT -> System.out.println("New Direction: Left");
-                case RIGHT -> System.out.println("New Direction: RIGHT");
+            }else {
+                direction = possibleDirections.get(new Random().nextInt(possibleDirections.size()));
+                switch (direction) {
+                    case TOP -> System.out.println("New Direction: Top");
+                    case BOTTOM -> System.out.println("New Direction: Bottom");
+                    case LEFT -> System.out.println("New Direction: Left");
+                    case RIGHT -> System.out.println("New Direction: RIGHT");
+                }
             }
-
            // return false;
         }
 
 
-        switch (direction){
-            case TOP :
-                nextY--;
-                break;
-            case BOTTOM:
-                nextY++;
-                break;
-            case LEFT:
-                nextX--;
-                break;
-            case RIGHT:
-                nextX++;
-                break;
+        switch (direction) {
+            case TOP -> nextY--;
+            case BOTTOM -> nextY++;
+            case LEFT -> nextX--;
+            case RIGHT -> nextX++;
         }
 
         setPos(nextX , nextY);
@@ -82,14 +85,17 @@ public class Blinky extends Ghost{
         IMazeElement bottom = maze.get(getPosY() + 1, getPosX());
 
         if(direction == TOP || direction == BOTTOM){
-            if(left.getSymbol() != Obstacles.WALL.getSymbol() ||
-                    right.getSymbol() != Obstacles.WALL.getSymbol()){
+            if(top.getSymbol() == Obstacles.WALL.getSymbol() ||
+                bottom.getSymbol() == Obstacles.WALL.getSymbol() ||
+                left.getSymbol() != Obstacles.WALL.getSymbol() ||
+                right.getSymbol() != Obstacles.WALL.getSymbol()){
                 return true;
             }
-        }
-        if(direction == RIGHT || direction == LEFT){
-            if(top.getSymbol() != Obstacles.WALL.getSymbol() ||
-                    bottom.getSymbol() != Obstacles.WALL.getSymbol()){
+        }else if(direction == RIGHT || direction == LEFT){
+            if(right.getSymbol() == Obstacles.WALL.getSymbol() ||
+                left.getSymbol() == Obstacles.WALL.getSymbol() ||
+                top.getSymbol() != Obstacles.WALL.getSymbol()  ||
+                bottom.getSymbol() != Obstacles.WALL.getSymbol()){
                 return true;
             }
         }
@@ -97,68 +103,66 @@ public class Blinky extends Ghost{
         return false;
     }
 
-    private int[] getValidDirections(Maze maze , Integer direction) {
-        int[] possibleDirections = new int[4];
-        int count = 0;
-
+    private ArrayList<Integer> getValidDirections(Maze maze , Integer direction) {
+       ArrayList<Integer> possibleDirections = new ArrayList<>();
 
         if(direction == TOP){
             // verifica se pode ir para cima
             if (maze.get(getPosY() - 1,getPosX()).getSymbol() != Obstacles.WALL.getSymbol()) {
-                possibleDirections[count++] = TOP;
+                possibleDirections.add(TOP);
             }
             // verifica se pode ir para a direita
             if (maze.get(getPosY(), getPosX() + 1).getSymbol() != Obstacles.WALL.getSymbol()) {
-                possibleDirections[count++] = RIGHT;
+                possibleDirections.add(RIGHT);
             }
             // verifica se pode ir para a esquerda
             if (maze.get(getPosY(), getPosX() - 1).getSymbol() != Obstacles.WALL.getSymbol()) {
-                possibleDirections[count++] = LEFT;
+                possibleDirections.add(LEFT);
             }
         }else if(direction == LEFT){
             // verifica se pode ir para a esquerda
             if (maze.get(getPosY(), getPosX() - 1).getSymbol() != Obstacles.WALL.getSymbol()) {
-                possibleDirections[count++] = LEFT;
+                possibleDirections.add(LEFT);
             }
             // verifica se pode ir para cima
             if (maze.get(getPosY() - 1,getPosX()).getSymbol() != Obstacles.WALL.getSymbol()) {
-                possibleDirections[count++] = TOP;
+                possibleDirections.add(TOP);
             }
             // verifica se pode ir para baixo
             if (maze.get(getPosY() + 1 , getPosX()).getSymbol() != Obstacles.WALL.getSymbol()) {
-                possibleDirections[count++] = BOTTOM;
+                possibleDirections.add(BOTTOM);
             }
         }
         else if(direction == RIGHT){
             // verifica se pode ir para a direita
             if (maze.get(getPosY(), getPosX() + 1).getSymbol() != Obstacles.WALL.getSymbol()) {
-                possibleDirections[count++] = RIGHT;
+                possibleDirections.add(RIGHT);
             }
             // verifica se pode ir para cima
             if (maze.get(getPosY() - 1,getPosX()).getSymbol() != Obstacles.WALL.getSymbol()) {
-                possibleDirections[count++] = TOP;
+                possibleDirections.add(TOP);
             }
             // verifica se pode ir para baixo
             if (maze.get(getPosY() + 1 , getPosX()).getSymbol() != Obstacles.WALL.getSymbol()) {
-                possibleDirections[count++] = BOTTOM;
+                possibleDirections.add(BOTTOM);
             }
         }else if(direction == BOTTOM){
             // verifica se pode ir para a esquerda
             if (maze.get(getPosY(), getPosX() - 1).getSymbol() != Obstacles.WALL.getSymbol()) {
-                possibleDirections[count++] = LEFT;
+                possibleDirections.add(LEFT);
             }
             // verifica se pode ir para a direita
             if (maze.get(getPosY(), getPosX() + 1).getSymbol() != Obstacles.WALL.getSymbol()) {
-                possibleDirections[count++] = RIGHT;
+                possibleDirections.add(RIGHT);
             }
             // verifica se pode ir para baixo
             if (maze.get(getPosY() + 1 , getPosX()).getSymbol() != Obstacles.WALL.getSymbol()) {
-                possibleDirections[count++] = BOTTOM;
+                possibleDirections.add(BOTTOM);
             }
         }
 
         // retorna um novo array com as direções possíveis
-        return count == 0 ? new int[]{} : java.util.Arrays.copyOfRange(possibleDirections, 0, count);
+        return possibleDirections;
     }
 
 
