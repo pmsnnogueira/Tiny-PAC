@@ -6,17 +6,17 @@ public interface IState {
 
     State getState();
 
-    boolean startGame();
+    boolean startGame();            //Isto vou ter de tirar
 
     //WaitToMovePacman
     IState evolve();
 
     //WaitToMovePacman
-    char[][] showMaze();
+    char[][] showMaze();        //Retirar
 
     //GAME
-    IState touchGhost();
-    IState eatFood();
+    IState touchGhost();        //Passar os ghosts
+    IState eatFood();           //Passar a food
 
     //VulnerableGhosts
     IState releaseGhosts();

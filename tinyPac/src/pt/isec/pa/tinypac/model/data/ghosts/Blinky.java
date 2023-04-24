@@ -1,74 +1,90 @@
 package pt.isec.pa.tinypac.model.data.ghosts;
 
+import pt.isec.pa.tinypac.Main;
 import pt.isec.pa.tinypac.model.data.Game;
 import pt.isec.pa.tinypac.model.data.Ghost;
 import pt.isec.pa.tinypac.model.data.IMazeElement;
 import pt.isec.pa.tinypac.model.data.Maze;
 import utils.Obstacles;
 
+import java.util.Random;
+
 public class Blinky extends Ghost{
+
+    private static final int TOP = 1;
+    private static final int RIGHT = 2;
+    private static final int LEFT = 3;
+    private static final int BOTTOM = 4;
+
+    private int direction;
 
 
     public Blinky(Game game,int posX, int posY){
         super(game,posX, posY);
+        this.direction = TOP;
     }
-
 
     @Override
     public boolean evolve(){
         Maze maze = game.getMaze();
-        IMazeElement front = maze.get(getPosY() - 1 ,getPosX());
-        IMazeElement left = null;
-        IMazeElement right = null;
-        IMazeElement back = null;
-        if(front == null)
-            return false;
+        IMazeElement top = maze.get(getPosY() - 1 ,getPosX());
+        IMazeElement left = maze.get(getPosY(), getPosX() - 1);
+        IMazeElement right = maze.get(getPosY(), getPosX() + 1);
+        IMazeElement bottom = maze.get(getPosY() + 1, getPosX());
+        float random = (float) Math.random();
+        int nextX = getPosX();
+        int nextY = getPosY();
 
-        if(front.getSymbol() != Obstacles.WALL.getSymbol()){
-            setPos(getPosX(),getPosY() - 1);
-            return true;
+
+        switch (direction){
+            case TOP :
+                nextY--;
+                break;
+            case RIGHT:
+                nextX++;
+                break;
+            case LEFT:
+                nextX--;
+            case BOTTOM:
+                nextY++;
         }
 
-        right = maze.get(getPosY(), getPosX() + 1);
-        left = maze.get(getPosY(), getPosX() - 1);
-        back = maze.get(getPosY() + 1, getPosX());
-        //Verificar se vao ser nulls!!!!!
-
-
-        if(left != null && right.getSymbol() == Obstacles.WALL.getSymbol() && left.getSymbol() != Obstacles.WALL.getSymbol()) {
-            //GoLeft
-            setPos(getPosX() - 1,getPosY());
-            return true;
-        }else if(right != null && right.getSymbol() != Obstacles.WALL.getSymbol() && left.getSymbol() == Obstacles.WALL.getSymbol()){
-            //GoRight
-            setPos(getPosX() - 1,getPosY());
-            return true;
-        }else if(back != null && back.getSymbol() != Obstacles.WALL.getSymbol() &&
-                right.getSymbol() == Obstacles.WALL.getSymbol() && left.getSymbol() == Obstacles.WALL.getSymbol()){
-            //GoBack
-            setPos(getPosX(),getPosY() - 1);
-            return true;
+        if(maze.get(nextY , nextX).getSymbol() == Obstacles.WALL.getSymbol()){
+            int[] possibleDirections = getValidDirections(maze);
+            if(possibleDirections.length == 0)
+                return false;
+            direction = possibleDirections[new Random().nextInt(possibleDirections.length)];
+        }else{
+            setPos(nextX , nextY);
         }
-
-        float random = (float)Math.random();
-        if(random > 0.5 && left != null){
-            //GoLeft
-            setPos(getPosX() - 1, getPosY());
-            return true;
-
-        }else if(right != null){
-            //GoRight
-            setPos(getPosX() - 1,getPosY());
-            return true;
-        }
-
-        System.out.println("\nposX: " + getPosX() + " posY: " + getPosY());
-        System.out.println("\nposX: " + getPosX() + " posY: " + (getPosY() - 1));
 
         return false;
     }
 
+    private int[] getValidDirections(Maze maze) {
+        int[] possibleDirections = new int[4];
+        int count = 0;
 
+        // verifica se pode ir para a direita
+        if (maze.get(getPosY(), getPosX() + 1).getSymbol() != Obstacles.WALL.getSymbol()) {
+            possibleDirections[count++] = RIGHT;
+        }
+        // verifica se pode ir para baixo
+        if (maze.get(getPosY() + 1 , getPosX()).getSymbol() != Obstacles.WALL.getSymbol()) {
+            possibleDirections[count++] = BOTTOM;
+        }
+        // verifica se pode ir para a esquerda
+        if (maze.get(getPosY(), getPosX() - 1).getSymbol() != Obstacles.WALL.getSymbol()) {
+            possibleDirections[count++] = LEFT;
+        }
+        // verifica se pode ir para cima
+        if (maze.get(getPosY() - 1,getPosX()).getSymbol() != Obstacles.WALL.getSymbol()) {
+            possibleDirections[count++] = TOP;
+        }
+
+        // retorna um novo array com as direções possíveis
+        return count == 0 ? new int[]{} : java.util.Arrays.copyOfRange(possibleDirections, 0, count);
+    }
 
 
     @Override

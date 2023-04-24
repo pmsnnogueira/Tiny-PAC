@@ -1,11 +1,12 @@
 package pt.isec.pa.tinypac.model.data;
 
-public class Pacman implements IMazeElement{
+public class Pacman extends GameObjects{
     private int posX;
     private int posY;
     private boolean power;
 
-    public Pacman(Integer posX, Integer posY){
+    public Pacman(Game game,Integer posX, Integer posY){
+        super(game);
         this.posX = posX;
         this.posY = posY;
         this.power = false;
@@ -27,5 +28,10 @@ public class Pacman implements IMazeElement{
     @Override
     public char getSymbol() {
         return '*';
+    }
+
+    @Override
+    public boolean evolve() {
+        return false;
     }
 }

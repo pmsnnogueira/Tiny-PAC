@@ -11,8 +11,6 @@ public class Context {
     private IState state;
     private GameManager data;
 
-    //private GameEngine gameEngine;
-
     public Context(){
         //Read the first level
         this.data = new GameManager();
@@ -40,5 +38,7 @@ public class Context {
         return state.showMaze();
     }
 
-
+    public GameManager getData() {
+        return data;
+    }
 }

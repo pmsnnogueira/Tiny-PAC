@@ -18,7 +18,6 @@ import java.util.Scanner;
 
 public class GameManager implements IGameEngineEvolve {
     private Game game;
-
     private final static String LEVELS_PATH = "src/pt/isec/pa/tinypac/levels/";
 
     public GameManager(){
@@ -130,7 +129,7 @@ public class GameManager implements IGameEngineEvolve {
                             maze.set(i, a, new Fruit());
                     case 'M' -> {   //LocalPacmanInicial
                         maze.set(i, a, new PacmanInitialPosition());
-                        game.setPacman(new Pacman(a, i));
+                        game.setPacman(new Pacman(game,a, i));
                     }
                     case 'O' ->   //Bola com Poderes
                             maze.set(i, a, new Power());
@@ -214,12 +213,13 @@ public class GameManager implements IGameEngineEvolve {
     }
 
 
-    public void tick(){
-
-    }
-
     @Override
     public void evolve(IGameEngine gameEngine, long currentTime) {
+        if(game == null)
+            return;
 
+        if(!game.evolve())
+            gameEngine.stop();
     }
+
 }

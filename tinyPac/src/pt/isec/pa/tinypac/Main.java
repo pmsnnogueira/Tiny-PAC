@@ -15,22 +15,20 @@ public class Main {
     public static void main(String[] args) {
 
         try {
-            TextInterface ui = new TextInterface();
-            ui.start();
+            //TextInterface ui = new TextInterface();
+            //ui.start();
 
            // GameManager gameManager = new GameManager();
-           // GameLanternaUI Lanternaui = new GameLanternaUI(gameManager);
-            /*IGameEngine gameEngine = new GameEngine();
+            GameLanternaUI Lanternaui = new GameLanternaUI();
+           // IGameEngine gameEngine = new GameEngine();
 
-            gameEngine.registerClient(gameManager);
+            /*gameEngine.registerClient(gameManager);
             //gameEngine.registerClient(Lanternaui);
             gameEngine.start(500);
             gameEngine.waitForTheEnd();*/
 
         }catch (IOException e){
             e.printStackTrace();
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
         }
     }
 }

@@ -7,8 +7,11 @@ import com.googlecode.lanterna.input.KeyStroke;
 import com.googlecode.lanterna.input.KeyType;
 import com.googlecode.lanterna.screen.Screen;
 import com.googlecode.lanterna.terminal.DefaultTerminalFactory;
+import pt.isec.pa.tinypac.gameengine.GameEngine;
+import pt.isec.pa.tinypac.gameengine.GameEngineState;
 import pt.isec.pa.tinypac.gameengine.IGameEngine;
 import pt.isec.pa.tinypac.gameengine.IGameEngineEvolve;
+import pt.isec.pa.tinypac.model.data.Game;
 import pt.isec.pa.tinypac.model.data.GameManager;
 import pt.isec.pa.tinypac.model.fsm.Context;
 import utils.Obstacles;
@@ -25,6 +28,15 @@ public class GameLanternaUI implements IGameEngineEvolve {
         screen = new DefaultTerminalFactory().createScreen();
         screen.setCursorPosition(null);
         fsm.startGame();
+
+        GameEngine gameEngine= new GameEngine();
+        gameEngine.registerClient(fsm.getData());
+        gameEngine.registerClient(this);
+        gameEngine.start(500);
+        gameEngine.waitForTheEnd();
+
+
+
         show();
     }
 
@@ -49,7 +61,7 @@ public class GameLanternaUI implements IGameEngineEvolve {
 
     private void show() throws IOException {
 
-      /*  char[][] env = fsm.maze();
+        char[][] env = fsm.showMaze();
         screen.startScreen();
         for (int y = 0; y < env.length; y++) {
             for (int x = 0; x < env[0].length; x++) {
@@ -66,7 +78,8 @@ public class GameLanternaUI implements IGameEngineEvolve {
                 screen.setCharacter(x,y, TextCharacter.fromCharacter(env[y][x],tc,bc)[0]);
             }
         }
-        screen.refresh();*/
+        screen.refresh();
+       // screen.doResizeIfNecessary();
     }
 }
 

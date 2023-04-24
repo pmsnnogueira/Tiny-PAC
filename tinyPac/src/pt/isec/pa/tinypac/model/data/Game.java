@@ -9,6 +9,7 @@ import utils.Obstacles;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class Game {
@@ -125,5 +126,17 @@ public class Game {
     //Verificar se já existe um jogo guardado
     boolean verifyPreviousSaveGame(){
         return false;
+    }
+
+    public boolean evolve() {
+
+        List<GameObjects> gameObjects = new ArrayList<>(ghosts);
+        gameObjects.add(pacman);
+
+        for(var object : gameObjects)
+            object.evolve();
+
+
+        return true;
     }
 }
