@@ -38,19 +38,22 @@ public class Blinky extends Ghost{
 
         switch (direction){
             case TOP :
-                nextY--;
+                --nextY;
                 break;
             case RIGHT:
-                nextX++;
+                ++nextX;
                 break;
             case LEFT:
-                nextX--;
+                --nextX;
+                break;
             case BOTTOM:
-                nextY++;
+                ++nextY;
+                break;
         }
 
-        if(maze.get(nextY , nextX).getSymbol() == Obstacles.WALL.getSymbol()){
-            int[] possibleDirections = getValidDirections(maze);
+        //Chegar a uma interseção
+        if(getValidDirections(maze,direction).length > 1){
+            int[] possibleDirections = getValidDirections(maze, direction);
             if(possibleDirections.length == 0)
                 return false;
             direction = possibleDirections[new Random().nextInt(possibleDirections.length)];
@@ -61,24 +64,63 @@ public class Blinky extends Ghost{
         return false;
     }
 
-    private int[] getValidDirections(Maze maze) {
+    private boolean mazeIntersection(Maze maze) {
+
+        IMazeElement top = maze.get(getPosY() - 1 ,getPosX());
+        IMazeElement left = maze.get(getPosY(), getPosX() - 1);
+        IMazeElement right = maze.get(getPosY(), getPosX() + 1);
+        IMazeElement bottom = maze.get(getPosY() + 1, getPosX());
+
+        if(top.getSymbol() != Obstacles.WALL.getSymbol()){
+            if(left.getSymbol() != Obstacles.WALL.getSymbol() &&
+                right.getSymbol() != Obstacles.WALL.getSymbol() &&
+                    bottom.getSymbol() != Obstacles.WALL.getSymbol()
+            )
+                return true;
+        }
+        if(right.getSymbol() != Obstacles.WALL.getSymbol()){
+            if(top.getSymbol() != Obstacles.WALL.getSymbol() ||
+                    left.getSymbol() != Obstacles.WALL.getSymbol() ||
+                    bottom.getSymbol() != Obstacles.WALL.getSymbol()
+            )
+                return true;
+        }
+        if(left.getSymbol() != Obstacles.WALL.getSymbol()){
+            if(top.getSymbol() != Obstacles.WALL.getSymbol() ||
+                    right.getSymbol() != Obstacles.WALL.getSymbol() ||
+                    bottom.getSymbol() != Obstacles.WALL.getSymbol()
+            )
+                return true;
+        }
+        if(bottom.getSymbol() != Obstacles.WALL.getSymbol()){
+            if(top.getSymbol() != Obstacles.WALL.getSymbol() ||
+                    left.getSymbol() != Obstacles.WALL.getSymbol() ||
+                    right.getSymbol() != Obstacles.WALL.getSymbol()
+            )
+                return true;
+        }
+
+        return false;
+    }
+
+    private int[] getValidDirections(Maze maze , Integer direction) {
         int[] possibleDirections = new int[4];
         int count = 0;
 
         // verifica se pode ir para a direita
-        if (maze.get(getPosY(), getPosX() + 1).getSymbol() != Obstacles.WALL.getSymbol()) {
+        if (maze.get(getPosY(), getPosX() + 1).getSymbol() != Obstacles.WALL.getSymbol() && direction != RIGHT) {
             possibleDirections[count++] = RIGHT;
         }
         // verifica se pode ir para baixo
-        if (maze.get(getPosY() + 1 , getPosX()).getSymbol() != Obstacles.WALL.getSymbol()) {
+        if (maze.get(getPosY() + 1 , getPosX()).getSymbol() != Obstacles.WALL.getSymbol() && direction != BOTTOM) {
             possibleDirections[count++] = BOTTOM;
         }
         // verifica se pode ir para a esquerda
-        if (maze.get(getPosY(), getPosX() - 1).getSymbol() != Obstacles.WALL.getSymbol()) {
+        if (maze.get(getPosY(), getPosX() - 1).getSymbol() != Obstacles.WALL.getSymbol() && direction != LEFT) {
             possibleDirections[count++] = LEFT;
         }
         // verifica se pode ir para cima
-        if (maze.get(getPosY() - 1,getPosX()).getSymbol() != Obstacles.WALL.getSymbol()) {
+        if (maze.get(getPosY() - 1,getPosX()).getSymbol() != Obstacles.WALL.getSymbol() && direction != TOP) {
             possibleDirections[count++] = TOP;
         }
 

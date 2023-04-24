@@ -169,7 +169,7 @@ public class GameManager implements IGameEngineEvolve {
                 continue;
 
             if(element.getSymbol() == Obstacles.PORTAL.getSymbol() || i == ghostCave.size()) {
-                ghost = new Blinky(game,randomPosition[0], randomPosition[1]);
+                ghost = new Blinky(game,randomPosition[0], randomPosition[1] - 1);
                 ghosts.add(ghost);
                 ghostCave.remove(randomPosition);
                 break;
