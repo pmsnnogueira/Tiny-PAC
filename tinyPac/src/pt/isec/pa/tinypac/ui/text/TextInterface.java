@@ -61,7 +61,7 @@ public class TextInterface implements IGameEngineEvolve{
         do{
             switch (PAInput.chooseOption("**** Tiny-PAC ****" , "Play Game" , "Top5" , "Exit")){
                 case 1 -> {
-                    GameLanternaUI gameLanternaUI = new GameLanternaUI();
+                    //GameLanternaUI gameLanternaUI = new GameLanternaUI();
                    // this.fsm = new Context();
                     //gameMenu();
 

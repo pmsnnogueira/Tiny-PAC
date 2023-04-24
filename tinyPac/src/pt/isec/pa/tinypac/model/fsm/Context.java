@@ -9,13 +9,8 @@ public class Context {
     private IState state;
     private GameManager data;
 
-    private GameEngine gameEngine;
-
-    public Context(GameEngine gameEngine){
-        //Read the first level
-        this.data = new GameManager(gameEngine);
-       /* this.gameEngine = new GameEngine();
-        gameEngine.start(500);*/
+    public Context(){
+        this.data = new GameManager();
         state = new WaitToMovePacmanState(this, data);
     }
 

@@ -23,8 +23,8 @@ public class WaitToMovePacmanState extends StateAdapter {
         return State.WAIT_TO_MOVE_PACMAN;
     }
 
-
     private void loadGame(){
+
         data.generateMapLevel();
         changeState(State.GAME);
     }

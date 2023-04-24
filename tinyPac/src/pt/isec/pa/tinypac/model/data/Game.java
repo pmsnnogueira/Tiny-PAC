@@ -115,11 +115,15 @@ public class Game {
 
     public boolean evolve() {
 
+        if(ghosts == null || pacman == null)
+            return false;
+
         List<GameObjects> gameObjects = new ArrayList<>(ghosts);
         gameObjects.add(pacman);
 
-        for(var object : gameObjects)
-            object.evolve();
+        if(gameObjects != null)
+            for(var object : gameObjects)
+                object.evolve();
 
 
         return true;

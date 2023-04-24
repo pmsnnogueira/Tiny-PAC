@@ -14,34 +14,33 @@ import pt.isec.pa.tinypac.gameengine.IGameEngineEvolve;
 import pt.isec.pa.tinypac.model.data.Game;
 import pt.isec.pa.tinypac.model.data.GameManager;
 import pt.isec.pa.tinypac.model.fsm.Context;
+import pt.isec.pa.tinypac.model.fsm.ModelManager;
 import utils.Obstacles;
 import utils.PAInput;
 
 import java.io.IOException;
 
 public class GameLanternaUI implements IGameEngineEvolve {
-    Context fsm;
+    ModelManager modelManager;
     Screen screen;
     GameEngine gameEngine;
 
-    public GameLanternaUI() throws IOException {
+    public GameLanternaUI(GameManager gameManager) throws IOException {
 
-        this.gameEngine= new GameEngine();
-        //gameEngine.registerClient(fsm.getData());
-        gameEngine.registerClient(this);
-
-
-        this.fsm = new Context(gameEngine);
         screen = new DefaultTerminalFactory().createScreen();
         screen.setCursorPosition(null);
 
-        gameEngine.registerClient(fsm.getData());
+        this.modelManager = new ModelManager(gameManager);
 
+        this.gameEngine = new GameEngine();
+        gameEngine.registerClient(this);
+        gameEngine.registerClient(modelManager.getGameManager());
 
-        show();
 
         gameEngine.start(500);
         gameEngine.waitForTheEnd();
+
+        show();
     }
 
     @Override
@@ -58,7 +57,6 @@ public class GameLanternaUI implements IGameEngineEvolve {
                 gameEngine.stop();
                 gameEngine.registerClient(this);
                 screen.close();
-
             }
         } catch (IOException e) { }
     }
@@ -66,7 +64,7 @@ public class GameLanternaUI implements IGameEngineEvolve {
 
     private void show() throws IOException {
 
-        char[][] env = fsm.showMaze();
+        char[][] env = modelManager.showMaze();
         if(env == null)
             return;
         screen.startScreen();

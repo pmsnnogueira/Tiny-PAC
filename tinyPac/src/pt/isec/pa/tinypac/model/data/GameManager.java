@@ -19,14 +19,10 @@ import java.util.Scanner;
 
 public class GameManager implements IGameEngineEvolve {
     private Game game;
-    private GameEngine gameEngine;
     private final static String LEVELS_PATH = "src/pt/isec/pa/tinypac/levels/";
 
-    public GameManager(GameEngine gameEngine){
+    public GameManager(){
         this.game = new Game();
-        //this.gameEngine = gameEngine;
-        //gameEngine.registerClient(this);
-        //gameEngine.start(2000);
     }
 
     private ArrayList<String> filesinFolder(String folderName){
@@ -220,11 +216,9 @@ public class GameManager implements IGameEngineEvolve {
 
     @Override
     public void evolve(IGameEngine gameEngine, long currentTime) {
-        if(game == null)
-            return;
-
-        if(!game.evolve())
-            gameEngine.stop();
+        //if(game != null)
+            if(!game.evolve())
+                gameEngine.stop();
     }
 
 }

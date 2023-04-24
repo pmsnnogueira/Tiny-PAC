@@ -11,15 +11,19 @@ import java.io.IOException;
 
 public class Main {
 
-    static int i = 0;
     public static void main(String[] args) {
 
         try {
             //TextInterface ui = new TextInterface();
             //ui.start();
 
-           // GameManager gameManager = new GameManager();
-            GameLanternaUI Lanternaui = new GameLanternaUI();
+            //GameManager gameManager = new GameManager();
+
+            GameManager gameManager = new GameManager();
+            GameLanternaUI lanternaui = new GameLanternaUI(gameManager);
+
+
+
            // IGameEngine gameEngine = new GameEngine();
 
             /*gameEngine.registerClient(gameManager);
