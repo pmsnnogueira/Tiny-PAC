@@ -139,7 +139,9 @@ public class GameManager implements IGameEngineEvolve {
                     case 'O' ->   //Bola com Poderes
                             maze.set(i, a, new Power());
                     case 'Y' -> {   //Portal
-                        maze.set(i, a, new Portal());
+                        Portal portal = new Portal(a,i); //x,y
+                        maze.set(i, a, portal);
+                        game.setPortal(portal);
                     }
                     case 'y' -> {   //Caverna dos Fantasmas
                         maze.set(i, a, new GhostCave());

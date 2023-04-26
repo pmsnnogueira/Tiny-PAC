@@ -40,7 +40,7 @@ public class GameLanternaUI implements IGameEngineEvolve {
 
         show();
 
-        gameEngine.start(500);
+        gameEngine.start(3000);
         gameEngine.waitForTheEnd();
     }
 

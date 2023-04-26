@@ -7,6 +7,7 @@ import pt.isec.pa.tinypac.model.data.ghosts.Pinky;
 import pt.isec.pa.tinypac.model.data.obstacles.*;
 import utils.Obstacles;
 
+import javax.sound.sampled.Port;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,6 +22,7 @@ public class Game {
     private Integer mazeRows;
     private Integer mazeColumns;
     private Pacman pacman;
+    private Portal portal;
     private ArrayList<Ghost> ghosts;
 
     public Game(){
@@ -30,6 +32,15 @@ public class Game {
         this.maze = null;
         this.ghosts = new ArrayList<>();
         this.pacman = null;
+    }
+
+
+    public Portal getPortal() {
+        return portal;
+    }
+
+    public void setPortal(Portal portal) {
+        this.portal = portal;
     }
 
     public Integer getLevel() {
