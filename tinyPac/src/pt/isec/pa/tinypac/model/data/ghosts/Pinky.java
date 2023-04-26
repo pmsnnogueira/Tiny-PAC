@@ -10,6 +10,8 @@ import utils.Obstacles;
 import java.util.ArrayList;
 import java.util.Random;
 
+import static java.lang.Math.sqrt;
+
 public class Pinky extends Ghost {
 
     private static final int TOP = 1;
@@ -28,11 +30,14 @@ public class Pinky extends Ghost {
     private int direction;
     private int cornerDirection;
 
+    private double minDistance;
+
 
     public Pinky(Game game, int posX, int posY){
         super(game,posX, posY);
         this.direction = TOP;
         this.cornerDirection = TOP_RIGHT;
+        this.minDistance = 0;
     }
 
     @Override
@@ -43,9 +48,37 @@ public class Pinky extends Ghost {
 
     private boolean changeCornerDirection(){
 
-        double result = Math.sqrt((getPosX() * getPosX()) + (getPosY() * getPosY()));
+        int cornerX = 0;
+        int cornerY = 0;
+
+        switch (cornerDirection){
+            case TOP_RIGHT : {
+                cornerX = game.getMazeColumns();
+                cornerY = 0;
+                minDistance = DISTANCE_MIN_CORNER *
+                break;
+            }
+            case TOP_LEFT: {
+                cornerX = 0;
+                cornerY = 0;
+                break;
+            }
+            case BOTTOM_RIGHT:{
+                cornerX = game.getMazeColumns();
+                cornerY = game.getMazeRows();
+                break;
+            }
+            case BOTTOM_LEFT:{
+                cornerX = 0;
+                cornerY = game.getMazeRows();
+                break;
+            }
+        }
+
+        double result = sqrt(cornerX * getPosX() + cornerY * getPosY());
+        System.out.println("Distancia do canto "+ result);
         if(result <= DISTANCE_MIN_CORNER){
-            System.out.println("Distancia minima atingida "+ result);
+            System.out.println("\n\nDistancia minima atingida "+ result);
             return true;
         }
         return false;
@@ -166,70 +199,59 @@ public class Pinky extends Ghost {
                 }
             }
             return possibleDirections;
-
-
         }
 
         if(direction == TOP){
             // verifica se pode ir para cima
-            if (top.getSymbol()!= Obstacles.WALL.getSymbol()) {
+            if (top.getSymbol() != Obstacles.WALL.getSymbol() && top.getSymbol() != Obstacles.PORTAL.getSymbol()) {
                 possibleDirections.add(TOP);
             }
             // verifica se pode ir para a direita
-            if (right.getSymbol() != Obstacles.WALL.getSymbol()) {
+            if (right.getSymbol() != Obstacles.WALL.getSymbol()&& right.getSymbol() != Obstacles.PORTAL.getSymbol()) {
                 possibleDirections.add(RIGHT);
             }
             // verifica se pode ir para a esquerda
-            if (left.getSymbol() != Obstacles.WALL.getSymbol()){             //Testar este) {
+            if (left.getSymbol() != Obstacles.WALL.getSymbol() && left.getSymbol() != Obstacles.PORTAL.getSymbol()){             //Testar este) {
                 possibleDirections.add(LEFT);
             }
         }else if(direction == LEFT){
             // verifica se pode ir para a esquerda
-            if (left.getSymbol() != Obstacles.WALL.getSymbol()) {
+            if (left.getSymbol() != Obstacles.WALL.getSymbol() && left.getSymbol() != Obstacles.PORTAL.getSymbol()) {
                 possibleDirections.add(LEFT);
             }
             // verifica se pode ir para cima
-            if (top.getSymbol() != Obstacles.WALL.getSymbol()) {
+            if (top.getSymbol() != Obstacles.WALL.getSymbol() && top.getSymbol() != Obstacles.PORTAL.getSymbol()) {
                 possibleDirections.add(TOP);
             }
             // verifica se pode ir para baixo
-            if (bottom.getSymbol() != Obstacles.WALL.getSymbol() &&
-                    actualPosition.getSymbol() != Obstacles.GHOST_CAVE.getSymbol() &&//Testar este
-                    (bottom.getSymbol() != Obstacles.GHOST_CAVE.getSymbol() ||
-                    bottom.getSymbol() != Obstacles.PORTAL.getSymbol())) {
+            if (bottom.getSymbol() != Obstacles.WALL.getSymbol() && bottom.getSymbol() != Obstacles.PORTAL.getSymbol()) {
                 possibleDirections.add(BOTTOM);
             }
         }
         else if(direction == RIGHT){
             // verifica se pode ir para a direita
-            if (right.getSymbol() != Obstacles.WALL.getSymbol()) {
+            if (right.getSymbol() != Obstacles.WALL.getSymbol() && right.getSymbol() != Obstacles.PORTAL.getSymbol()) {
                 possibleDirections.add(RIGHT);
             }
             // verifica se pode ir para cima
-            if (top.getSymbol() != Obstacles.WALL.getSymbol()) {
+            if (top.getSymbol() != Obstacles.WALL.getSymbol() && top.getSymbol() != Obstacles.PORTAL.getSymbol()) {
                 possibleDirections.add(TOP);
             }
             // verifica se pode ir para baixo
-            if (bottom.getSymbol() != Obstacles.WALL.getSymbol()&&             //Testar este
-                    actualPosition.getSymbol() != Obstacles.GHOST_CAVE.getSymbol() &&//Testar este
-                    (bottom.getSymbol() != Obstacles.GHOST_CAVE.getSymbol() ||
-                            bottom.getSymbol() != Obstacles.PORTAL.getSymbol())) {
+            if (bottom.getSymbol() != Obstacles.WALL.getSymbol() && bottom.getSymbol() != Obstacles.PORTAL.getSymbol()) {
                 possibleDirections.add(BOTTOM);
             }
         }else if(direction == BOTTOM){
             // verifica se pode ir para a esquerda
-            if (left.getSymbol() != Obstacles.WALL.getSymbol()) {
+            if (left.getSymbol() != Obstacles.WALL.getSymbol() && left.getSymbol() != Obstacles.PORTAL.getSymbol()) {
                 possibleDirections.add(LEFT);
             }
             // verifica se pode ir para a direita
-            if (right.getSymbol() != Obstacles.WALL.getSymbol()) {
+            if (right.getSymbol() != Obstacles.WALL.getSymbol() && right.getSymbol() != Obstacles.PORTAL.getSymbol()) {
                 possibleDirections.add(RIGHT);
             }
             // verifica se pode ir para baixo
-            if (bottom.getSymbol() != Obstacles.WALL.getSymbol() &&
-                    actualPosition.getSymbol() != Obstacles.GHOST_CAVE.getSymbol() &&//Testar este
-                    (bottom.getSymbol() != Obstacles.GHOST_CAVE.getSymbol() ||
-                            bottom.getSymbol() != Obstacles.PORTAL.getSymbol())) {
+            if (bottom.getSymbol() != Obstacles.WALL.getSymbol() && bottom.getSymbol() != Obstacles.PORTAL.getSymbol()) {
                 possibleDirections.add(BOTTOM);
             }
         }
