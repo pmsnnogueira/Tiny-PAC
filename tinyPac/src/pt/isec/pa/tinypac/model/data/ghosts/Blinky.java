@@ -128,8 +128,11 @@ public class Blinky extends Ghost{
             if (maze.get(getPosY() - 1,getPosX()).getSymbol() != Obstacles.WALL.getSymbol()) {
                 possibleDirections.add(TOP);
             }
+            IMazeElement bottom = maze.get(getPosY() + 1,getPosX());
             // verifica se pode ir para baixo
-            if (maze.get(getPosY() + 1 , getPosX()).getSymbol() != Obstacles.WALL.getSymbol()) {
+            if (bottom.getSymbol() != Obstacles.WALL.getSymbol() &&             //Testar este
+                bottom.getSymbol() != Obstacles.GHOST_CAVE.getSymbol() ||
+                bottom.getSymbol() != Obstacles.PORTAL.getSymbol()) {
                 possibleDirections.add(BOTTOM);
             }
         }

@@ -15,6 +15,9 @@ public class Pinky extends Ghost {
         return 'P';
     }
 
+
+
+    
     @Override
     public boolean evolve() {
         return false;
