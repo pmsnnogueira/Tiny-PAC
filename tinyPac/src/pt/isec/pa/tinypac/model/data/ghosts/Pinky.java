@@ -11,8 +11,7 @@ import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Random;
 
-import static java.lang.Math.min;
-import static java.lang.Math.sqrt;
+import static java.lang.Math.*;
 import static java.lang.System.exit;
 
 public class Pinky extends Ghost {
@@ -93,6 +92,20 @@ public class Pinky extends Ghost {
                 System.out.println("CornerX: " + cornerX + " Y:" + cornerY);
                 return true;
             }
+        }else if(cornerDirection == BOTTOM_RIGHT) {
+            if (getPosX() >= cornerX && getPosY() >= cornerY) {
+                System.out.println("\n\nDistancia minima atingida ");
+                System.out.println("Pos: " + getPosX() + " Y:" + getPosY());
+                System.out.println("CornerX: " + cornerX + " Y:" + cornerY);
+                return true;
+            }
+        }else if(cornerDirection == TOP_LEFT) {
+            if (getPosX() <= cornerX && getPosY() <= cornerY) {
+                System.out.println("\n\nDistancia minima atingida ");
+                System.out.println("Pos: " + getPosX() + " Y:" + getPosY());
+                System.out.println("CornerX: " + cornerX + " Y:" + cornerY);
+                return true;
+            }
         }
         return false;
     }
@@ -106,12 +119,45 @@ public class Pinky extends Ghost {
         int nextX = getPosX();
         int nextY = getPosY();
 
+        if(verifyMinimumDistance()){
+            //Change Direction
+            //System.out.println("AQui2");
+            switch (direction) {
+                case TOP: {
+                    nextY++;
+                    direction = BOTTOM;
+                    break;
+                }
+                case BOTTOM : {
+                    nextY--;
+                    direction = TOP;
+                    break;
+                }
+                case LEFT : {
+                    nextX++;
+                    direction = RIGHT;
+                    break;
+                }
+                case RIGHT : {
+                    nextX--;
+                    direction = LEFT;
+                    break;
+                }
+            }
+
+            setPos(nextX , nextY);
+            changeDirection();
+            return true;
+        }
+
+
+
 
         System.out.println("Initial: " + nextX + " " + nextY);
 
 
 
-        //if(cruzamento(maze,direction)) {
+        if(cruzamento(maze,direction)) {
             ArrayList<Integer> possibleDirections = new ArrayList(getValidDirections(maze));
             for (int i = 0; i < possibleDirections.size(); i++) {
                 switch (possibleDirections.get(i)) {
@@ -122,18 +168,18 @@ public class Pinky extends Ghost {
                 }
             }
             System.out.println(possibleDirections.size());
-            if(possibleDirections.size() == 0){
+            if (possibleDirections.size() == 0) {
                 System.out.println("Zero movimentos");
-                if(direction == TOP)
+                if (direction == TOP)
                     direction = BOTTOM;
-                else if(direction == BOTTOM)
+                else if (direction == BOTTOM)
                     direction = TOP;
-                else if(direction == RIGHT)
+                else if (direction == RIGHT)
                     direction = LEFT;
-                else if(direction == LEFT)
+                else if (direction == LEFT)
                     direction = RIGHT;
 
-            }else {
+            } else {
                 direction = possibleDirections.get(new Random().nextInt(possibleDirections.size()));
                 switch (direction) {
                     case TOP -> System.out.println("New Direction: Top");
@@ -142,6 +188,7 @@ public class Pinky extends Ghost {
                     case RIGHT -> System.out.println("New Direction: RIGHT");
                 }
             }
+        }
             // return false;
         //}
 
@@ -156,19 +203,6 @@ public class Pinky extends Ghost {
         System.out.println("\n\tNew Pos: " + nextX + " Y: " + nextY);
         setPos(nextX , nextY);
 
-        if(verifyMinimumDistance()){
-            //Change Direction
-            //System.out.println("AQui2");
-            /*switch (direction) {
-                case TOP -> nextY++;
-                case BOTTOM -> nextY--;
-                case LEFT -> nextX++;
-                case RIGHT -> nextX--;
-            }
-
-            setPos(nextX , nextY);*/
-            changeDirection();
-        }
 
 
         return true;
@@ -250,46 +284,80 @@ public class Pinky extends Ghost {
             return possibleDirections;
         }
 
-
         if(cornerDirection == TOP_RIGHT){
-            if(top.getSymbol() != Obstacles.WALL.getSymbol()){
+            if(top.getSymbol() != Obstacles.WALL.getSymbol() && direction != BOTTOM){
                 possibleDirections.add(TOP);
-                return possibleDirections;
+                possibleDirections.add(TOP);
             }
-            if(right.getSymbol() != Obstacles.WALL.getSymbol()){
+            if(right.getSymbol() != Obstacles.WALL.getSymbol() && direction != LEFT){
                 //GoRight
                 possibleDirections.add(RIGHT);
-                return possibleDirections;
+                possibleDirections.add(RIGHT);
             }
-            if(left.getSymbol() != Obstacles.WALL.getSymbol()){
+            if(left.getSymbol() != Obstacles.WALL.getSymbol() && direction != RIGHT){
                 possibleDirections.add(LEFT);
-                return possibleDirections;
             }
-            if(bottom.getSymbol() != Obstacles.WALL.getSymbol()){
+            if(bottom.getSymbol() != Obstacles.WALL.getSymbol() && direction != TOP){
                 possibleDirections.add(BOTTOM);
-                return possibleDirections;
             }
+            return possibleDirections;
         }
 
-
         if(cornerDirection == BOTTOM_RIGHT){
+            if(bottom.getSymbol() != Obstacles.WALL.getSymbol() && direction != TOP){
+                possibleDirections.add(BOTTOM);
+                possibleDirections.add(BOTTOM);
+            }
+            if(right.getSymbol() != Obstacles.WALL.getSymbol() && direction != LEFT){
+                //GoRight
+                possibleDirections.add(RIGHT);
+                possibleDirections.add(RIGHT);
+            }
+            if(left.getSymbol() != Obstacles.WALL.getSymbol() && direction != RIGHT){
+                possibleDirections.add(LEFT);
+            }
+            if(top.getSymbol() != Obstacles.WALL.getSymbol() && direction != BOTTOM){
+                possibleDirections.add(TOP);
+            }
+            return possibleDirections;
+        }
+
+        if(cornerDirection == TOP_LEFT){
+            if(top.getSymbol() != Obstacles.WALL.getSymbol() && direction != BOTTOM){
+                possibleDirections.add(TOP);
+                possibleDirections.add(TOP);
+            }
+            if(left.getSymbol() != Obstacles.WALL.getSymbol() && direction != RIGHT){
+                possibleDirections.add(LEFT);
+                possibleDirections.add(LEFT);
+            }
+            if(right.getSymbol() != Obstacles.WALL.getSymbol() && direction != LEFT){
+                //GoRight
+                possibleDirections.add(RIGHT);
+            }
+            if(bottom.getSymbol() != Obstacles.WALL.getSymbol() && direction != TOP){
+                possibleDirections.add(BOTTOM);
+            }
+            return possibleDirections;
+        }
+
+        if(cornerDirection == BOTTOM_LEFT){
             if(bottom.getSymbol() != Obstacles.WALL.getSymbol()){
                 possibleDirections.add(BOTTOM);
-                return possibleDirections;
+                possibleDirections.add(BOTTOM);
+            }
+            if(left.getSymbol() != Obstacles.WALL.getSymbol()){
+                possibleDirections.add(LEFT);
+                possibleDirections.add(LEFT);
             }
             if(right.getSymbol() != Obstacles.WALL.getSymbol()){
                 //GoRight
                 possibleDirections.add(RIGHT);
-                return possibleDirections;
-            }
-            if(left.getSymbol() != Obstacles.WALL.getSymbol()){
-                possibleDirections.add(LEFT);
-                return possibleDirections;
             }
             if(top.getSymbol() != Obstacles.WALL.getSymbol()){
                 possibleDirections.add(TOP);
-                return possibleDirections;
             }
+            return possibleDirections;
         }
 
         return null;
