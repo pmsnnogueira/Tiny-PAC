@@ -7,10 +7,13 @@ import pt.isec.pa.tinypac.model.data.Maze;
 import pt.isec.pa.tinypac.model.data.obstacles.Portal;
 import utils.Obstacles;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Random;
 
+import static java.lang.Math.min;
 import static java.lang.Math.sqrt;
+import static java.lang.System.exit;
 
 public class Pinky extends Ghost {
 
@@ -37,7 +40,7 @@ public class Pinky extends Ghost {
         super(game,posX, posY);
         this.direction = TOP;
         this.cornerDirection = TOP_RIGHT;
-        this.minDistance = 0;
+        this.minDistance = game.getMazeColumns() * DISTANCE_MIN_CORNER;
     }
 
     @Override
@@ -46,40 +49,50 @@ public class Pinky extends Ghost {
     }
 
 
-    private boolean changeCornerDirection(){
+    private boolean verifyMinimumDistance(){
 
         int cornerX = 0;
         int cornerY = 0;
 
         switch (cornerDirection){
             case TOP_RIGHT : {
-                cornerX = game.getMazeColumns();
-                cornerY = 0;
-                minDistance = DISTANCE_MIN_CORNER *
-                break;
-            }
-            case TOP_LEFT: {
-                cornerX = 0;
-                cornerY = 0;
+                cornerX = (int)(game.getMazeColumns() - (game.getMazeColumns() * DISTANCE_MIN_CORNER));
+                cornerY = (int)(game.getMazeRows() * DISTANCE_MIN_CORNER);
                 break;
             }
             case BOTTOM_RIGHT:{
-                cornerX = game.getMazeColumns();
-                cornerY = game.getMazeRows();
+                cornerX = (int) (game.getMazeColumns() - (game.getMazeColumns() * DISTANCE_MIN_CORNER));
+                cornerY = (int) (game.getMazeRows() - (game.getMazeRows() * DISTANCE_MIN_CORNER));;
+                break;
+            }
+            case TOP_LEFT: {
+                cornerX = (int)(game.getMazeColumns() * DISTANCE_MIN_CORNER);
+                cornerY = (int)(game.getMazeRows() * DISTANCE_MIN_CORNER);
                 break;
             }
             case BOTTOM_LEFT:{
-                cornerX = 0;
-                cornerY = game.getMazeRows();
+                cornerX = (int)(game.getMazeColumns() * DISTANCE_MIN_CORNER);
+                cornerY = (int)(game.getMazeRows() - (game.getMazeRows() * DISTANCE_MIN_CORNER));
                 break;
             }
         }
 
-        double result = sqrt(cornerX * getPosX() + cornerY * getPosY());
-        System.out.println("Distancia do canto "+ result);
-        if(result <= DISTANCE_MIN_CORNER){
-            System.out.println("\n\nDistancia minima atingida "+ result);
-            return true;
+        int result = (int)sqrt(((getPosX() - 29) * (getPosX() - 29)) + ((getPosY() - 1) * (getPosY() - 1)));
+/*        System.out.println("Distancia do canto "+ result);
+        System.out.println("DistanciaX "+ cornerX);
+        System.out.println("DistanciaY "+ cornerY);*/
+
+        System.out.println("Pitagoras: " + result);
+
+        if(cornerDirection == TOP_RIGHT) {
+            //Está um problema com o if em baixo, ele faz o topRight bem, mas depois quando vai para o BottomLeft
+            //ele verifica que a posicao atual é menor que a posicao do canto do BOTTOMLEFT, esta condicao vai ficar bue vezes true
+            if (getPosX() <= cornerX && getPosY() <= cornerY) {
+                System.out.println("\n\nDistancia minima atingida ");
+                System.out.println("Pos: " + getPosX() + " Y:" + getPosY());
+                System.out.println("CornerX: " + cornerX + " Y:" + cornerY);
+                return true;
+            }
         }
         return false;
     }
@@ -89,14 +102,17 @@ public class Pinky extends Ghost {
     @Override
     public boolean evolve() {
 
-        changeCornerDirection();
-
         Maze maze = game.getMaze();
         int nextX = getPosX();
         int nextY = getPosY();
 
-        if(cruzamento(maze,direction)) {
-            ArrayList<Integer> possibleDirections = new ArrayList(getValidDirections(maze , direction));
+
+        System.out.println("Initial: " + nextX + " " + nextY);
+
+
+
+        //if(cruzamento(maze,direction)) {
+            ArrayList<Integer> possibleDirections = new ArrayList(getValidDirections(maze));
             for (int i = 0; i < possibleDirections.size(); i++) {
                 switch (possibleDirections.get(i)) {
                     case TOP -> System.out.println("Top");
@@ -127,7 +143,7 @@ public class Pinky extends Ghost {
                 }
             }
             // return false;
-        }
+        //}
 
 
         switch (direction) {
@@ -137,11 +153,42 @@ public class Pinky extends Ghost {
             case RIGHT -> nextX++;
         }
 
+        System.out.println("\n\tNew Pos: " + nextX + " Y: " + nextY);
         setPos(nextX , nextY);
 
+        if(verifyMinimumDistance()){
+            //Change Direction
+            //System.out.println("AQui2");
+            /*switch (direction) {
+                case TOP -> nextY++;
+                case BOTTOM -> nextY--;
+                case LEFT -> nextX++;
+                case RIGHT -> nextX--;
+            }
+
+            setPos(nextX , nextY);*/
+            changeDirection();
+        }
 
 
         return true;
+    }
+
+    private void changeDirection() {
+        System.out.println("AQUi\n\n");
+        if(cornerDirection == TOP_RIGHT){
+            cornerDirection = BOTTOM_RIGHT;
+            return;
+        }else if(cornerDirection == BOTTOM_RIGHT){
+            cornerDirection = TOP_LEFT;
+            return;
+        }else if(cornerDirection == TOP_LEFT){
+            cornerDirection = BOTTOM_LEFT;
+            return;
+        }else if(cornerDirection == BOTTOM_LEFT){
+            cornerDirection = TOP_RIGHT;
+            return;
+        }
     }
 
     private boolean cruzamento(Maze maze, int direction){
@@ -171,7 +218,85 @@ public class Pinky extends Ghost {
     }
 
 
-    private ArrayList<Integer> getValidDirections(Maze maze , Integer direction) {
+
+    private ArrayList<Integer> getValidDirections(Maze maze){
+
+        ArrayList<Integer> possibleDirections = new ArrayList<>();
+
+        IMazeElement top = maze.get(getPosY() - 1,getPosX());
+        IMazeElement right = maze.get(getPosY() ,getPosX() + 1);
+        IMazeElement left = maze.get(getPosY(),getPosX()-1);
+        IMazeElement bottom = maze.get(getPosY() + 1,getPosX());
+        IMazeElement actualPosition = maze.get(getPosY() , getPosX());
+        Portal portal = game.getPortal();
+
+
+        if(actualPosition.getSymbol() == Obstacles.GHOST_CAVE.getSymbol()){
+            if(portal.getPosX() < getPosX()){
+                //GoLeft
+                possibleDirections.add(LEFT);
+            }else if(portal.getPosX() > getPosX()){
+                //Go Right
+                possibleDirections.add(RIGHT);
+            }else if(portal.getPosX() == getPosX()){
+                if(portal.getPosY() < getPosY()){
+                    //goTop
+                    possibleDirections.add(TOP);
+                }else{
+                    //GoBottom
+                    possibleDirections.add(BOTTOM);
+                }
+            }
+            return possibleDirections;
+        }
+
+
+        if(cornerDirection == TOP_RIGHT){
+            if(top.getSymbol() != Obstacles.WALL.getSymbol()){
+                possibleDirections.add(TOP);
+                return possibleDirections;
+            }
+            if(right.getSymbol() != Obstacles.WALL.getSymbol()){
+                //GoRight
+                possibleDirections.add(RIGHT);
+                return possibleDirections;
+            }
+            if(left.getSymbol() != Obstacles.WALL.getSymbol()){
+                possibleDirections.add(LEFT);
+                return possibleDirections;
+            }
+            if(bottom.getSymbol() != Obstacles.WALL.getSymbol()){
+                possibleDirections.add(BOTTOM);
+                return possibleDirections;
+            }
+        }
+
+
+        if(cornerDirection == BOTTOM_RIGHT){
+            if(bottom.getSymbol() != Obstacles.WALL.getSymbol()){
+                possibleDirections.add(BOTTOM);
+                return possibleDirections;
+            }
+            if(right.getSymbol() != Obstacles.WALL.getSymbol()){
+                //GoRight
+                possibleDirections.add(RIGHT);
+                return possibleDirections;
+            }
+            if(left.getSymbol() != Obstacles.WALL.getSymbol()){
+                possibleDirections.add(LEFT);
+                return possibleDirections;
+            }
+            if(top.getSymbol() != Obstacles.WALL.getSymbol()){
+                possibleDirections.add(TOP);
+                return possibleDirections;
+            }
+        }
+
+        return null;
+    }
+
+
+    /*private ArrayList<Integer> getValidDirections(Maze maze , Integer direction) {
         ArrayList<Integer> possibleDirections = new ArrayList<>();
 
 
@@ -255,14 +380,9 @@ public class Pinky extends Ghost {
                 possibleDirections.add(BOTTOM);
             }
         }
-
-
-
-
-
         // retorna um novo array com as direções possíveis
         return possibleDirections;
-    }
+    }*/
 
 
 }

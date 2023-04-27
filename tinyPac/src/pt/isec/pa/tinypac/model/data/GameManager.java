@@ -192,15 +192,18 @@ public class GameManager implements IGameEngineEvolve {
             } while (maze.get(randomPosition[0], randomPosition[1]).getSymbol() != 'y');
 
             switch (i){
-                case 0:
-                    ghost = new Clyde(game,randomPosition[0] , randomPosition[1]);
+                case 0: {
+                    ghost = new Clyde(game, randomPosition[0], randomPosition[1]);
                     break;
-                case 1:
-                    ghost = new Inky(game,randomPosition[0] , randomPosition[1]);
+                }
+                case 1: {
+                    ghost = new Inky(game, randomPosition[0], randomPosition[1]);
                     break;
-                case 2:
-                    ghost = new Pinky(game,randomPosition[0] , randomPosition[1]);
+                }
+                case 2: {
+                    ghost = new Pinky(game, randomPosition[0], randomPosition[1]);
                     break;
+                }
             }
             ghosts.add(ghost);
             //maze.set(randomPosition[0] , randomPosition[1] , ghost);
