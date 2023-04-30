@@ -37,7 +37,7 @@ public class GameLanternaUI implements IGameEngineEvolve {
         gameEngine.registerClient(modelManager.getGameManager());
 
 
-        gameEngine.start(500);
+        gameEngine.start(1000);
         gameEngine.waitForTheEnd();
 
         show();
@@ -78,7 +78,8 @@ public class GameLanternaUI implements IGameEngineEvolve {
                 TextColor bc = switch(env[y][x]) {
                     case '*' -> TextColor.ANSI.YELLOW;
                     //case 'o' -> TextColor.ANSI.WHITE;
-                    case 'B' -> TextColor.ANSI.BLUE;
+                    case 'P' -> TextColor.ANSI.BLUE;
+                    case 'B' -> TextColor.ANSI.RED;
                     default -> TextColor.ANSI.BLACK;
                 };
                 screen.setCharacter(x,y, TextCharacter.fromCharacter(env[y][x],tc,bc)[0]);

@@ -135,7 +135,9 @@ public class GameManager implements IGameEngineEvolve {
                     case 'O' ->   //Bola com Poderes
                             maze.set(i, a, new Power());
                     case 'Y' -> {   //Portal
-                        maze.set(i, a, new Portal());
+                        Portal portal = new Portal(a,i); //x,y
+                        maze.set(i, a, portal);
+                        game.setPortal(portal);
                     }
                     case 'y' -> {   //Caverna dos Fantasmas
                         maze.set(i, a, new GhostCave());
@@ -170,7 +172,7 @@ public class GameManager implements IGameEngineEvolve {
                 continue;
 
             if(element.getSymbol() == Obstacles.PORTAL.getSymbol() || i == ghostCave.size()) {
-                ghost = new Blinky(game,randomPosition[0], randomPosition[1] - 1);
+                ghost = new Blinky(game,randomPosition[0], randomPosition[1]);
                 ghosts.add(ghost);
                 ghostCave.remove(randomPosition);
                 break;
@@ -186,15 +188,18 @@ public class GameManager implements IGameEngineEvolve {
             } while (maze.get(randomPosition[0], randomPosition[1]).getSymbol() != 'y');
 
             switch (i){
-                case 0:
-                    ghost = new Clyde(game,randomPosition[0] , randomPosition[1]);
+                case 0: {
+                    ghost = new Clyde(game, randomPosition[0], randomPosition[1]);
                     break;
-                case 1:
-                    ghost = new Inky(game,randomPosition[0] , randomPosition[1]);
+                }
+                case 1: {
+                    ghost = new Inky(game, randomPosition[0], randomPosition[1]);
                     break;
-                case 2:
-                    ghost = new Pinky(game,randomPosition[0] , randomPosition[1]);
+                }
+                case 2: {
+                    ghost = new Pinky(game, randomPosition[0], randomPosition[1]);
                     break;
+                }
             }
             ghosts.add(ghost);
             //maze.set(randomPosition[0] , randomPosition[1] , ghost);
