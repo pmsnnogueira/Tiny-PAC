@@ -3,7 +3,6 @@ package pt.isec.pa.tinypac.model;
 import pt.isec.pa.tinypac.gameengine.GameEngine;
 import pt.isec.pa.tinypac.model.data.GameManager;
 import pt.isec.pa.tinypac.model.fsm.Context;
-import pt.isec.pa.tinypac.model.fsm.State;
 import utils.Direction;
 
 public class ModelManager {
@@ -19,15 +18,14 @@ public class ModelManager {
         this.gameManager = new GameManager();
         this.context = new Context(gameManager);
         gameEngine.registerClient(context.getGameManager());
+        startLevel();
     }
 
     private void loadGame(){
         gameManager.generateMapLevel();
-
     }
 
-
-    public boolean start(){
+    public boolean startLevel(){
         //Load dos ficheiros e carregamento do jogo
         loadGame();
         return true;

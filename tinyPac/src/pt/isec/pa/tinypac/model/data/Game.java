@@ -156,6 +156,11 @@ public class Game {
 
     public boolean eatFood(){
         Position position = pacman.getCurrentPosition();
+        IMazeElement element = maze.get(position.getPosY(), position.getPosX());
+        if(element == null){
+            return false;
+        }
+
         if(maze.get(position.getPosY() , position.getPosX()).getSymbol() == Obstacles.BALL.getSymbol()){
             if(maze.set(position.getPosY(), position.getPosX(), null)){
                 return true;

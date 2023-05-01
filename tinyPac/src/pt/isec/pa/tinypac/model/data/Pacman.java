@@ -19,21 +19,25 @@ public class Pacman extends GameObjects{
     }
 
 
-
     @Override
     public boolean evolve() {
+
+        //Movimentacao do pacman
 
         Maze maze = game.getMaze();
         if(maze == null)
             return false;
-        if(position.getDirection() == null)
-            return false;
 
         int[] nextDirections = position.getNextPosition();//Next x and y
-        if(maze.get(nextDirections[1], nextDirections[0]).getSymbol() == Obstacles.WALL.getSymbol()){
-            return false;
+        IMazeElement element = maze.get(nextDirections[1], nextDirections[0]);
+        if(element == null) {
+            position.setPos(nextDirections[0], nextDirections[1]);
+            return true;
         }
 
+        if(element.getSymbol() == Obstacles.WALL.getSymbol()){
+            return false;
+        }
         position.setPos(nextDirections[0] , nextDirections[1]);
 
         return true;
@@ -58,6 +62,9 @@ public class Pacman extends GameObjects{
     }
 
     private boolean verifyElementObstacle(IMazeElement mazeElement) {
+        if(mazeElement == null)
+            return true;
+
         if(mazeElement.getSymbol() == Obstacles.WALL.getSymbol() || mazeElement.getSymbol() == Obstacles.PORTAL.getSymbol()){
             return false;
         }

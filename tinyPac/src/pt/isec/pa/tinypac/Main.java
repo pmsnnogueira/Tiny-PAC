@@ -15,7 +15,6 @@ public class Main {
 
             //GameManager gameManager = new GameManager();
 
-            GameManager gameManager = new GameManager();
             GameLanternaUI lanternaui = new GameLanternaUI();
 
 
