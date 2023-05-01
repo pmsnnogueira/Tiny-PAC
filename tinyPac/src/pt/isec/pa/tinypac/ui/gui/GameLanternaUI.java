@@ -13,7 +13,7 @@ import pt.isec.pa.tinypac.gameengine.GameEngine;
 import pt.isec.pa.tinypac.gameengine.IGameEngine;
 import pt.isec.pa.tinypac.gameengine.IGameEngineEvolve;
 import pt.isec.pa.tinypac.model.ModelManager;
-import utils.Direction;
+import pt.isec.pa.tinypac.utils.Direction;
 
 import java.io.IOException;
 

@@ -1,4 +1,4 @@
-package utils;
+package pt.isec.pa.tinypac.utils;
 
 public enum Obstacles {
     WALL('x'),WARP('W'),BALL('o'),FRUIT('F'),PACMAN_INITIAL_POSITION('M'),

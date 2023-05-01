@@ -1,6 +1,4 @@
-package utils;
-
-import pt.isec.pa.tinypac.model.data.IMazeElement;
+package pt.isec.pa.tinypac.utils;
 
 public class Position {
 

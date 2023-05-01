@@ -2,9 +2,9 @@ package pt.isec.pa.tinypac.model.data;
 
 
 import pt.isec.pa.tinypac.model.data.obstacles.*;
-import utils.Direction;
-import utils.Obstacles;
-import utils.Position;
+import pt.isec.pa.tinypac.utils.Direction;
+import pt.isec.pa.tinypac.utils.Obstacles;
+import pt.isec.pa.tinypac.utils.Position;
 
 
 import java.util.ArrayList;

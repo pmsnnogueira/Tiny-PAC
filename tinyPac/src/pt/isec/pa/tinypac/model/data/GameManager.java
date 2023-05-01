@@ -7,8 +7,8 @@ import pt.isec.pa.tinypac.model.data.ghosts.Clyde;
 import pt.isec.pa.tinypac.model.data.ghosts.Inky;
 import pt.isec.pa.tinypac.model.data.ghosts.Pinky;
 import pt.isec.pa.tinypac.model.data.obstacles.*;
-import utils.Direction;
-import utils.Obstacles;
+import pt.isec.pa.tinypac.utils.Direction;
+import pt.isec.pa.tinypac.utils.Obstacles;
 
 import java.io.BufferedReader;
 import java.io.File;

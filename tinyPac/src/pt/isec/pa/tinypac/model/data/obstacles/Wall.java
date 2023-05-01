@@ -1,7 +1,7 @@
 package pt.isec.pa.tinypac.model.data.obstacles;
 
 import pt.isec.pa.tinypac.model.data.IMazeElement;
-import utils.Obstacles;
+import pt.isec.pa.tinypac.utils.Obstacles;
 
 public class Wall implements IMazeElement {
 

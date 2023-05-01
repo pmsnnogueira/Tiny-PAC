@@ -3,7 +3,7 @@ package pt.isec.pa.tinypac.ui.text;
 import pt.isec.pa.tinypac.gameengine.IGameEngine;
 import pt.isec.pa.tinypac.gameengine.IGameEngineEvolve;
 import pt.isec.pa.tinypac.model.fsm.Context;
-import utils.PAInput;
+import pt.isec.pa.tinypac.utils.PAInput;
 
 import java.io.IOException;
 

@@ -2,12 +2,9 @@ package pt.isec.pa.tinypac.model.fsm;
 
 import pt.isec.pa.tinypac.gameengine.IGameEngine;
 import pt.isec.pa.tinypac.gameengine.IGameEngineEvolve;
-import pt.isec.pa.tinypac.model.data.Game;
 import pt.isec.pa.tinypac.model.data.GameManager;
-import pt.isec.pa.tinypac.model.fsm.IState;
-import pt.isec.pa.tinypac.model.fsm.State;
 import pt.isec.pa.tinypac.model.fsm.states.WaitForDirectionState;
-import utils.Direction;
+import pt.isec.pa.tinypac.utils.Direction;
 
 
 public class Context implements IGameEngineEvolve {

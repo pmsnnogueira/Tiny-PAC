@@ -4,7 +4,7 @@ import pt.isec.pa.tinypac.model.data.Game;
 import pt.isec.pa.tinypac.model.data.Ghost;
 import pt.isec.pa.tinypac.model.data.IMazeElement;
 import pt.isec.pa.tinypac.model.data.Maze;
-import utils.Obstacles;
+import pt.isec.pa.tinypac.utils.Obstacles;
 
 import java.util.ArrayList;
 import java.util.Random;

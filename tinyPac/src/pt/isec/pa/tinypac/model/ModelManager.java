@@ -4,7 +4,7 @@ import pt.isec.pa.tinypac.gameengine.GameEngine;
 import pt.isec.pa.tinypac.model.data.GameManager;
 import pt.isec.pa.tinypac.model.fsm.Context;
 import pt.isec.pa.tinypac.model.fsm.State;
-import utils.Direction;
+import pt.isec.pa.tinypac.utils.Direction;
 
 public class ModelManager{
 

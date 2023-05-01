@@ -5,7 +5,7 @@ import pt.isec.pa.tinypac.model.data.Ghost;
 import pt.isec.pa.tinypac.model.data.IMazeElement;
 import pt.isec.pa.tinypac.model.data.Maze;
 import pt.isec.pa.tinypac.model.data.obstacles.Portal;
-import utils.Obstacles;
+import pt.isec.pa.tinypac.utils.Obstacles;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -165,7 +165,7 @@ public class Pinky extends Ghost {
                     case RIGHT -> System.out.println("Right");
                 }
             }
-            System.out.println(possibleDirections.size());
+            //System.out.println(possibleDirections.size());
             if (possibleDirections.size() == 0) {
                 System.out.println("Zero movimentos");
                 if (direction == TOP)

@@ -1,8 +1,8 @@
 package pt.isec.pa.tinypac.model.data;
 
-import utils.Direction;
-import utils.Obstacles;
-import utils.Position;
+import pt.isec.pa.tinypac.utils.Direction;
+import pt.isec.pa.tinypac.utils.Obstacles;
+import pt.isec.pa.tinypac.utils.Position;
 
 public class Pacman extends GameObjects{
     private Position position;

@@ -5,7 +5,7 @@ import pt.isec.pa.tinypac.model.data.GameManager;
 import pt.isec.pa.tinypac.model.fsm.Context;
 import pt.isec.pa.tinypac.model.fsm.State;
 import pt.isec.pa.tinypac.model.fsm.StateAdapter;
-import utils.Direction;
+import pt.isec.pa.tinypac.utils.Direction;
 
 public class WaitForDirectionState extends StateAdapter {
 

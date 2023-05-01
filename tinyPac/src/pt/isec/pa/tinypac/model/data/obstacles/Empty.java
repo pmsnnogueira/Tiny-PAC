@@ -1,7 +1,6 @@
 package pt.isec.pa.tinypac.model.data.obstacles;
 
 import pt.isec.pa.tinypac.model.data.IMazeElement;
-import utils.Obstacles;
 
 public class Empty implements IMazeElement {
 

@@ -2,7 +2,7 @@ package pt.isec.pa.tinypac.model.fsm;
 
 import pt.isec.pa.tinypac.gameengine.IGameEngine;
 import pt.isec.pa.tinypac.model.data.GameManager;
-import utils.Direction;
+import pt.isec.pa.tinypac.utils.Direction;
 
 public abstract class StateAdapter implements IState {
 
