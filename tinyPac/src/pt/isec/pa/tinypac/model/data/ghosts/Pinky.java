@@ -79,29 +79,29 @@ public class Pinky extends Ghost {
         System.out.println("DistanciaX "+ cornerX);
         System.out.println("DistanciaY "+ cornerY);*/
 
-        System.out.println("Pitagoras: " + result);
+        //System.out.println("Pitagoras: " + result);
 
         if(cornerDirection == TOP_RIGHT) {
             //Está um problema com o if em baixo, ele faz o topRight bem, mas depois quando vai para o BottomLeft
             //ele verifica que a posicao atual é menor que a posicao do canto do BOTTOMLEFT, esta condicao vai ficar bue vezes true
             if (getPosX() <= cornerX && getPosY() <= cornerY) {
-                System.out.println("\n\nDistancia minima atingida ");
+                /*System.out.println("\n\nDistancia minima atingida ");
                 System.out.println("Pos: " + getPosX() + " Y:" + getPosY());
-                System.out.println("CornerX: " + cornerX + " Y:" + cornerY);
+                System.out.println("CornerX: " + cornerX + " Y:" + cornerY);*/
                 return true;
             }
         }else if(cornerDirection == BOTTOM_RIGHT) {
             if (getPosX() >= cornerX && getPosY() >= cornerY) {
-                System.out.println("\n\nDistancia minima atingida ");
+                /*System.out.println("\n\nDistancia minima atingida ");
                 System.out.println("Pos: " + getPosX() + " Y:" + getPosY());
-                System.out.println("CornerX: " + cornerX + " Y:" + cornerY);
+                System.out.println("CornerX: " + cornerX + " Y:" + cornerY);*/
                 return true;
             }
         }else if(cornerDirection == TOP_LEFT) {
             if (getPosX() <= cornerX && getPosY() <= cornerY) {
-                System.out.println("\n\nDistancia minima atingida ");
+                /*System.out.println("\n\nDistancia minima atingida ");
                 System.out.println("Pos: " + getPosX() + " Y:" + getPosY());
-                System.out.println("CornerX: " + cornerX + " Y:" + cornerY);
+                System.out.println("CornerX: " + cornerX + " Y:" + cornerY);*/
                 return true;
             }
         }
@@ -151,7 +151,7 @@ public class Pinky extends Ghost {
 
 
 
-        System.out.println("Initial: " + nextX + " " + nextY);
+       // System.out.println("Initial: " + nextX + " " + nextY);
 
 
 
@@ -198,7 +198,7 @@ public class Pinky extends Ghost {
             case RIGHT -> nextX++;
         }
 
-        System.out.println("\n\tNew Pos: " + nextX + " Y: " + nextY);
+        //System.out.println("\n\tNew Pos: " + nextX + " Y: " + nextY);
         setPos(nextX , nextY);
 
 
@@ -207,7 +207,7 @@ public class Pinky extends Ghost {
     }
 
     private void changeDirection() {
-        System.out.println("AQUi\n\n");
+        //System.out.println("AQUi\n\n");
         if(cornerDirection == TOP_RIGHT){
             cornerDirection = BOTTOM_RIGHT;
             return;

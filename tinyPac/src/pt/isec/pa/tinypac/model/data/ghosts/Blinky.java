@@ -1,6 +1,5 @@
 package pt.isec.pa.tinypac.model.data.ghosts;
 
-import pt.isec.pa.tinypac.Main;
 import pt.isec.pa.tinypac.model.data.Game;
 import pt.isec.pa.tinypac.model.data.Ghost;
 import pt.isec.pa.tinypac.model.data.IMazeElement;
@@ -41,7 +40,6 @@ public class Blinky extends Ghost{
                     case RIGHT -> System.out.println("Right");
                 }
             }
-            System.out.println(possibleDirections.size());
             if(possibleDirections.size() == 0){
                 System.out.println("Zero movimentos");
                 if(direction == TOP)
@@ -86,16 +84,16 @@ public class Blinky extends Ghost{
 
         if(direction == TOP || direction == BOTTOM){
             if(top.getSymbol() == Obstacles.WALL.getSymbol() ||
-                bottom.getSymbol() == Obstacles.WALL.getSymbol() ||
-                left.getSymbol() != Obstacles.WALL.getSymbol() ||
-                right.getSymbol() != Obstacles.WALL.getSymbol()){
+                    bottom.getSymbol() == Obstacles.WALL.getSymbol() ||
+                    left.getSymbol() != Obstacles.WALL.getSymbol() ||
+                    right.getSymbol() != Obstacles.WALL.getSymbol()){
                 return true;
             }
         }else if(direction == RIGHT || direction == LEFT){
             if(right.getSymbol() == Obstacles.WALL.getSymbol() ||
-                left.getSymbol() == Obstacles.WALL.getSymbol() ||
-                top.getSymbol() != Obstacles.WALL.getSymbol()  ||
-                bottom.getSymbol() != Obstacles.WALL.getSymbol()){
+                    left.getSymbol() == Obstacles.WALL.getSymbol() ||
+                    top.getSymbol() != Obstacles.WALL.getSymbol()  ||
+                    bottom.getSymbol() != Obstacles.WALL.getSymbol()){
                 return true;
             }
         }
@@ -103,8 +101,9 @@ public class Blinky extends Ghost{
         return false;
     }
 
+
     private ArrayList<Integer> getValidDirections(Maze maze , Integer direction) {
-       ArrayList<Integer> possibleDirections = new ArrayList<>();
+        ArrayList<Integer> possibleDirections = new ArrayList<>();
 
         if(direction == TOP){
             // verifica se pode ir para cima
@@ -131,8 +130,8 @@ public class Blinky extends Ghost{
             IMazeElement bottom = maze.get(getPosY() + 1,getPosX());
             // verifica se pode ir para baixo
             if (bottom.getSymbol() != Obstacles.WALL.getSymbol() &&             //Testar este
-                bottom.getSymbol() != Obstacles.GHOST_CAVE.getSymbol() ||
-                bottom.getSymbol() != Obstacles.PORTAL.getSymbol()) {
+                    bottom.getSymbol() != Obstacles.GHOST_CAVE.getSymbol() ||
+                    bottom.getSymbol() != Obstacles.PORTAL.getSymbol()) {
                 possibleDirections.add(BOTTOM);
             }
         }

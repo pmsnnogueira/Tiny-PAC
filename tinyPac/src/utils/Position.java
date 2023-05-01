@@ -39,22 +39,22 @@ public class Position {
 
         if(direction != null){
             if(direction == Direction.UP){
-                System.out.println("UP");
+                //System.out.println("UP");
                 if(posY - 1 < mazeHeigth) {
                     pos[1] = posY - 1;
                 }
             }else if(direction == Direction.DOWN){
-                System.out.println("DOWN");
+                //System.out.println("DOWN");
                 if(posY + 1 < mazeHeigth) {
                     pos[1] = posY + 1;
                 }
             } else if(direction == Direction.LEFT){
-                System.out.println("LEFT");
+                //System.out.println("LEFT");
                 if(posX - 1 < mazeWidth) {
                     pos[0] = posX - 1;
                 }
             }else if(direction == Direction.RIGHT){
-                System.out.println("RIGHT");
+                //System.out.println("RIGHT");
                 if(posX + 1 < mazeWidth) {
                     pos[0] = posX + 1;
                 }

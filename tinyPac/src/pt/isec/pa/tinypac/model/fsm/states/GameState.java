@@ -5,6 +5,7 @@ import pt.isec.pa.tinypac.model.data.GameManager;
 import pt.isec.pa.tinypac.model.fsm.Context;
 import pt.isec.pa.tinypac.model.fsm.State;
 import pt.isec.pa.tinypac.model.fsm.StateAdapter;
+import utils.Direction;
 
 public class GameState extends StateAdapter {
 
@@ -17,10 +18,14 @@ public class GameState extends StateAdapter {
         return State.GAME;
     }
 
+    @Override
+    public boolean changeDirection(Direction direction) {
+        return data.changeDirection(direction);
+    }
 
     @Override
-    public boolean evolve(IGameEngine gameEngine, long currentTime) {
-        return false;
+    public void evolve(IGameEngine gameEngine, long currentTime) {
+        data.evolve(gameEngine,currentTime);
     }
 
     @Override

@@ -1,7 +1,6 @@
 package pt.isec.pa.tinypac;
 
-import pt.isec.pa.tinypac.model.data.GameManager;
-import pt.isec.pa.tinypac.ui.text.GameLanternaUI;
+import pt.isec.pa.tinypac.ui.gui.GameLanternaUI;
 
 import java.io.IOException;
 

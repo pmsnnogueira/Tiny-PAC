@@ -1,5 +1,7 @@
 package pt.isec.pa.tinypac.model.fsm;
 
+import pt.isec.pa.tinypac.gameengine.IGameEngine;
+import pt.isec.pa.tinypac.gameengine.IGameEngineEvolve;
 import pt.isec.pa.tinypac.model.data.Game;
 import pt.isec.pa.tinypac.model.data.GameManager;
 import pt.isec.pa.tinypac.model.fsm.IState;
@@ -8,7 +10,7 @@ import pt.isec.pa.tinypac.model.fsm.states.WaitForDirectionState;
 import utils.Direction;
 
 
-public class Context {
+public class Context implements IGameEngineEvolve {
     private IState state;
     private GameManager data;
 
@@ -29,9 +31,7 @@ public class Context {
     }
 
     public boolean changeDirection(Direction direction){
-        if(data.changeDirection(direction))
-            return true;
-        return false;
+        return state.changeDirection(direction);
     }
 
     public char[][] showMaze(){
@@ -40,5 +40,14 @@ public class Context {
 
     public GameManager getGameManager() {
         return data;
+    }
+
+    @Override
+    public void evolve(IGameEngine gameEngine, long currentTime) {
+        state.evolve(gameEngine,currentTime);
+    }
+
+    public boolean pause(){
+        return state.pause();
     }
 }

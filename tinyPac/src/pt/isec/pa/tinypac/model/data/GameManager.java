@@ -1,6 +1,5 @@
 package pt.isec.pa.tinypac.model.data;
 
-import pt.isec.pa.tinypac.gameengine.GameEngine;
 import pt.isec.pa.tinypac.gameengine.IGameEngine;
 import pt.isec.pa.tinypac.gameengine.IGameEngineEvolve;
 import pt.isec.pa.tinypac.model.data.ghosts.Blinky;
@@ -26,6 +25,10 @@ public class GameManager implements IGameEngineEvolve {
         this.game = new Game();
     }
 
+
+    public boolean unlockGosts(){
+        return game.unlockGhosts();
+    }
 
 
     public boolean changeDirection(Direction direction){
@@ -138,6 +141,7 @@ public class GameManager implements IGameEngineEvolve {
                             maze.set(i, a, new Warp());
                     case 'o' ->   //Comida
                             maze.set(i, a, new Ball());
+                            //maze.set(i, a, null);
                     case 'F' ->   //fruta
                             maze.set(i, a, new Fruit());
                     case 'M' -> {   //LocalPacmanInicial
@@ -193,11 +197,14 @@ public class GameManager implements IGameEngineEvolve {
 
 
         for(int i = 0; i < 3;i++){
+
+            IMazeElement element = null;
             do {
                 numPositions = ghostCave.size();
                 int randomIndex = (int) (Math.random() * numPositions);
                 randomPosition = ghostCave.get(randomIndex);
-            } while (maze.get(randomPosition[0], randomPosition[1]).getSymbol() != 'y');
+                element = maze.get(randomPosition[0], randomPosition[1]);
+            } while (element == null || element.getSymbol() != 'y');
 
             switch (i){
                 case 0: {

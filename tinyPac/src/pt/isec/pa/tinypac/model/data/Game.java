@@ -1,19 +1,14 @@
 package pt.isec.pa.tinypac.model.data;
 
-import pt.isec.pa.tinypac.model.data.ghosts.Blinky;
-import pt.isec.pa.tinypac.model.data.ghosts.Clyde;
-import pt.isec.pa.tinypac.model.data.ghosts.Inky;
-import pt.isec.pa.tinypac.model.data.ghosts.Pinky;
+
 import pt.isec.pa.tinypac.model.data.obstacles.*;
 import utils.Direction;
 import utils.Obstacles;
 import utils.Position;
 
-import javax.sound.sampled.Port;
-import java.io.*;
+
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 
 public class Game {
 
@@ -38,12 +33,8 @@ public class Game {
     }
 
     public boolean changeDirection(Direction direction){
-        if(pacman.setDirection(direction))
-            return true;
-        return false;
+        return pacman.setDirection(direction);
     }
-
-
 
     public Portal getPortal() {
         return portal;
@@ -162,10 +153,21 @@ public class Game {
         }
 
         if(maze.get(position.getPosY() , position.getPosX()).getSymbol() == Obstacles.BALL.getSymbol()){
-            if(maze.set(position.getPosY(), position.getPosX(), null)){
+            if(maze.set(position.getPosY(), position.getPosX(), new Empty())){
                 return true;
             }
         }
         return false;
+    }
+
+    public boolean unlockGhosts() {
+
+        if(ghosts == null)
+            return false;
+
+        for(Ghost a : ghosts)
+            a.setLocked(false);
+
+        return true;
     }
 }

@@ -1,5 +1,6 @@
-package pt.isec.pa.tinypac.ui.text;
+package pt.isec.pa.tinypac.ui.gui;
 
+import com.googlecode.lanterna.TerminalSize;
 import com.googlecode.lanterna.TextCharacter;
 import com.googlecode.lanterna.TextColor;
 import com.googlecode.lanterna.input.KeyStroke;
@@ -11,11 +12,36 @@ import com.googlecode.lanterna.terminal.Terminal;
 import pt.isec.pa.tinypac.gameengine.GameEngine;
 import pt.isec.pa.tinypac.gameengine.IGameEngine;
 import pt.isec.pa.tinypac.gameengine.IGameEngineEvolve;
-import pt.isec.pa.tinypac.model.data.GameManager;
 import pt.isec.pa.tinypac.model.ModelManager;
 import utils.Direction;
 
 import java.io.IOException;
+
+
+class TerminalFactory extends DefaultTerminalFactory{
+
+    TerminalFactory(){
+        super();
+        terminalSize();
+        changeTitle();
+    }
+
+    private void terminalSize(){
+        TerminalSize terminalSize = new TerminalSize(40,35);
+        this.setInitialTerminalSize(terminalSize);
+    }
+
+    private void changeTitle(){
+        setTerminalEmulatorTitle("Tiny - Pac");
+    }
+
+    @Override
+    public Terminal createTerminal() throws IOException {
+        return super.createTerminal();
+    }
+}
+
+
 
 public class GameLanternaUI implements IGameEngineEvolve {
     ModelManager modelManager;
@@ -25,7 +51,7 @@ public class GameLanternaUI implements IGameEngineEvolve {
 
     public GameLanternaUI() throws IOException {
 
-        terminal = new DefaultTerminalFactory().createTerminal();
+        terminal = new TerminalFactory().createTerminal();
         screen = new TerminalScreen(terminal);
 
         terminal.setCursorVisible(false);
@@ -116,42 +142,82 @@ public class GameLanternaUI implements IGameEngineEvolve {
         gameEngine.registerClient(this);
 
 
-        gameEngine.start(250);
+        gameEngine.start(500);
         gameEngine.waitForTheEnd();
+
+
+
+
+    }
+
+    private void showPauseMenu() {
+        try{
+            terminal.clearScreen();
+            terminal.resetColorAndSGR();
+            terminal.setCursorPosition(1,1);
+            terminal.putString("======== Tiny-PAC Pause =======");
+            terminal.setCursorPosition(1,2);
+            terminal.putString("|| 1 - Save and Exit           ||");
+            terminal.setCursorPosition(1,3);
+            terminal.putString("|| 2 - Exit without saving     ||");
+            terminal.setCursorPosition(1,4);
+            terminal.putString("|| 3 - Back to Game            ||");
+            terminal.setCursorPosition(1,5);
+            terminal.putString("===============================");
+            terminal.flush();
+        }catch (IOException e){}
 
 
     }
 
 
-
-
     @Override
     public void evolve(IGameEngine gameEngine, long currentTime) {
         try {
-            showGame();
+            switch (modelManager.getState()){
+                case WAIT_FOR_DIRECTIONS, LOCKED_GHOSTS, GAME:{
+                    showGame();
+                    break;
+                }
+                case PAUSE :{
+                    showPauseMenu();
+                    break;
+                }
+            }
+            //showGame();
             KeyStroke key = screen.pollInput();
             if(key != null){
-                switch (key.getKeyType()){
-                    case ArrowUp :{ modelManager.changeDirection(Direction.UP);
+                switch (modelManager.getState()){
+                    case PAUSE: {
+                        /*if(key.getKeyType() == KeyType.Escape){
+                            modelManager.pause();
+                        }*/
+                    }
+                    default:{
+                        switch (key.getKeyType()){
+                            case Escape:{ modelManager.pause();
+                                break;
+                            }
+                            case ArrowUp :{ modelManager.changeDirection(Direction.UP);
 
-                        System.out.println("UP");
-                        break;
-                    }
-                    case ArrowDown : {
-                        modelManager.changeDirection(Direction.DOWN);
-                        break;
-                    }
-                    case ArrowLeft :{
-                        modelManager.changeDirection(Direction.LEFT);
-                        break;
-                    }
-                    case ArrowRight :{
-                        modelManager.changeDirection(Direction.RIGHT);
-                        break;
+                                break;
+                            }
+                            case ArrowDown : {
+                                modelManager.changeDirection(Direction.DOWN);
+                                break;
+                            }
+                            case ArrowLeft :{
+                                modelManager.changeDirection(Direction.LEFT);
+                                break;
+                            }
+                            case ArrowRight :{
+                                modelManager.changeDirection(Direction.RIGHT);
+                                break;
+                            }
+                        }
                     }
                 }
-
-                if(key.getKeyType() == KeyType.Escape ||  (key.getKeyType() == KeyType.Character && key.getCharacter().equals('q'))){     //Por enquanto sair do jogo
+                if(key.getKeyType() == KeyType.Character && key.getCharacter().equals('q')){     //Por enquanto sair do jogo
                     gameEngine.stop();
                    //gameEngine.registerClient(this);
                     screen.close();
