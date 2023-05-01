@@ -6,21 +6,20 @@ import pt.isec.pa.tinypac.model.fsm.Context;
 import pt.isec.pa.tinypac.model.fsm.State;
 import pt.isec.pa.tinypac.model.fsm.StateAdapter;
 
-public class GameState extends StateAdapter {
+public class LockedGhostsState extends StateAdapter {
 
-    public GameState(Context context, GameManager data){
+    public LockedGhostsState(Context context, GameManager data){
         super(context, data);
     }
 
     @Override
     public State getState() {
-        return State.GAME;
+        return State.LOCKED_GHOSTS;
     }
-
 
     @Override
     public boolean evolve(IGameEngine gameEngine, long currentTime) {
-        return false;
+        return evolve(gameEngine, currentTime);
     }
 
     @Override

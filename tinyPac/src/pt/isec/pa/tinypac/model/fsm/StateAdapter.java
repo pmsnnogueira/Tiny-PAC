@@ -1,8 +1,8 @@
 package pt.isec.pa.tinypac.model.fsm;
 
-import pt.isec.pa.tinypac.model.data.Game;
+import pt.isec.pa.tinypac.gameengine.IGameEngine;
 import pt.isec.pa.tinypac.model.data.GameManager;
-import pt.isec.pa.tinypac.model.data.Maze;
+import utils.Direction;
 
 public abstract class StateAdapter implements IState {
 
@@ -19,53 +19,22 @@ public abstract class StateAdapter implements IState {
     }
 
     @Override
-    public char[][] showMaze() {
-        return null;
-    }
-
-    @Override
-    public boolean startGame() {
+    public boolean changeDirection(Direction direction) {
         return false;
     }
 
-
     @Override
-    public IState touchGhost() {
-        return null;
+    public boolean evolve(IGameEngine gameEngine, long currentTime) {
+        return false;
     }
 
     @Override
-    public IState eatFood() {
-        return null;
+    public boolean pause() {
+        return false;
     }
 
     @Override
-    public IState releaseGhosts() {
-        return null;
-    }
-
-    @Override
-    public IState newLevel() {
-        return null;
-    }
-
-    @Override
-    public IState pauseGame() {
-        return null;
-    }
-
-    @Override
-    public IState resumeGame() {
-        return null;
-    }
-
-    @Override
-    public IState exitGame() {
-        return null;
-    }
-
-    @Override
-    public IState saveGame() {
-        return null;
+    public boolean resume() {
+        return false;
     }
 }

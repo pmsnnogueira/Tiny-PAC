@@ -27,7 +27,7 @@ public class Blinky extends Ghost{
 
     @Override
     public boolean evolve(){
-        /*Maze maze = game.getMaze();
+        Maze maze = game.getMaze();
         int nextX = getPosX();
         int nextY = getPosY();
         
@@ -73,7 +73,7 @@ public class Blinky extends Ghost{
             case RIGHT -> nextX++;
         }
 
-        setPos(nextX , nextY);*/
+        setPos(nextX , nextY);
         return false;
     }
 

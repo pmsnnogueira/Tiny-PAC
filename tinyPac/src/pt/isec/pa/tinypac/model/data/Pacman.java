@@ -1,44 +1,79 @@
 package pt.isec.pa.tinypac.model.data;
 
+import utils.Direction;
+import utils.Obstacles;
+import utils.Position;
+
 public class Pacman extends GameObjects{
-    private int posX;
-    private int posY;
+    private Position position;
     private boolean power;
 
     public Pacman(Game game,Integer posX, Integer posY){
         super(game);
-        this.posX = posX;
-        this.posY = posY;
         this.power = false;
+        this.position = new Position(posX, posY, game.getMazeRows(), game.getMazeColumns());
     }
 
-    public void setPos(int posX , int posY){
-        this.posX = posX;
-        this.posY = posY;
+    public Position getCurrentPosition(){
+        return new Position(position);
     }
 
-    public int getPosX() {
-        return posX;
+
+
+    @Override
+    public boolean evolve() {
+
+        Maze maze = game.getMaze();
+        if(maze == null)
+            return false;
+        if(position.getDirection() == null)
+            return false;
+
+        int[] nextDirections = position.getNextPosition();//Next x and y
+        if(maze.get(nextDirections[1], nextDirections[0]).getSymbol() == Obstacles.WALL.getSymbol()){
+            return false;
+        }
+
+        position.setPos(nextDirections[0] , nextDirections[1]);
+
+        return true;
     }
 
-    public int getPosY() {
-        return posY;
+    public boolean setDirection(Direction direction) {
+
+        Position aux = new Position(getPosX() , getPosY() , game.getMazeRows() , game.getMazeColumns());
+        aux.setDirection(direction);
+        int[] nextPos = aux.getNextPosition();
+        Maze maze = game.getMaze();
+
+        IMazeElement mazeElement = maze.get(nextPos[1] , nextPos[0]);
+
+
+        if(verifyElementObstacle(mazeElement)){
+            position.setDirection(direction);
+            return true;
+        }
+
+        return false;
+    }
+
+    private boolean verifyElementObstacle(IMazeElement mazeElement) {
+        if(mazeElement.getSymbol() == Obstacles.WALL.getSymbol() || mazeElement.getSymbol() == Obstacles.PORTAL.getSymbol()){
+            return false;
+        }
+        return true;
+    }
+
+    public int getPosX(){
+        return position.getPosX();
+    }
+
+    public int getPosY(){
+        return position.getPosY();
     }
 
     @Override
     public char getSymbol() {
         return '*';
-    }
-
-    @Override
-    public boolean evolve() {
-
-
-
-
-
-
-
-        return false;
     }
 }

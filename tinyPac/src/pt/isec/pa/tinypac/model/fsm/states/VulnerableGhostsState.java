@@ -6,26 +6,25 @@ import pt.isec.pa.tinypac.model.fsm.Context;
 import pt.isec.pa.tinypac.model.fsm.State;
 import pt.isec.pa.tinypac.model.fsm.StateAdapter;
 
-public class GameState extends StateAdapter {
+public class VulnerableGhostsState extends StateAdapter {
 
-    public GameState(Context context, GameManager data){
+    public VulnerableGhostsState(Context context, GameManager data){
         super(context, data);
     }
 
     @Override
     public State getState() {
-        return State.GAME;
+        return State.VULNERABLE_GHOSTS;
     }
-
 
     @Override
     public boolean evolve(IGameEngine gameEngine, long currentTime) {
-        return false;
+        return evolve(gameEngine,currentTime);
     }
 
     @Override
     public boolean pause() {
         changeState(State.PAUSE);
-        return true;
+        return false;
     }
 }

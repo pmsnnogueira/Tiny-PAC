@@ -7,12 +7,10 @@ import pt.isec.pa.tinypac.model.data.Maze;
 import pt.isec.pa.tinypac.model.data.obstacles.Portal;
 import utils.Obstacles;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Random;
 
 import static java.lang.Math.*;
-import static java.lang.System.exit;
 
 public class Pinky extends Ghost {
 

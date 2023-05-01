@@ -1,17 +1,20 @@
 package pt.isec.pa.tinypac.model.fsm;
 
-import pt.isec.pa.tinypac.gameengine.GameEngine;
+import pt.isec.pa.tinypac.model.data.Game;
 import pt.isec.pa.tinypac.model.data.GameManager;
-import pt.isec.pa.tinypac.model.fsm.states.WaitToMovePacmanState;
+import pt.isec.pa.tinypac.model.fsm.IState;
+import pt.isec.pa.tinypac.model.fsm.State;
+import pt.isec.pa.tinypac.model.fsm.states.WaitForDirectionState;
+import utils.Direction;
 
 
 public class Context {
     private IState state;
     private GameManager data;
 
-    public Context(){
-        this.data = new GameManager();
-        state = new WaitToMovePacmanState(this, data);
+    public Context(GameManager data){
+        this.data = data;
+        state = new WaitForDirectionState(this, data);
     }
 
     public State getState(){
@@ -25,11 +28,17 @@ public class Context {
         this.state = newState;
     }
 
-    public char[][] showMaze(){
-        return state.showMaze();
+    public boolean changeDirection(Direction direction){
+        if(data.changeDirection(direction))
+            return true;
+        return false;
     }
 
-    public GameManager getData() {
+    public char[][] showMaze(){
+        return data.showMaze();
+    }
+
+    public GameManager getGameManager() {
         return data;
     }
 }

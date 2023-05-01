@@ -1,32 +1,22 @@
 package pt.isec.pa.tinypac.model.fsm;
 
-import pt.isec.pa.tinypac.model.data.Maze;
+import pt.isec.pa.tinypac.gameengine.IGameEngine;
+import utils.Direction;
 
 public interface IState {
 
     State getState();
 
-    boolean startGame();            //Isto vou ter de tirar
+    boolean changeDirection(Direction direction);
 
-    //WaitToMovePacman
-    char[][] showMaze();        //Retirar
+    boolean evolve(IGameEngine gameEngine, long currentTime);
 
-    //GAME
-    IState touchGhost();        //Passar os ghosts
-    IState eatFood();           //Passar a food
+    boolean pause();
 
-    //VulnerableGhosts
-    IState releaseGhosts();
-
-
-    //LevelComplete
-    IState newLevel();
+    boolean resume();
 
 
 
-    //PAUSE
-    IState pauseGame();
-    IState resumeGame();
-    IState exitGame();
-    IState saveGame();
+
+
 }

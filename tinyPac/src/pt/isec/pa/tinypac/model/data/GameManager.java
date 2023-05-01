@@ -8,6 +8,7 @@ import pt.isec.pa.tinypac.model.data.ghosts.Clyde;
 import pt.isec.pa.tinypac.model.data.ghosts.Inky;
 import pt.isec.pa.tinypac.model.data.ghosts.Pinky;
 import pt.isec.pa.tinypac.model.data.obstacles.*;
+import utils.Direction;
 import utils.Obstacles;
 
 import java.io.BufferedReader;
@@ -24,6 +25,16 @@ public class GameManager implements IGameEngineEvolve {
     public GameManager(){
         this.game = new Game();
     }
+
+
+
+    public boolean changeDirection(Direction direction){
+
+        if(game.changeDirection(direction))
+            return true;
+        return false;
+    }
+
 
     private ArrayList<String> filesinFolder(String folderName){
 
@@ -96,7 +107,8 @@ public class GameManager implements IGameEngineEvolve {
                 rows = ++counter;
                 columns = line.length();
             }
-            bufferedReader.close(); //não é necessário
+            sc.close();
+            bufferedReader.close(); //não é necessário por causa do tryCatch
         } catch (IOException e) {
             e.printStackTrace();
             return null;
@@ -105,7 +117,7 @@ public class GameManager implements IGameEngineEvolve {
         game.setMazeRows(rows);
         game.setMazeColumns(columns);
 
-        System.out.println("Game Rows: " + rows + " Columns: " + columns);
+        //System.out.println("Game Rows: " + rows + " Columns: " + columns);
         return setCharInMap(stringBuilder);
     }
 
@@ -202,7 +214,6 @@ public class GameManager implements IGameEngineEvolve {
                 }
             }
             ghosts.add(ghost);
-            //maze.set(randomPosition[0] , randomPosition[1] , ghost);
             ghostCave.remove(randomPosition);
         }
 

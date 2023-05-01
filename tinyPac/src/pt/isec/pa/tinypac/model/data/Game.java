@@ -5,7 +5,9 @@ import pt.isec.pa.tinypac.model.data.ghosts.Clyde;
 import pt.isec.pa.tinypac.model.data.ghosts.Inky;
 import pt.isec.pa.tinypac.model.data.ghosts.Pinky;
 import pt.isec.pa.tinypac.model.data.obstacles.*;
+import utils.Direction;
 import utils.Obstacles;
+import utils.Position;
 
 import javax.sound.sampled.Port;
 import java.io.*;
@@ -25,6 +27,7 @@ public class Game {
     private Portal portal;
     private ArrayList<Ghost> ghosts;
 
+
     public Game(){
         this.level = 1;
         this.lives = 3;
@@ -33,6 +36,13 @@ public class Game {
         this.ghosts = new ArrayList<>();
         this.pacman = null;
     }
+
+    public boolean changeDirection(Direction direction){
+        if(pacman.setDirection(direction))
+            return true;
+        return false;
+    }
+
 
 
     public Portal getPortal() {
@@ -100,12 +110,9 @@ public class Game {
                 if (gameBoard[i][a] == Obstacles.GHOST_CAVE.getSymbol()
                         || gameBoard[i][a] == Obstacles.PACMAN_INITIAL_POSITION.getSymbol()) {
                     gameBoard[i][a] = ' ';
-                    continue;
                 }
 
-               //System.out.print(gameBoard[i][a]);
             }
-            //System.out.println();
         }
         return gameBoard;
     }
@@ -130,13 +137,30 @@ public class Game {
             return false;
 
         List<GameObjects> gameObjects = new ArrayList<>(ghosts);
-        gameObjects.add(pacman);
 
-        if(gameObjects != null)
-            for(var object : gameObjects)
-                object.evolve();
+        pacman.evolve();
+        eatFood();
+        if(gameObjects != null){
+            for(var object : gameObjects) {
+                if(object instanceof Ghost a){
+                    if(!a.getLocked()){
+                        object.evolve();
+                    }
+                }
+            }
+        }
 
 
         return true;
+    }
+
+    public boolean eatFood(){
+        Position position = pacman.getCurrentPosition();
+        if(maze.get(position.getPosY() , position.getPosX()).getSymbol() == Obstacles.BALL.getSymbol()){
+            if(maze.set(position.getPosY(), position.getPosX(), null)){
+                return true;
+            }
+        }
+        return false;
     }
 }

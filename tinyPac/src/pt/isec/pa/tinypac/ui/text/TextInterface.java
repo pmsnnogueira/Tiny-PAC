@@ -18,12 +18,12 @@ public class TextInterface implements IGameEngineEvolve{
     }
 
     public void gameMenu() throws InterruptedException {
-        while (!finish){
+      /*  while (!finish){
             switch (fsm.getState()){
-                case WAIT_TO_MOVE_PACMAN -> waitToMovePacmaUI();
+                case WAIT_FOR_DIRECTION -> waitToMovePacmaUI();
                 case GAME -> gameUI();
             }
-        }
+        }*/
     }
 
     private void waitToMovePacmaUI() {
@@ -44,7 +44,7 @@ public class TextInterface implements IGameEngineEvolve{
     }
 
     private void printBoard(){
-        char[][] maze = fsm.showMaze();
+        /*char[][] maze = fsm.showMaze();
         if(maze == null)
             return;
 
@@ -53,7 +53,7 @@ public class TextInterface implements IGameEngineEvolve{
                 System.out.print(maze[i][a]);
             }
             System.out.println();
-        }
+        }*/
     }
 
     public void start() throws IOException, InterruptedException {

@@ -1,26 +1,23 @@
 package pt.isec.pa.tinypac.model.fsm;
 
-import pt.isec.pa.tinypac.model.data.Game;
 import pt.isec.pa.tinypac.model.data.GameManager;
 import pt.isec.pa.tinypac.model.fsm.states.*;
 
 public enum State {
 
-    WAIT_TO_MOVE_PACMAN,
+    WAIT_FOR_DIRECTIONS,
     GAME,
+    LOCKED_GHOSTS,
     VULNERABLE_GHOSTS,
-    LEVEL_COMPLETE,
-    PAUSE,
-    GAME_OVER;
+    PAUSE;
 
     IState createState(Context context, GameManager data){
         return switch (this){
-            case WAIT_TO_MOVE_PACMAN -> new WaitToMovePacmanState(context, data);
+            case WAIT_FOR_DIRECTIONS -> new WaitForDirectionState(context, data);
             case GAME -> new GameState(context, data);
-            case VULNERABLE_GHOSTS -> new VulnerableGhostState(context, data);
-            case LEVEL_COMPLETE -> new LevelCompleteState(context, data);
-            case PAUSE -> new Pause(context, data);
-            case GAME_OVER -> new GameOverState(context, data);
+            case LOCKED_GHOSTS -> new LockedGhostsState(context, data);
+            case VULNERABLE_GHOSTS -> new VulnerableGhostsState(context, data);
+            case PAUSE -> new PauseState(context, data);
         };
     }
 }

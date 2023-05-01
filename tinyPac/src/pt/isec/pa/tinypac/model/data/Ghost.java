@@ -1,15 +1,14 @@
 package pt.isec.pa.tinypac.model.data;
 
 public abstract class Ghost extends GameObjects{
-    private Boolean lock;
+    private Boolean locked;
     private Integer posX;
     private Integer posY;
-
     private static final char SYMBOL = 'G';
 
     public Ghost(Game game, int posX , int posY){
         super(game);
-        this.lock = true;
+        this.locked = true;
         this.posX = posX;
         this.posY = posY;
     }
@@ -27,8 +26,8 @@ public abstract class Ghost extends GameObjects{
         return posY;
     }
 
-    public Boolean getLock() {
-        return lock;
+    public Boolean getLocked() {
+        return locked;
     }
     public void setPosX(Integer posX) {
         this.posX = posX;
@@ -37,8 +36,8 @@ public abstract class Ghost extends GameObjects{
     public void setPosY(Integer posY) {
         this.posY = posY;
     }
-    public void setLock(Boolean lock) {
-        this.lock = lock;
+    public void setLocked(Boolean lock) {
+        this.locked = lock;
     }
 
 
