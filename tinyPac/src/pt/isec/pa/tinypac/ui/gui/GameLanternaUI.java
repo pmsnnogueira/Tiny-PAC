@@ -56,9 +56,9 @@ public class GameLanternaUI implements IGameEngineEvolve {
 
         terminal.setCursorVisible(false);
 
+        gameMenu();
 
-
-        showMenu();
+       // showMenu();
     }
 
     private void printMenu(){

@@ -114,7 +114,7 @@ public class Pinky extends Ghost {
     public boolean evolve() {
 
         Maze maze = game.getMaze();
-        int nextX = getPosX();
+        /*int nextX = getPosX();
         int nextY = getPosY();
 
         if(verifyMinimumDistance()){
@@ -160,7 +160,7 @@ public class Pinky extends Ghost {
             for (int i = 0; i < possibleDirections.size(); i++) {
                 switch (possibleDirections.get(i)) {
                     case TOP -> System.out.println("Top");
-                    case BOTTOM -> System.out.println("Bottom");
+                   case BOTTOM -> System.out.println("Bottom");
                     case LEFT -> System.out.println("Left");
                     case RIGHT -> System.out.println("Right");
                 }
@@ -199,7 +199,7 @@ public class Pinky extends Ghost {
         }
 
         //System.out.println("\n\tNew Pos: " + nextX + " Y: " + nextY);
-        setPos(nextX , nextY);
+        setPos(nextX , nextY);*/
 
 
 
