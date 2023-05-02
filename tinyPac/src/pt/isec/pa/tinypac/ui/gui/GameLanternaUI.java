@@ -49,6 +49,8 @@ public class GameLanternaUI implements IGameEngineEvolve {
     Terminal terminal;
     GameEngine gameEngine;
 
+    private static final Integer GAME_ENGINE_TIME = 1000;
+
     public GameLanternaUI() throws IOException {
 
         terminal = new TerminalFactory().createTerminal();
@@ -142,7 +144,7 @@ public class GameLanternaUI implements IGameEngineEvolve {
         gameEngine.registerClient(this);
 
 
-        gameEngine.start(500);
+        gameEngine.start(GAME_ENGINE_TIME);
         gameEngine.waitForTheEnd();
 
 
