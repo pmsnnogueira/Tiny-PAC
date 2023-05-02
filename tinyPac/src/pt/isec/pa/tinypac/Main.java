@@ -1,22 +1,32 @@
 package pt.isec.pa.tinypac;
 
-import pt.isec.pa.tinypac.gameengine.GameEngine;
-import pt.isec.pa.tinypac.gameengine.IGameEngine;
-import pt.isec.pa.tinypac.model.fsm.Context;
-import pt.isec.pa.tinypac.ui.text.TextInterface;
+import pt.isec.pa.tinypac.ui.gui.GameLanternaUI;
+
+import java.io.IOException;
 
 public class Main {
+
     public static void main(String[] args) {
-        IGameEngine gameEngine = new GameEngine();
-        TestClient client = new TestClient();
-        gameEngine.registerClient(client);
-        gameEngine.start(500);
-        gameEngine.waitForTheEnd();
+
+        try {
+            //TextInterface ui = new TextInterface();
+            //ui.start();
+
+            //GameManager gameManager = new GameManager();
+
+            GameLanternaUI lanternaui = new GameLanternaUI();
 
 
-        Context context = new Context();
-        TextInterface ui = new TextInterface(context);
-        ui.start();
 
+           // IGameEngine gameEngine = new GameEngine();
+
+            /*gameEngine.registerClient(gameManager);
+            //gameEngine.registerClient(Lanternaui);
+            gameEngine.start(500);
+            gameEngine.waitForTheEnd();*/
+
+        }catch (IOException e){
+            e.printStackTrace();
+        }
     }
 }
