@@ -7,6 +7,9 @@ public class Power implements IMazeElement {
 
     private final char symbol;
 
+    public static final int POWER_POINTS = 150;
+
+
     public Power(){
         this.symbol = Obstacles.POWER.getSymbol();
     }

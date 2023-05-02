@@ -12,9 +12,11 @@ import java.util.List;
 
 public class Game {
 
+
+    private static final char LIVES_ICON = 'A';
     private Integer level;
     private Integer lives;
-    private Integer points;
+    private Integer score;
     private Maze maze;
     private Integer mazeRows;
     private Integer mazeColumns;
@@ -26,7 +28,7 @@ public class Game {
     public Game(){
         this.level = 1;
         this.lives = 3;
-        this.points = 0;
+        this.score = 0;
         this.maze = null;
         this.ghosts = new ArrayList<>();
         this.pacman = null;
@@ -79,6 +81,17 @@ public class Game {
     public Maze getMaze() {
         return maze;
     }
+
+    public String showGameInfo(){
+
+        String info = "Score: " + score + "\tLives: ";
+        for(int i = 0; i < lives ; i++){
+            info += LIVES_ICON;
+        }
+
+       return info;
+    }
+
 
     public char[][] showMaze() {
         char[][] gameBoard;
@@ -152,12 +165,26 @@ public class Game {
             return false;
         }
 
-        if(maze.get(position.getPosY() , position.getPosX()).getSymbol() == Obstacles.BALL.getSymbol()){
-            if(maze.set(position.getPosY(), position.getPosX(), new Empty())){
+        if(element.getSymbol() == Obstacles.BALL.getSymbol()){
+            incrementPoints(element);
+            if(maze.set(position.getPosY(), position.getPosX(), null)){
                 return true;
             }
         }
         return false;
+    }
+
+    private void incrementPoints(IMazeElement element){
+        if(element.getSymbol() == Obstacles.FRUIT.getSymbol()){
+            this.score += Obstacles.FRUIT.getPoints();
+            return;
+        }
+        if(element.getSymbol() == Obstacles.BALL.getSymbol()){
+            this.score += Obstacles.BALL.getPoints();
+        }
+        if(element.getSymbol() == Obstacles.POWER.getSymbol()){
+            this.score += Obstacles.POWER.getPoints();
+        }
     }
 
     public boolean unlockGhosts() {

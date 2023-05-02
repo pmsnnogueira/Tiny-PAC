@@ -51,4 +51,8 @@ public class ModelManager{
         return context.showMaze();
     }
 
+    public String showGameInfo(){
+        return gameManager.showGameInfo();
+    }
+
 }

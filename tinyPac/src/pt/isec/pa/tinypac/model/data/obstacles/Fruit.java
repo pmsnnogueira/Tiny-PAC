@@ -7,6 +7,8 @@ public class Fruit implements IMazeElement {
 
     private final char symbol;
 
+    public static final int FRUIT_POINTS = 100;
+
     public Fruit(){
         this.symbol = Obstacles.FRUIT.getSymbol();
     }

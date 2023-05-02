@@ -49,7 +49,7 @@ public class GameLanternaUI implements IGameEngineEvolve {
     Terminal terminal;
     GameEngine gameEngine;
 
-    private static final Integer GAME_ENGINE_TIME = 1000;
+    private static final Integer GAME_ENGINE_TIME = 250;
 
     public GameLanternaUI() throws IOException {
 
@@ -232,10 +232,16 @@ public class GameLanternaUI implements IGameEngineEvolve {
     private void showGame() throws IOException {
 
         char[][] env = modelManager.showMaze();
+        String information = modelManager.showGameInfo();
         if(env == null)
             return;
         screen.startScreen();
         screen.doResizeIfNecessary();
+        terminal.resetColorAndSGR();        //tentar mudar isto para ser tudo pelo terminal
+        terminal.putString(information);
+        terminal.flush();
+        terminal.setCursorVisible(false);
+        terminal.setCursorPosition(0,2);
         for (int y = 0; y < env.length; y++) {
             for (int x = 0; x < env[0].length; x++) {
                 TextColor tc = switch(env[y][x]) {
@@ -259,7 +265,7 @@ public class GameLanternaUI implements IGameEngineEvolve {
                     case 'W' -> TextColor.ANSI.WHITE;
                     default -> TextColor.ANSI.BLACK;
                 };
-                screen.setCharacter(x,y, TextCharacter.fromCharacter(env[y][x],tc,bc)[0]);
+                screen.setCharacter(x,y + 1, TextCharacter.fromCharacter(env[y][x],tc,bc)[0]);
             }
         }
         screen.refresh();
