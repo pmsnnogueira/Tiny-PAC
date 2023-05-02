@@ -163,31 +163,39 @@ public class Blinky extends Ghost{
         IMazeElement right = maze.get(getPosY(), getPosX() + 1);
         IMazeElement down = maze.get(getPosY() + 1, getPosX());
 
-        if(right == null || left == null) {           //Há caminho para a direita ou para a esquerda
+       /* if(right == null || left == null) {           //Há caminho para a direita ou para a esquerda
             if(up == null || down == null)
                 return true;                          //Há um cruzamento
             return false;
-        }
+        }*/
 
         if(direction == UP || direction == DOWN){
-            if(up.getSymbol() == Obstacles.WALL.getSymbol() ||     //Sem saida para esta direcao
-                down.getSymbol() == Obstacles.WALL.getSymbol())
+            if ((up != null && down != null) && (up.getSymbol() == Obstacles.WALL.getSymbol() ||     //Sem saida para esta direcao
+                    down.getSymbol() == Obstacles.WALL.getSymbol()))
                 return true;                                        //True para mudar a direcao
 
-            if(right.getSymbol() != Obstacles.WALL.getSymbol() ||   //há um cruzamento na direita ou na esquerda
+            if((right == null || left == null) || right.getSymbol() != Obstacles.WALL.getSymbol() ||   //há um cruzamento na direita ou na esquerda
                 left.getSymbol() != Obstacles.WALL.getSymbol())
                 return true;                                        //True para mudar de direcao
 
+            if((up == null && down != null) || (up != null && down == null))
+                return true;
+
         }else if(direction == RIGHT || direction == LEFT){
 
-            if(right.getSymbol() == Obstacles.WALL.getSymbol() ||               //Sem saida e mudar de direcao
-                    left.getSymbol() == Obstacles.WALL.getSymbol()){
+            if ((right!= null && left != null) && (right.getSymbol() == Obstacles.WALL.getSymbol() ||               //Sem saida e mudar de direcao
+                    left.getSymbol() == Obstacles.WALL.getSymbol())) {
                 return true;
             }
-            if(up.getSymbol() != Obstacles.WALL.getSymbol()  ||
-                    down.getSymbol() != Obstacles.WALL.getSymbol()){          //Há caminho noutras direcçoes entao mudar de d
+
+            if ((up == null || down == null) || (up.getSymbol() != Obstacles.WALL.getSymbol() ||
+                    down.getSymbol() != Obstacles.WALL.getSymbol())) {          //Há caminho noutras direcçoes entao mudar de d
                 return true;
             }
+
+            if((right == null && left != null) || (right != null && left == null))
+                return true;
+
         }
         return false;
     }
