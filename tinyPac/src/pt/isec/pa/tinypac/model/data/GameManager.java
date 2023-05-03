@@ -140,8 +140,8 @@ public class GameManager implements IGameEngineEvolve {
                     case 'W' ->   //Zona Warp
                             maze.set(i, a, new Warp());
                     case 'o' ->   //Comida
-                            maze.set(i, a, new Ball());
-                            //maze.set(i, a, null);
+                            //maze.set(i, a, new Ball());
+                            maze.set(i, a, null);
                     case 'F' ->   //fruta
                             maze.set(i, a, new Fruit());
                     case 'M' -> {   //LocalPacmanInicial
@@ -246,6 +246,10 @@ public class GameManager implements IGameEngineEvolve {
         //if(game != null)
             if(!game.evolve())
                 gameEngine.stop();
+    }
+
+    public boolean controlGame(){
+        return game.controlGame();
     }
 
 }

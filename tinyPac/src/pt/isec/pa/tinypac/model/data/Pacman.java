@@ -79,6 +79,14 @@ public class Pacman extends GameObjects{
         return position.getPosY();
     }
 
+    public boolean getPower(){
+        return power;
+    }
+
+    public void setPower(boolean power) {
+        this.power = power;
+    }
+
     @Override
     public char getSymbol() {
         return '*';

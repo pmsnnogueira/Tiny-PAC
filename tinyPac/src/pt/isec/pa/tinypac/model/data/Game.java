@@ -140,22 +140,41 @@ public class Game {
         if(ghosts == null || pacman == null)
             return false;
 
-        List<GameObjects> gameObjects = new ArrayList<>(ghosts);
-
         pacman.evolve();
         eatFood();
-        if(gameObjects != null){
-            for(var object : gameObjects) {
-                if(object instanceof Ghost a){
-                    if(!a.getLocked()){
-                        object.evolve();
-                    }
-                }
+        for(Ghost ghost : ghosts){
+            if(!ghost.getLocked()){
+                ghost.evolve();
             }
+        }
+
+        if(!controlGame()){
+            //resetLevel();
         }
 
 
         return true;
+    }
+
+
+    public boolean controlGame(){
+
+        for(Ghost ghost: ghosts){
+            if(ghost.getPosX() == pacman.getPosX() && ghost.getPosY() == pacman.getPosY()){
+                //Ghost in same place as pacman
+                if(pacman.getPower()){
+                    //resetLevel();
+                    return false;
+                }else{
+                    pacmanEatGhost(ghost);
+                }
+            }
+        }
+        return true;
+    }
+
+    private void pacmanEatGhost(Ghost ghost){
+        ghost.reset();
     }
 
     public boolean eatFood(){
@@ -165,10 +184,15 @@ public class Game {
             return false;
         }
 
-        if(element.getSymbol() == Obstacles.BALL.getSymbol()){
+        if(element.getSymbol() == Obstacles.BALL.getSymbol() ||
+                element.getSymbol() == Obstacles.FRUIT.getSymbol() ||
+                element.getSymbol() == Obstacles.POWER.getSymbol()){
             incrementPoints(element);
             if(maze.set(position.getPosY(), position.getPosX(), null)){
                 return true;
+            }
+            if(element.getSymbol() == Obstacles.POWER.getSymbol()){
+                pacman.setPower(true);
             }
         }
         return false;

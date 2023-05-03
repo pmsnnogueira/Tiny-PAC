@@ -7,7 +7,7 @@ public class Ball implements IMazeElement {
 
     private final char symbol;
 
-    public static final int BALL_POINTS = 50;
+    public static final int BALL_POINTS = 10;
 
     public Ball(){
         this.symbol = Obstacles.BALL.getSymbol();
