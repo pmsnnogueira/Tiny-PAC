@@ -1,7 +1,6 @@
 package pt.isec.pa.tinypac.model.data;
 
 import pt.isec.pa.tinypac.utils.GhostPosition;
-import pt.isec.pa.tinypac.utils.Position;
 
 import java.util.ArrayList;
 
@@ -9,7 +8,7 @@ public abstract class Ghost extends GameObjects{
     private Boolean locked;
     private GhostPosition currentPosition;
 
-    private GhostPosition initialPosition;
+    private final GhostPosition initialPosition;
     private ArrayList<GhostPosition> positions;
     private static final char SYMBOL = 'G';
 

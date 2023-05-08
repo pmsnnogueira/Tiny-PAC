@@ -4,11 +4,10 @@ package pt.isec.pa.tinypac.model.data;
 import pt.isec.pa.tinypac.model.data.obstacles.*;
 import pt.isec.pa.tinypac.utils.Direction;
 import pt.isec.pa.tinypac.utils.Obstacles;
-import pt.isec.pa.tinypac.utils.Position;
+import pt.isec.pa.tinypac.utils.PacmanPosition;
 
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class Game {
 
@@ -178,8 +177,8 @@ public class Game {
     }
 
     public boolean eatFood(){
-        Position position = pacman.getCurrentPosition();
-        IMazeElement element = maze.get(position.getPosY(), position.getPosX());
+        PacmanPosition pacmanPosition = pacman.getCurrentPosition();
+        IMazeElement element = maze.get(pacmanPosition.getPosY(), pacmanPosition.getPosX());
         if(element == null){
             return false;
         }
@@ -188,7 +187,7 @@ public class Game {
                 element.getSymbol() == Obstacles.FRUIT.getSymbol() ||
                 element.getSymbol() == Obstacles.POWER.getSymbol()){
             incrementPoints(element);
-            if(maze.set(position.getPosY(), position.getPosX(), null)){
+            if(maze.set(pacmanPosition.getPosY(), pacmanPosition.getPosX(), null)){
                 return true;
             }
             if(element.getSymbol() == Obstacles.POWER.getSymbol()){
