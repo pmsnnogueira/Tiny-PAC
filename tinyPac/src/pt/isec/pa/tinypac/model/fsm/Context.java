@@ -1,5 +1,6 @@
 package pt.isec.pa.tinypac.model.fsm;
 
+import pt.isec.pa.tinypac.gameengine.GameEngine;
 import pt.isec.pa.tinypac.gameengine.IGameEngine;
 import pt.isec.pa.tinypac.gameengine.IGameEngineEvolve;
 import pt.isec.pa.tinypac.model.data.GameManager;
@@ -34,14 +35,9 @@ public class Context implements IGameEngineEvolve {
     public char[][] showMaze(){
         return data.showMaze();
     }
-
-    public GameManager getGameManager() {
-        return data;
-    }
-
     @Override
     public void evolve(IGameEngine gameEngine, long currentTime) {
-        state.evolve(gameEngine,currentTime);
+        state.evolve(currentTime);
     }
 
     public boolean pause(){

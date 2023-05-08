@@ -9,7 +9,7 @@ public interface IState {
 
     boolean changeDirection(Direction direction);
 
-    void evolve(IGameEngine gameEngine, long currentTime);
+    void evolve(long currentTime);
 
     boolean pause();
 

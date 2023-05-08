@@ -24,8 +24,8 @@ public class GameState extends StateAdapter {
     }
 
     @Override
-    public void evolve(IGameEngine gameEngine, long currentTime) {
-        data.evolve(gameEngine,currentTime);
+    public void evolve(long currentTime) {
+        data.evolve(currentTime);
 
         if(!data.controlGame()){
             changeState(State.WAIT_FOR_DIRECTIONS);

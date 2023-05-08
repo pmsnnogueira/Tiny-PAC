@@ -30,12 +30,12 @@ public class LockedGhostsState extends StateAdapter {
         return data.changeDirection(direction);
     }
 
-    @Override
-    public void evolve(IGameEngine gameEngine, long currentTime) {
+
+    public void evolve(long currentTime) {
         if(unlockGhosts(currentTime))
             changeState(State.GAME);
 
-        data.evolve(gameEngine, currentTime);
+        data.evolve(currentTime);
     }
 
     private boolean unlockGhosts(long currentTime){

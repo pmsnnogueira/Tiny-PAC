@@ -24,7 +24,7 @@ public class PauseState extends StateAdapter {
     }
 
     @Override
-    public void evolve(IGameEngine gameEngine, long currentTime) {
+    public void evolve(long currentTime) {
         return;
     }
 

@@ -17,7 +17,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class GameManager implements IGameEngineEvolve {
+public class GameManager{
     private Game game;
     private final static String LEVELS_PATH = "src/pt/isec/pa/tinypac/levels/";
 
@@ -241,11 +241,10 @@ public class GameManager implements IGameEngineEvolve {
         return game.showGameInfo();
     }
 
-    @Override
-    public void evolve(IGameEngine gameEngine, long currentTime) {
+    public void evolve(long currentTime) {
         //if(game != null)
-            if(!game.evolve())
-                gameEngine.stop();
+            game.evolve();
+                //gameEngine.stop();
     }
 
     public boolean controlGame(){

@@ -17,9 +17,7 @@ public class Blinky extends Ghost{
     private static final int RIGHT = 2;
     private static final int LEFT = 3;
     private static final int DOWN = 4;
-
     private int direction;
-
 
     public Blinky(Game game,int posX, int posY){
         super(game,posX, posY);
@@ -135,10 +133,16 @@ public class Blinky extends Ghost{
         return 0;
     }
 
+    private void addLastMove(Integer posX, Integer posY){
+        addLastPosition(posX,posY);
+    }
+
     private boolean move(Maze maze, int direction){
 
         int nextPosX = getPosX();
         int nextPosY = getPosY();
+
+        addLastPosition(getPosX(),getPosY());
 
         switch (direction){
             case UP -> nextPosY--;

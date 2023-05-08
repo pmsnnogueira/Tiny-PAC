@@ -24,7 +24,7 @@ public abstract class StateAdapter implements IState {
     }
 
     @Override
-    public void evolve(IGameEngine gameEngine, long currentTime) {
+    public void evolve(long currentTime) {
         return;
     }
 
