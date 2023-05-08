@@ -44,7 +44,7 @@ public class Blinky extends Ghost{
 
     @Override
     public boolean evolve(){
-        Maze maze = game.getMaze();
+/*        Maze maze = game.getMaze();
 
         if(cruzamento(maze, direction)){
             //Mudar de direcao
@@ -63,9 +63,9 @@ public class Blinky extends Ghost{
             }
         }
 
-        move(maze, direction);
+        move(maze, direction);*/
 
-        return false;
+        return true;
     }
 
     private int oppositeDirection(Integer direction){
@@ -142,7 +142,7 @@ public class Blinky extends Ghost{
         int nextPosX = getPosX();
         int nextPosY = getPosY();
 
-        addLastPosition(getPosX(),getPosY());
+        addLastMove(getPosX(),getPosY());
 
         switch (direction){
             case UP -> nextPosY--;
@@ -217,7 +217,7 @@ public class Blinky extends Ghost{
         if(currentElement.getSymbol() == Obstacles.GHOST_CAVE.getSymbol()){
             if(portal.getPosX() < getPosX())
                 possibleDirections.add(LEFT);
-            else if(portal.getPosY() > getPosX())
+            else if(portal.getPosX() > getPosX())
                 possibleDirections.add(RIGHT);
             else if(portal.getPosY() < getPosY())
                 possibleDirections.add(UP);
