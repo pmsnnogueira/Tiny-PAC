@@ -24,20 +24,20 @@ public class Pinky extends Ghost {
     private static final int TOP_LEFT = 7;
     private static final int DOWN_LEFT = 8;
 
-    private static final double DISTANCE_MIN_CORNER = 0.15;
+    private static final double DISTANCE_MIN_CORNER = 0.35;
 
 
     private int direction;
     private int cornerDirection;
 
-    private double minDistance;
+    private int minDistance;
 
 
     public Pinky(Game game, int posX, int posY){
         super(game,posX, posY);
         this.direction = UP;
         this.cornerDirection = UP_RIGHT;
-        this.minDistance = game.getMazeColumns() * DISTANCE_MIN_CORNER;
+        this.minDistance = (int) (game.getMazeColumns() * DISTANCE_MIN_CORNER);
     }
 
     @Override
@@ -74,6 +74,11 @@ public class Pinky extends Ghost {
             case UP_RIGHT: {
                 cornerX = (int)(game.getMazeColumns() - (game.getMazeColumns() * DISTANCE_MIN_CORNER));
                 cornerY = (int)(game.getMazeRows() * DISTANCE_MIN_CORNER);
+                if(getPosX() >= cornerX && getPosY() <= cornerY){
+                    /*System.out.println("Distancia minima: " + minDistance);
+                    System.out.println("\tCornerX: " + cornerX);
+                    System.out.println("\tCornerY: " + cornerY);*/
+                }
                 break;
             }
             case DOWN_RIGHT:{
@@ -93,9 +98,6 @@ public class Pinky extends Ghost {
             }
         }
 
-
-
-
         return false;
     }
 
@@ -106,14 +108,16 @@ public class Pinky extends Ghost {
 
         Maze maze = game.getMaze();
 
+        verifyMinimumDistance();
+
         if(cruzamento(maze, direction)){
             //Mudar de direcao
             ArrayList<Integer> validDirections = new ArrayList<>(getValidDirections(maze));
             if(validDirections.size() >= 2){
 
-                System.out.println("\nCurrentDirection: " + printDirection(direction));
+                //System.out.println("\nCurrentDirection: " + printDirection(direction));
                 //Mudar aqui a direcao do fantasma
-                printValidPositions(validDirections);
+                //printValidPositions(validDirections);
 
 
                 //Escolher qual a melhor para ele e a aleatoriedade
@@ -170,11 +174,11 @@ public class Pinky extends Ghost {
             return -1;
         }
 
-        System.out.println("\t\tCurrentDirection: " + printDirection(direction));
+        //System.out.println("\t\tCurrentDirection: " + printDirection(direction));
         switch (direction) {    //Pode virar para esta posicao
             case UP, DOWN: {
                 if (newDirection == RIGHT || newDirection == LEFT) {
-                    System.out.println("\t\t1NewDirection: " + printDirection(newDirection));
+          //          System.out.println("\t\t1NewDirection: " + printDirection(newDirection));
                     return 1;
                 }else{
                     return 0;
@@ -182,7 +186,7 @@ public class Pinky extends Ghost {
             }
             case LEFT, RIGHT: {
                 if (newDirection == UP || newDirection == DOWN){
-                    System.out.println("\t\t2NewDirection: " + printDirection(newDirection));
+            //        System.out.println("\t\t2NewDirection: " + printDirection(newDirection));
                     return 1;
                 }else{
                     return 0;
