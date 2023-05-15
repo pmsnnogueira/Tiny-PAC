@@ -43,94 +43,50 @@ public class Blinky extends Ghost{
     }
 
     @Override
-    public boolean evolve(){
-/*        Maze maze = game.getMaze();
+    public boolean evolve() {
+
+        Maze maze = game.getMaze();
 
         if(cruzamento(maze, direction)){
-            //Mudar de direcao
+
+            //É possivel mudar de direcao
             ArrayList<Integer> validDirections = new ArrayList<>(getValidDirections(maze));
             if(validDirections.size() >= 2){
-
-                System.out.println("\nCurrentDirection: " + printDirection(direction));
-                //Mudar aqui a direcao do fantasma
-                printValidPositions(validDirections);
-
-
                 //Escolher qual a melhor para ele e a aleatoriedade
                 this.direction = chooseDirection(validDirections,direction);
+
             }else if(validDirections.size() == 1){
                 direction = validDirections.get(0);
             }
         }
 
-        move(maze, direction);*/
+        move(maze, direction);
 
         return true;
     }
 
-    private int oppositeDirection(Integer direction){
-       if(direction == UP)
-           return DOWN;
-       if(direction == LEFT)
-           return RIGHT;
-       if(direction == RIGHT)
-           return LEFT;
-       if(direction == DOWN)
-           return UP;
+    private Integer oppositeDirection(Integer direction){
+        if(direction == UP)
+            return DOWN;
+        if(direction == LEFT)
+            return RIGHT;
+        if(direction == RIGHT)
+            return LEFT;
+        if(direction == DOWN)
+            return UP;
 
-       return -1;
+        return -1;
     }
 
     private int chooseDirection(ArrayList<Integer> validDirections, Integer direction){
+        ArrayList<Integer> aux = new ArrayList<>(validDirections);
 
-        Integer newDirection;
-        Integer result;
-        do{
-            int random = new Random().nextInt(validDirections.size());
-            newDirection = validDirections.get(random);
+        aux.remove(oppositeDirection(direction));
+        if(aux.size() == 0)
+            return oppositeDirection(direction);
+        int random = new Random().nextInt(aux.size());
 
-
-            result = verifyNewDirection(validDirections, newDirection, direction);
-            if(result == 1)
-                return newDirection;
-            if(result == -1)
-                return oppositeDirection(direction);
-
-            validDirections.remove(newDirection);
-
-
-        }while (true);
-    }
-
-
-    private int verifyNewDirection(ArrayList<Integer> validDirections, Integer newDirection, Integer direction){
-
-        if(validDirections.size() == 0) {     //Voltar para tras, na direcao ao contrario
-            System.out.println("\t\tSize is 0");
-            return -1;
-        }
-
-        System.out.println("\t\tCurrentDirection: " + printDirection(direction));
-        switch (direction) {    //Pode virar para esta posicao
-            case UP, DOWN: {
-                if (newDirection == RIGHT || newDirection == LEFT) {
-                    System.out.println("\t\t1NewDirection: " + printDirection(newDirection));
-                    return 1;
-                }else{
-                    return 0;
-                }
-            }
-            case LEFT, RIGHT: {
-                if (newDirection == UP || newDirection == DOWN){
-                    System.out.println("\t\t2NewDirection: " + printDirection(newDirection));
-                    return 1;
-                }else{
-                    return 0;
-                }
-            }
-        }
-
-        return 0;
+        return aux.get(random);
     }
 
     private void addLastMove(Integer posX, Integer posY){
@@ -167,11 +123,13 @@ public class Blinky extends Ghost{
         IMazeElement right = maze.get(getPosY(), getPosX() + 1);
         IMazeElement down = maze.get(getPosY() + 1, getPosX());
 
-       /* if(right == null || left == null) {           //Há caminho para a direita ou para a esquerda
-            if(up == null || down == null)
-                return true;                          //Há um cruzamento
-            return false;
-        }*/
+        //Verificar se é uma parede dos fantasmas
+        if((up != null && up.getSymbol() == Obstacles.PORTAL.getSymbol()) ||
+                (down != null && down.getSymbol() == Obstacles.PORTAL.getSymbol()) ||
+                (right != null && right.getSymbol() == Obstacles.PORTAL.getSymbol())||
+                (left != null && left.getSymbol() == Obstacles.PORTAL.getSymbol())
+        )
+            return true;
 
         if(direction == UP || direction == DOWN){
             if ((up != null && down != null) && (up.getSymbol() == Obstacles.WALL.getSymbol() ||     //Sem saida para esta direcao
@@ -179,11 +137,13 @@ public class Blinky extends Ghost{
                 return true;                                        //True para mudar a direcao
 
             if((right == null || left == null) || right.getSymbol() != Obstacles.WALL.getSymbol() ||   //há um cruzamento na direita ou na esquerda
-                left.getSymbol() != Obstacles.WALL.getSymbol())
+                    left.getSymbol() != Obstacles.WALL.getSymbol())
                 return true;                                        //True para mudar de direcao
 
-            if((up == null && down != null) || (up != null && down == null))
-                return true;
+            if((up == null && down != null && down.getSymbol() == Obstacles.WALL.getSymbol()) ||
+                    (up != null && down == null && up.getSymbol() == Obstacles.WALL.getSymbol()))
+                return true;                            //True para mudar de direcao
+
 
         }else if(direction == RIGHT || direction == LEFT){
 
@@ -197,7 +157,8 @@ public class Blinky extends Ghost{
                 return true;
             }
 
-            if((right == null && left != null) || (right != null && left == null))
+            if((right == null && left != null && left.getSymbol() == Obstacles.WALL.getSymbol())
+                    || (right != null && left == null && right.getSymbol() == Obstacles.WALL.getSymbol()))
                 return true;
 
         }
@@ -284,6 +245,8 @@ public class Blinky extends Ghost{
             return null;
 
         // retorna um novo array com as direções possíveis
+
+        //printValidPositions(possibleDirections);
         return possibleDirections;
     }
 

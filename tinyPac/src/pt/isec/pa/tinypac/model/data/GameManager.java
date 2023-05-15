@@ -1,7 +1,5 @@
 package pt.isec.pa.tinypac.model.data;
 
-import pt.isec.pa.tinypac.gameengine.IGameEngine;
-import pt.isec.pa.tinypac.gameengine.IGameEngineEvolve;
 import pt.isec.pa.tinypac.model.data.ghosts.Blinky;
 import pt.isec.pa.tinypac.model.data.ghosts.Clyde;
 import pt.isec.pa.tinypac.model.data.ghosts.Inky;
@@ -140,8 +138,8 @@ public class GameManager{
                     case 'W' ->   //Zona Warp
                             maze.set(i, a, new Warp());
                     case 'o' ->   //Comida
-                            //maze.set(i, a, new Ball());
-                            maze.set(i, a, null);
+                            maze.set(i, a, new Empty());
+                            //maze.set(i, a, null);
                     case 'F' ->   //fruta
                             maze.set(i, a, new Fruit());
                     case 'M' -> {   //LocalPacmanInicial

@@ -5,8 +5,10 @@ import pt.isec.pa.tinypac.model.data.Ghost;
 import pt.isec.pa.tinypac.model.data.IMazeElement;
 import pt.isec.pa.tinypac.model.data.Maze;
 import pt.isec.pa.tinypac.model.data.obstacles.Portal;
+import pt.isec.pa.tinypac.utils.Direction;
 import pt.isec.pa.tinypac.utils.Obstacles;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -63,8 +65,6 @@ public class Pinky extends Ghost {
         return string;
     }
 
-
-
     private boolean verifyMinimumDistance(){
 
         int cornerX = 0;
@@ -113,6 +113,7 @@ public class Pinky extends Ghost {
         if(cruzamento(maze, direction)){
             //Mudar de direcao
             ArrayList<Integer> validDirections = new ArrayList<>(getValidDirections(maze));
+            //printValidPositions(validDirections);
             if(validDirections.size() >= 2){
 
                 //System.out.println("\nCurrentDirection: " + printDirection(direction));
@@ -122,6 +123,8 @@ public class Pinky extends Ghost {
 
                 //Escolher qual a melhor para ele e a aleatoriedade
                 this.direction = chooseDirection(validDirections,direction);
+
+                //System.out.println(printDirection(direction));
             }else if(validDirections.size() == 1){
                 direction = validDirections.get(0);
             }
@@ -132,7 +135,7 @@ public class Pinky extends Ghost {
         return true;
     }
 
-    private int oppositeDirection(Integer direction){
+    private Integer oppositeDirection(Integer direction){
         if(direction == UP)
             return DOWN;
         if(direction == LEFT)
@@ -149,21 +152,18 @@ public class Pinky extends Ghost {
 
         Integer newDirection;
         Integer result;
-        do{
-            int random = new Random().nextInt(validDirections.size());
-            newDirection = validDirections.get(random);
+        ArrayList<Integer> aux = new ArrayList<>(validDirections);
 
+        aux.remove(oppositeDirection(direction));
+        if(aux.size() == 0)
+            return oppositeDirection(direction);
+        int random = new Random().nextInt(aux.size());
 
-            result = verifyNewDirection(validDirections, newDirection, direction);
-            if(result == 1)
-                return newDirection;
-            if(result == -1)
-                return oppositeDirection(direction);
+        System.out.println("Ola");
+        printValidPositions(aux);
 
-            validDirections.remove(newDirection);
+        return aux.get(random);
 
-
-        }while (true);
     }
 
 
@@ -174,25 +174,19 @@ public class Pinky extends Ghost {
             return -1;
         }
 
+
+        //Fazer a aleatoriedade sem a direcao em que está, se não houver nenhuma direcao ele usa a oposta
         //System.out.println("\t\tCurrentDirection: " + printDirection(direction));
-        switch (direction) {    //Pode virar para esta posicao
-            case UP, DOWN: {
-                if (newDirection == RIGHT || newDirection == LEFT) {
-          //          System.out.println("\t\t1NewDirection: " + printDirection(newDirection));
-                    return 1;
-                }else{
-                    return 0;
-                }
-            }
-            case LEFT, RIGHT: {
-                if (newDirection == UP || newDirection == DOWN){
-            //        System.out.println("\t\t2NewDirection: " + printDirection(newDirection));
-                    return 1;
-                }else{
-                    return 0;
-                }
-            }
-        }
+        ArrayList<Integer> possibleDirections = new ArrayList<>(validDirections);
+        possibleDirections.remove(direction);       //Remover a direcao atual
+
+       /* int Random = new Random().nextInt(possibleDirections.size());
+
+
+
+
+
+        }*/
 
         return 0;
     }
@@ -231,11 +225,13 @@ public class Pinky extends Ghost {
         IMazeElement right = maze.get(getPosY(), getPosX() + 1);
         IMazeElement down = maze.get(getPosY() + 1, getPosX());
 
-       /* if(right == null || left == null) {           //Há caminho para a direita ou para a esquerda
-            if(up == null || down == null)
-                return true;                          //Há um cruzamento
-            return false;
-        }*/
+        //Verificar se é uma parede dos fantasmas
+        if((up != null && up.getSymbol() == Obstacles.PORTAL.getSymbol()) ||
+                (down != null && down.getSymbol() == Obstacles.PORTAL.getSymbol()) ||
+                (right != null && right.getSymbol() == Obstacles.PORTAL.getSymbol())||
+                (left != null && left.getSymbol() == Obstacles.PORTAL.getSymbol())
+        )
+            return true;
 
         if(direction == UP || direction == DOWN){
             if ((up != null && down != null) && (up.getSymbol() == Obstacles.WALL.getSymbol() ||     //Sem saida para esta direcao
@@ -246,8 +242,10 @@ public class Pinky extends Ghost {
                     left.getSymbol() != Obstacles.WALL.getSymbol())
                 return true;                                        //True para mudar de direcao
 
-            if((up == null && down != null) || (up != null && down == null))
-                return true;
+            if((up == null && down != null && down.getSymbol() == Obstacles.WALL.getSymbol()) ||
+                    (up != null && down == null && up.getSymbol() == Obstacles.WALL.getSymbol()))
+                return true;                            //True para mudar de direcao
+
 
         }else if(direction == RIGHT || direction == LEFT){
 
@@ -261,7 +259,8 @@ public class Pinky extends Ghost {
                 return true;
             }
 
-            if((right == null && left != null) || (right != null && left == null))
+            if((right == null && left != null && left.getSymbol() == Obstacles.WALL.getSymbol())
+                    || (right != null && left == null && right.getSymbol() == Obstacles.WALL.getSymbol()))
                 return true;
 
         }
@@ -348,6 +347,8 @@ public class Pinky extends Ghost {
             return null;
 
         // retorna um novo array com as direções possíveis
+
+        //printValidPositions(possibleDirections);
         return possibleDirections;
     }
 
