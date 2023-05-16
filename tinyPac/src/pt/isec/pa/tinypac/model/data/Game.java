@@ -173,7 +173,7 @@ public class Game {
     }
 
     private void pacmanEatGhost(Ghost ghost){
-        ghost.reset();
+        ghost.setReturnToBase(true);
     }
 
     public boolean eatFood(){

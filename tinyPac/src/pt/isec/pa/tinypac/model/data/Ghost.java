@@ -1,15 +1,16 @@
 package pt.isec.pa.tinypac.model.data;
 
 import pt.isec.pa.tinypac.utils.GhostPosition;
+import pt.isec.pa.tinypac.utils.Stack;
 
-import java.util.ArrayList;
+
 
 public abstract class Ghost extends GameObjects{
     private Boolean locked;
     private GhostPosition currentPosition;
-
     private final GhostPosition initialPosition;
-    private ArrayList<GhostPosition> positions;
+    private Stack<GhostPosition> movements;
+    private Boolean returnToBase;
     private static final char SYMBOL = 'G';
 
     public static final int GHOST_POINTS = 200;
@@ -20,16 +21,26 @@ public abstract class Ghost extends GameObjects{
         this.locked = true;
         this.initialPosition = new GhostPosition(posX,posY);
         this.currentPosition = new GhostPosition(posX,posY);
-        this.positions = new ArrayList<>();
+        this.movements = new Stack();
+        this.returnToBase = false;
     }
 
     public void setPos(int posX , int posY){
         this.currentPosition.setPos(posX,posY);
     }
 
-    public void reset(){
-        this.locked = true;
-        this.currentPosition = initialPosition;
+    public void unlockGhost(){
+        this.locked = false;
+        this.returnToBase = false;
+        //this.currentPosition = initialPosition;
+    }
+
+    public Boolean getReturnToBase() {
+        return returnToBase;
+    }
+
+    public void setReturnToBase(Boolean returnToBase) {
+        this.returnToBase = returnToBase;
     }
 
     public Integer getInitialPositionX() {
@@ -40,11 +51,16 @@ public abstract class Ghost extends GameObjects{
         return this.initialPosition.getPosY();
     }
 
-    public void addLastPosition(Integer posX, Integer posY){
-        this.positions.add(new GhostPosition(posX, posY));
+    public void pushLastPosition(Integer posX, Integer posY){
+        this.movements.push(new GhostPosition(posX, posY));
+    }
+    public GhostPosition popLastPosition(){
+        return this.movements.pop();
     }
 
-
+    public boolean isLastPositionEmpty(){
+        return this.movements.empty();
+    }
 
     public Integer getPosX() {
         return this.currentPosition.getPosX();

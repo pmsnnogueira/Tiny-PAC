@@ -99,7 +99,7 @@ public class Pinky extends Ghost {
     @Override
     public boolean evolve() {
 
-        Maze maze = game.getMaze();
+        /*Maze maze = game.getMaze();
 
         if(verifyMinimumDistance(cornerDirection)){
             //Mudar a direcao do canto
@@ -121,7 +121,7 @@ public class Pinky extends Ghost {
             }
         }
 
-        move(maze, direction);
+        move(maze, direction);*/
 
         return true;
     }
@@ -225,7 +225,7 @@ public class Pinky extends Ghost {
     }
 
     private void addLastMove(Integer posX, Integer posY){
-        addLastPosition(posX,posY);
+        pushLastPosition(posX,posY);
     }
 
     private boolean move(Maze maze, int direction){

@@ -6,6 +6,7 @@ import pt.isec.pa.tinypac.model.data.IMazeElement;
 import pt.isec.pa.tinypac.model.data.Maze;
 import pt.isec.pa.tinypac.model.data.obstacles.Portal;
 import pt.isec.pa.tinypac.utils.Direction;
+import pt.isec.pa.tinypac.utils.GhostPosition;
 import pt.isec.pa.tinypac.utils.Obstacles;
 
 import java.util.ArrayList;
@@ -42,12 +43,22 @@ public class Blinky extends Ghost{
         return string;
     }
 
+
     @Override
     public boolean evolve() {
 
+        if(getReturnToBase()){
+            if(!isLastPositionEmpty()){
+                GhostPosition lastPositon = popLastPosition();
+                setPos(lastPositon.getPosX(), lastPositon.getPosY());
+                return true;
+            }
+            unlockGhost();
+        }
+
         Maze maze = game.getMaze();
 
-      /*  if(cruzamento(maze, direction)){
+        if(cruzamento(maze, direction)){
 
             //É possivel mudar de direcao
             ArrayList<Integer> validDirections = new ArrayList<>(getValidDirections(maze));
@@ -60,7 +71,8 @@ public class Blinky extends Ghost{
             }
         }
 
-        move(maze, direction);*/
+
+        move(maze, direction);
 
         return true;
     }
@@ -90,7 +102,7 @@ public class Blinky extends Ghost{
     }
 
     private void addLastMove(Integer posX, Integer posY){
-        addLastPosition(posX,posY);
+        pushLastPosition(posX,posY);
     }
 
     private boolean move(Maze maze, int direction){
