@@ -65,10 +65,28 @@ public class Pinky extends Ghost {
         return string;
     }
 
-    private boolean verifyMinimumDistance(){
+    public static double distToCorner(int objX, int objY, int cornerX, int cornerY) {
+        int dx = objX - cornerX;
+        int dy = objY - cornerY;
+        return Math.sqrt(dx*dx + dy*dy);
+    }
 
-        double distToCorner = Math.min(Math.min(getPosX(), game.getMazeColumns() - getPosX() - 1),
-                Math.min(getPosY(), game.getMazeRows() - getPosY() - 1));
+    private boolean verifyMinimumDistance(Integer cornerDirection){
+        double distToCorner = 0;
+        switch (cornerDirection){
+            case UP_RIGHT -> {
+                distToCorner = distToCorner(getPosX(), getPosY(), game.getMazeColumns() - 2, 1);
+            }
+            case DOWN_RIGHT -> {
+                distToCorner = distToCorner(getPosX(), getPosY(), game.getMazeColumns() - 2, game.getMazeRows() - 2);
+            }
+            case UP_LEFT -> {
+                distToCorner = distToCorner(getPosX(), getPosY(), 1, 1);
+            }
+            case DOWN_LEFT -> {
+                distToCorner = distToCorner(getPosX(), getPosY(), 1, game.getMazeRows() - 2);
+            }
+        }
 
         if (distToCorner / Math.min(game.getMazeColumns(), game.getMazeRows()) <= DISTANCE_MIN_CORNER) {            //O Fantasma está a uma distancia minima do canto
 
@@ -78,16 +96,14 @@ public class Pinky extends Ghost {
         return false;
     }
 
-
-
     @Override
     public boolean evolve() {
 
         Maze maze = game.getMaze();
 
-        if(verifyMinimumDistance()){
+        if(verifyMinimumDistance(cornerDirection)){
             //Mudar a direcao do canto
-            changeCornerDirection(cornerDirection);
+            this.cornerDirection = changeCornerDirection(cornerDirection);
         }
 
         if(cruzamento(maze, direction)){
@@ -110,7 +126,7 @@ public class Pinky extends Ghost {
         return true;
     }
 
-    private Integer changeCornerDirection(Integer cornerDirection){
+    private int changeCornerDirection(Integer cornerDirection){
         if(cornerDirection == UP_RIGHT)
             return DOWN_RIGHT;
         if(cornerDirection == DOWN_RIGHT)
@@ -138,14 +154,7 @@ public class Pinky extends Ghost {
 
     private int chooseDirection(ArrayList<Integer> validDirections, Integer direction){
 
-        Integer newDirection;
-        Integer result;
-        ArrayList<Integer> aux = new ArrayList<>(validDirections);
-
-        aux.remove(oppositeDirection(direction));
-        if(aux.size() == 0)
-            return oppositeDirection(direction);
-        int random = new Random().nextInt(aux.size());
+        ArrayList<Integer> aux = new ArrayList<>();
 
         switch (cornerDirection){
             case UP_RIGHT -> {
@@ -153,22 +162,66 @@ public class Pinky extends Ghost {
                     aux.add(UP);
                 if(validDirections.contains(RIGHT))
                     aux.add(RIGHT);
+
+                if(aux.size() == 0){
+                    //Escolher entre esquerda e baixo
+                    if(validDirections.contains(LEFT))
+                        aux.add(LEFT);
+                    if(validDirections.contains(DOWN))
+                        aux.add(DOWN);
+                    return aux.get(new Random().nextInt(aux.size()));
+                }
             }
             case DOWN_RIGHT -> {
+                if(validDirections.contains(RIGHT))
+                    aux.add(RIGHT);
+                if(validDirections.contains(DOWN))
+                    aux.add(DOWN);
 
+                if(aux.size() == 0) {
+                    //Escolher entre esquerda e UP
+                    if (validDirections.contains(LEFT))
+                        aux.add(LEFT);
+                    if (validDirections.contains(UP))
+                        aux.add(UP);
+                }
             }
             case UP_LEFT -> {
+                if(validDirections.contains(UP))
+                    aux.add(UP);
+                if(validDirections.contains(LEFT))
+                    aux.add(LEFT);
+                if(aux.size() == 0) {
+                    //Escolher entre esquerda e UP
+                    if (validDirections.contains(RIGHT))
+                        aux.add(RIGHT);
+                    if (validDirections.contains(DOWN))
+                        aux.add(DOWN);
+                }
 
             }
             case DOWN_LEFT -> {
+                if(validDirections.contains(DOWN))
+                    aux.add(DOWN);
+                if(validDirections.contains(LEFT))
+                    aux.add(LEFT);
 
+                if(aux.size() == 0){
+                    //Escolher entre esquerda e UP
+                    if(validDirections.contains(RIGHT))
+                        aux.add(RIGHT);
+                    if(validDirections.contains(UP))
+                        aux.add(UP);
+                }
             }
         }
 
-       /* System.out.println("Ola");
-        printValidPositions(aux);*/
+        if(aux.size() > 1)
+            return aux.get(new Random().nextInt(aux.size()));
+        else if(aux.size() == 1)
+            return aux.get(0);
 
-        return aux.get(random);
+        return 0;
     }
 
     private void addLastMove(Integer posX, Integer posY){
