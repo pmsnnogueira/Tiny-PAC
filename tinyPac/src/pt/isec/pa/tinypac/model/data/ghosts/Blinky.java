@@ -47,7 +47,7 @@ public class Blinky extends Ghost{
 
         Maze maze = game.getMaze();
 
-        if(cruzamento(maze, direction)){
+      /*  if(cruzamento(maze, direction)){
 
             //É possivel mudar de direcao
             ArrayList<Integer> validDirections = new ArrayList<>(getValidDirections(maze));
@@ -60,7 +60,7 @@ public class Blinky extends Ghost{
             }
         }
 
-        move(maze, direction);
+        move(maze, direction);*/
 
         return true;
     }

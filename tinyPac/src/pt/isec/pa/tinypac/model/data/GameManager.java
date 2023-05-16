@@ -138,8 +138,8 @@ public class GameManager{
                     case 'W' ->   //Zona Warp
                             maze.set(i, a, new Warp());
                     case 'o' ->   //Comida
-                            maze.set(i, a, new Empty());
-                            //maze.set(i, a, null);
+                            //maze.set(i, a, new Empty());
+                            maze.set(i, a, null);
                     case 'F' ->   //fruta
                             maze.set(i, a, new Fruit());
                     case 'M' -> {   //LocalPacmanInicial

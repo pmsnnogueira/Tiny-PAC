@@ -23,10 +23,10 @@ public class Pinky extends Ghost {
 
     private static final int UP_RIGHT = 5;
     private static final int DOWN_RIGHT = 6;
-    private static final int TOP_LEFT = 7;
+    private static final int UP_LEFT = 7;
     private static final int DOWN_LEFT = 8;
 
-    private static final double DISTANCE_MIN_CORNER = 0.35;
+    private static final double DISTANCE_MIN_CORNER = 0.15;
 
 
     private int direction;
@@ -67,37 +67,14 @@ public class Pinky extends Ghost {
 
     private boolean verifyMinimumDistance(){
 
-        int cornerX = 0;
-        int cornerY = 0;
+        double distToCorner = Math.min(Math.min(getPosX(), game.getMazeColumns() - getPosX() - 1),
+                Math.min(getPosY(), game.getMazeRows() - getPosY() - 1));
 
-        switch (cornerDirection){
-            case UP_RIGHT: {
-                cornerX = (int)(game.getMazeColumns() - (game.getMazeColumns() * DISTANCE_MIN_CORNER));
-                cornerY = (int)(game.getMazeRows() * DISTANCE_MIN_CORNER);
-                if(getPosX() >= cornerX && getPosY() <= cornerY){
-                    /*System.out.println("Distancia minima: " + minDistance);
-                    System.out.println("\tCornerX: " + cornerX);
-                    System.out.println("\tCornerY: " + cornerY);*/
-                }
-                break;
-            }
-            case DOWN_RIGHT:{
-                cornerX = (int) (game.getMazeColumns() - (game.getMazeColumns() * DISTANCE_MIN_CORNER));
-                cornerY = (int) (game.getMazeRows() - (game.getMazeRows() * DISTANCE_MIN_CORNER));;
-                break;
-            }
-            case TOP_LEFT: {
-                cornerX = (int)(game.getMazeColumns() * DISTANCE_MIN_CORNER);
-                cornerY = (int)(game.getMazeRows() * DISTANCE_MIN_CORNER);
-                break;
-            }
-            case DOWN_LEFT:{
-                cornerX = (int)(game.getMazeColumns() * DISTANCE_MIN_CORNER);
-                cornerY = (int)(game.getMazeRows() - (game.getMazeRows() * DISTANCE_MIN_CORNER));
-                break;
-            }
+        if (distToCorner / Math.min(game.getMazeColumns(), game.getMazeRows()) <= DISTANCE_MIN_CORNER) {            //O Fantasma está a uma distancia minima do canto
+
+            System.out.println("Fantasma perto de um canto!...\n\n");
+            return true;
         }
-
         return false;
     }
 
@@ -108,7 +85,10 @@ public class Pinky extends Ghost {
 
         Maze maze = game.getMaze();
 
-        verifyMinimumDistance();
+        if(verifyMinimumDistance()){
+            //Mudar a direcao do canto
+            changeCornerDirection(cornerDirection);
+        }
 
         if(cruzamento(maze, direction)){
             //Mudar de direcao
@@ -116,15 +96,10 @@ public class Pinky extends Ghost {
             //printValidPositions(validDirections);
             if(validDirections.size() >= 2){
 
-                //System.out.println("\nCurrentDirection: " + printDirection(direction));
-                //Mudar aqui a direcao do fantasma
-                //printValidPositions(validDirections);
-
-
                 //Escolher qual a melhor para ele e a aleatoriedade
                 this.direction = chooseDirection(validDirections,direction);
 
-                //System.out.println(printDirection(direction));
+                //System.out.p  rintln(printDirection(direction));
             }else if(validDirections.size() == 1){
                 direction = validDirections.get(0);
             }
@@ -133,6 +108,19 @@ public class Pinky extends Ghost {
         move(maze, direction);
 
         return true;
+    }
+
+    private Integer changeCornerDirection(Integer cornerDirection){
+        if(cornerDirection == UP_RIGHT)
+            return DOWN_RIGHT;
+        if(cornerDirection == DOWN_RIGHT)
+            return UP_LEFT;
+        if(cornerDirection == UP_LEFT)
+            return DOWN_LEFT;
+        if(cornerDirection == DOWN_LEFT)
+            return UP_RIGHT;
+
+        return -1;
     }
 
     private Integer oppositeDirection(Integer direction){
@@ -159,36 +147,28 @@ public class Pinky extends Ghost {
             return oppositeDirection(direction);
         int random = new Random().nextInt(aux.size());
 
-        System.out.println("Ola");
-        printValidPositions(aux);
+        switch (cornerDirection){
+            case UP_RIGHT -> {
+                if(validDirections.contains(UP))
+                    aux.add(UP);
+                if(validDirections.contains(RIGHT))
+                    aux.add(RIGHT);
+            }
+            case DOWN_RIGHT -> {
 
-        return aux.get(random);
+            }
+            case UP_LEFT -> {
 
-    }
+            }
+            case DOWN_LEFT -> {
 
-
-    private int verifyNewDirection(ArrayList<Integer> validDirections, Integer newDirection, Integer direction){
-
-        if(validDirections.size() == 0) {     //Voltar para tras, na direcao ao contrario
-            System.out.println("\t\tSize is 0");
-            return -1;
+            }
         }
 
+       /* System.out.println("Ola");
+        printValidPositions(aux);*/
 
-        //Fazer a aleatoriedade sem a direcao em que está, se não houver nenhuma direcao ele usa a oposta
-        //System.out.println("\t\tCurrentDirection: " + printDirection(direction));
-        ArrayList<Integer> possibleDirections = new ArrayList<>(validDirections);
-        possibleDirections.remove(direction);       //Remover a direcao atual
-
-       /* int Random = new Random().nextInt(possibleDirections.size());
-
-
-
-
-
-        }*/
-
-        return 0;
+        return aux.get(random);
     }
 
     private void addLastMove(Integer posX, Integer posY){
