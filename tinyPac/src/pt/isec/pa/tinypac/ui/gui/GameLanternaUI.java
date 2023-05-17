@@ -177,7 +177,7 @@ public class GameLanternaUI implements IGameEngineEvolve {
     public void evolve(IGameEngine gameEngine, long currentTime) {
         try {
             switch (modelManager.getState()){
-                case WAIT_FOR_DIRECTIONS, LOCKED_GHOSTS, GAME:{
+                case WAIT_FOR_DIRECTIONS, LOCKED_GHOSTS, GAME, GHOST_VULNERABLE:{
                     showGame();
                     break;
                 }

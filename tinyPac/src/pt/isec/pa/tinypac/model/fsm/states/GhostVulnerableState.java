@@ -26,8 +26,7 @@ public class GhostVulnerableState extends StateAdapter {
 
         data.evolve(currentTime);
 
-        //int result = data.controlGame();
-
+        int result = data.controlGame();
     }
 
     @Override

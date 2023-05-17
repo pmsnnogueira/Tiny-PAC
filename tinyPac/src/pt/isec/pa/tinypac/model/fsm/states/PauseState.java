@@ -20,7 +20,14 @@ public class PauseState extends StateAdapter {
 
     @Override
     public boolean resume() {
-        return super.resume();
+
+        State previousState = switch (context.getState()){
+            case WAIT_FOR_DIRECTIONS -> new WaitForDirectionState(context , data);
+            case LOCKED_GHOSTS -> new LockedGhostsState(context , data);
+            case GAME -> new GameState(context , data);
+            case GHOST_VULNERABLE -> new GhostVulnerableState(context,data);
+            
+        };
     }
 
     @Override

@@ -168,15 +168,17 @@ public class Game {
             if(ghost.getPosX() == pacman.getPosX() && ghost.getPosY() == pacman.getPosY()){
                 //Ghost in same place as pacman
                 if(pacman.getPower()){
-
                     pacmanEatGhost(ghost);
                     //resetLevel();
-                    return 1;               //PACMAN ESTÀ COM PODERES e matou o ghost
                 }else{
                     return -1;          //Pacman MORREU
                 }
             }
         }
+        if(pacman.getPower()){
+            return 1;       //Pacman With powers
+        }
+
         return 0;
     }
 
