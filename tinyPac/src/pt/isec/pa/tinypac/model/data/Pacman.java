@@ -11,7 +11,7 @@ public class Pacman extends GameObjects{
 
     public Pacman(Game game,Integer posX, Integer posY){
         super(game);
-        this.power = false;
+        this.power = true;
         this.pacmanPosition = new PacmanPosition(posX, posY, game.getMazeRows(), game.getMazeColumns());
     }
 
@@ -42,6 +42,11 @@ public class Pacman extends GameObjects{
         pacmanPosition.setPos(nextDirections[0] , nextDirections[1]);
 
         return true;
+    }
+
+    @Override
+    public void returnToBase() {
+        return;
     }
 
     public boolean setDirection(Direction direction) {

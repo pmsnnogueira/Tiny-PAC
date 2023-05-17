@@ -27,8 +27,12 @@ public class GameState extends StateAdapter {
     public void evolve(long currentTime) {
         data.evolve(currentTime);
 
-        if(!data.controlGame()){
-            changeState(State.WAIT_FOR_DIRECTIONS);
+        int result = data.controlGame();
+        if(result == -1){
+            //Moreu ou recomeçar nivel
+            //changeState(State.WAIT_FOR_DIRECTIONS);
+        }else if(result == 1){
+            changeState(State.GHOST_VULNERABLE);
         }
     }
 

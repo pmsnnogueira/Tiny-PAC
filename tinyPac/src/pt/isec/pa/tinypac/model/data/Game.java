@@ -139,37 +139,45 @@ public class Game {
         if(ghosts == null || pacman == null)
             return false;
 
-        pacman.evolve();
+        evolvePacman();
         eatFood();
-        for(Ghost ghost : ghosts){
-            if(!ghost.getLocked()){
-                ghost.evolve();
-            }
-        }
 
-        if(!controlGame()){
-            //resetLevel();
-        }
 
+        evolveGhosts();
 
         return true;
     }
 
+    public void evolvePacman(){
+        pacman.evolve();
+    }
 
-    public boolean controlGame(){
+    public void evolveGhosts(){
+        for(Ghost ghost : ghosts){
+            if(!ghost.getLocked() && !ghost.getReturnToBase()){
+                ghost.evolve();
+            } else if(ghost.getReturnToBase()){
+                ghost.returnToBase();
+            }
+        }
+    }
+
+    public Integer controlGame(){
 
         for(Ghost ghost: ghosts){
             if(ghost.getPosX() == pacman.getPosX() && ghost.getPosY() == pacman.getPosY()){
                 //Ghost in same place as pacman
                 if(pacman.getPower()){
-                    //resetLevel();
-                    return false;
-                }else{
+
                     pacmanEatGhost(ghost);
+                    //resetLevel();
+                    return 1;               //PACMAN ESTÀ COM PODERES e matou o ghost
+                }else{
+                    return -1;          //Pacman MORREU
                 }
             }
         }
-        return true;
+        return 0;
     }
 
     private void pacmanEatGhost(Ghost ghost){

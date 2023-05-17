@@ -126,6 +126,11 @@ public class Pinky extends Ghost {
         return true;
     }
 
+    @Override
+    public void returnToBase() {
+        return;
+    }
+
     private int changeCornerDirection(Integer cornerDirection){
         if(cornerDirection == UP_RIGHT)
             return DOWN_RIGHT;

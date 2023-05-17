@@ -43,18 +43,21 @@ public class Blinky extends Ghost{
         return string;
     }
 
-
     @Override
-    public boolean evolve() {
+    public void returnToBase(){
 
         if(getReturnToBase()){
             if(!isLastPositionEmpty()){
                 GhostPosition lastPositon = popLastPosition();
                 setPos(lastPositon.getPosX(), lastPositon.getPosY());
-                return true;
+                return;
             }
             unlockGhost();
         }
+    }
+
+    @Override
+    public boolean evolve() {
 
         Maze maze = game.getMaze();
 

@@ -245,7 +245,7 @@ public class GameManager{
                 //gameEngine.stop();
     }
 
-    public boolean controlGame(){
+    public Integer controlGame(){
         return game.controlGame();
     }
 
