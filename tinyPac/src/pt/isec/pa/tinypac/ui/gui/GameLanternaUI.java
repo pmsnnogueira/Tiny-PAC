@@ -191,17 +191,20 @@ public class GameLanternaUI implements IGameEngineEvolve {
             if(key != null){
                 switch (modelManager.getState()){
                     case PAUSE: {
-                        /*if(key.getKeyType() == KeyType.Escape){
-                            modelManager.pause();
-                        }*/
+                        if(key.getKeyType() == KeyType.Character && key.getCharacter().equals('3')){
+                            modelManager.resume();
+                            terminal.clearScreen();
+                            break;
+                        }
                     }
                     default:{
                         switch (key.getKeyType()){
-                            case Escape:{ modelManager.pause();
+                            case Escape:{
+                                modelManager.pause();
                                 break;
                             }
-                            case ArrowUp :{ modelManager.changeDirection(Direction.UP);
-
+                            case ArrowUp :{
+                                modelManager.changeDirection(Direction.UP);
                                 break;
                             }
                             case ArrowDown : {

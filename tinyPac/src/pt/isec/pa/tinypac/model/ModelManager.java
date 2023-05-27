@@ -46,6 +46,9 @@ public class ModelManager{
     public boolean pause(){
         return context.pause();
     }
+    public boolean resume(){
+        return context.resume();
+    }
 
     public char[][] showMaze(){
         return context.showMaze();
