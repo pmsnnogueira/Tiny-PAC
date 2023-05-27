@@ -1,6 +1,5 @@
 package pt.isec.pa.tinypac.model.fsm.states;
 
-import pt.isec.pa.tinypac.gameengine.IGameEngine;
 import pt.isec.pa.tinypac.model.data.GameManager;
 import pt.isec.pa.tinypac.model.fsm.Context;
 import pt.isec.pa.tinypac.model.fsm.State;
@@ -31,7 +30,9 @@ public class GameState extends StateAdapter {
         if(result == -1){
             //Moreu ou recomeçar nivel
             //changeState(State.WAIT_FOR_DIRECTIONS);
+            System.out.println("Pacman died");
         }else if(result == 1){
+            System.out.println("Changing to GhostVulnerableState");
             changeState(State.GHOST_VULNERABLE);
         }
     }

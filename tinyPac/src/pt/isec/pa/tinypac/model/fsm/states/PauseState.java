@@ -21,13 +21,26 @@ public class PauseState extends StateAdapter {
     @Override
     public boolean resume() {
 
-        State previousState = switch (context.getState()){
-            case WAIT_FOR_DIRECTIONS -> new WaitForDirectionState(context , data);
-            case LOCKED_GHOSTS -> new LockedGhostsState(context , data);
-            case GAME -> new GameState(context , data);
-            case GHOST_VULNERABLE -> new GhostVulnerableState(context,data);
-            
-        };
+        State state = context.getState();
+
+        if(state == State.WAIT_FOR_DIRECTIONS){
+            changeState(State.WAIT_FOR_DIRECTIONS);
+            return true;
+        }
+        if(state == State.LOCKED_GHOSTS){
+            changeState(State.LOCKED_GHOSTS);
+            return true;
+        }
+        if(state == State.GAME){
+            changeState(State.GAME);
+            return true;
+        }
+        if(state == State.GHOST_VULNERABLE){
+            changeState(State.GHOST_VULNERABLE);
+            return true;
+        }
+
+        return false;
     }
 
     @Override
