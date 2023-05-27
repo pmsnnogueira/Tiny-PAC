@@ -12,10 +12,13 @@ public class Context implements IGameEngineEvolve {
     private IState state;
     private IState previousState;
 
+    private long timeBeforePause;
+
     public Context(GameManager data){
         this.data = data;
         state = new WaitForDirectionState(this, data);
         this.previousState = null;
+        this.timeBeforePause = 0;
     }
 
     public State getState(){
@@ -47,7 +50,8 @@ public class Context implements IGameEngineEvolve {
         state.evolve(currentTime);
     }
 
-    public boolean pause(){
+    public boolean pause(long currentTime){
+        this.timeBeforePause = currentTime;
         this.previousState = state;
         return state.pause();
     }

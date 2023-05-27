@@ -10,7 +10,7 @@ public abstract class Ghost extends GameObjects{
     private GhostPosition currentPosition;
     private final GhostPosition initialPosition;
     private Stack<GhostPosition> movements;
-    private Boolean returnToBase;
+    private Boolean vulnerable;
     private static final char SYMBOL = 'G';
 
     public static final int GHOST_POINTS = 200;
@@ -22,7 +22,7 @@ public abstract class Ghost extends GameObjects{
         this.initialPosition = new GhostPosition(posX,posY);
         this.currentPosition = new GhostPosition(posX,posY);
         this.movements = new Stack();
-        this.returnToBase = false;
+        this.vulnerable = false;
     }
 
     public void setPos(int posX , int posY){
@@ -31,16 +31,16 @@ public abstract class Ghost extends GameObjects{
 
     public void unlockGhost(){
         this.locked = false;
-        this.returnToBase = false;
+        this.vulnerable = false;
         //this.currentPosition = initialPosition;
     }
 
-    public Boolean getReturnToBase() {
-        return returnToBase;
+    public Boolean getVulnerable() {
+        return vulnerable;
     }
 
-    public void setReturnToBase(Boolean returnToBase) {
-        this.returnToBase = returnToBase;
+    public void setVulnerable(Boolean vulnerable) {
+        this.vulnerable = vulnerable;
     }
 
     public Integer getInitialPositionX() {

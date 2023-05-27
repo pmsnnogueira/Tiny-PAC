@@ -249,4 +249,8 @@ public class GameManager{
         return game.controlGame();
     }
 
+    public void ghostsVulnerable(){
+        game.ghostsVulnerable();
+    }
+
 }

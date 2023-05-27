@@ -11,7 +11,7 @@ public class Pacman extends GameObjects{
 
     public Pacman(Game game,Integer posX, Integer posY){
         super(game);
-        this.power = true;
+        this.power = false;
         this.pacmanPosition = new PacmanPosition(posX, posY, game.getMazeRows(), game.getMazeColumns());
     }
 

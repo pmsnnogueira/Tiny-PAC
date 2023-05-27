@@ -33,6 +33,7 @@ public class GameState extends StateAdapter {
             System.out.println("Pacman died");
         }else if(result == 1){
             System.out.println("Changing to GhostVulnerableState");
+            data.ghostsVulnerable();
             changeState(State.GHOST_VULNERABLE);
         }
     }

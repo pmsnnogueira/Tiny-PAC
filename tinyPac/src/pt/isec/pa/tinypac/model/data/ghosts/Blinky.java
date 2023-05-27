@@ -46,13 +46,13 @@ public class Blinky extends Ghost{
     @Override
     public void returnToBase(){
 
-        if(getReturnToBase()){
+        if(getVulnerable()){
             if(!isLastPositionEmpty()){
                 GhostPosition lastPositon = popLastPosition();
                 setPos(lastPositon.getPosX(), lastPositon.getPosY());
                 return;
             }
-            unlockGhost();
+            //unlockGhost();
         }
 
         return;

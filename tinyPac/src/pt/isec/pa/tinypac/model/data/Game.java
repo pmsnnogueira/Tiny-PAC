@@ -154,9 +154,9 @@ public class Game {
 
     public void evolveGhosts(){
         for(Ghost ghost : ghosts){
-            if(!ghost.getLocked() && !ghost.getReturnToBase()){
+            if(!ghost.getLocked() && !ghost.getVulnerable()){
                 ghost.evolve();
-            } else if(ghost.getReturnToBase()){
+            } else if(ghost.getVulnerable()){
                 ghost.returnToBase();
             }
         }
@@ -183,7 +183,10 @@ public class Game {
     }
 
     private void pacmanEatGhost(Ghost ghost){
-        ghost.setReturnToBase(true);
+
+        
+
+
     }
 
     public boolean eatFood(){
@@ -195,14 +198,14 @@ public class Game {
 
         if(element.getSymbol() == Obstacles.BALL.getSymbol() ||
                 element.getSymbol() == Obstacles.FRUIT.getSymbol() ||
-                element.getSymbol() == Obstacles.POWER.getSymbol()){
+                element.getSymbol() == Obstacles.POWER.getSymbol())
+        {
             incrementPoints(element);
-            if(maze.set(pacmanPosition.getPosY(), pacmanPosition.getPosX(), null)){
-                return true;
-            }
-            if(element.getSymbol() == Obstacles.POWER.getSymbol()){
+
+            if(element.getSymbol() == Obstacles.POWER.getSymbol())
                 pacman.setPower(true);
-            }
+
+            maze.set(pacmanPosition.getPosY(), pacmanPosition.getPosX(), null);
         }
         return false;
     }
@@ -230,4 +233,14 @@ public class Game {
 
         return true;
     }
+
+    public void ghostsVulnerable(){
+        for(Ghost ghost: ghosts)
+            ghostVulnerable(ghost);
+    }
+
+    public void ghostVulnerable(Ghost ghost){
+        ghost.setVulnerable(true);
+    }
+
 }

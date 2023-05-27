@@ -44,7 +44,7 @@ public class ModelManager{
     }
 
     public boolean pause(){
-        return context.pause();
+        return context.pause(gameEngine.getInterval());
     }
     public boolean resume(){
         return context.resume();
