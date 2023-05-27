@@ -1,6 +1,5 @@
 package pt.isec.pa.tinypac.model.fsm.states;
 
-import pt.isec.pa.tinypac.gameengine.IGameEngine;
 import pt.isec.pa.tinypac.model.data.GameManager;
 import pt.isec.pa.tinypac.model.fsm.Context;
 import pt.isec.pa.tinypac.model.fsm.State;
@@ -11,10 +10,8 @@ public class WaitForDirectionState extends StateAdapter {
 
     public WaitForDirectionState(Context context, GameManager data){
         super(context, data);
-        //loadGame();
+        data.loadMapLevel();
     }
-
-
 
     @Override
     public State getState() {

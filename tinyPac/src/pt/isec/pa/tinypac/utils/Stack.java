@@ -37,5 +37,9 @@ public class Stack<T>{
     public void push(T valor){
         lista.add(valor);
     }
+
+    public void clear() {
+        lista.clear();
+    }
 }
 

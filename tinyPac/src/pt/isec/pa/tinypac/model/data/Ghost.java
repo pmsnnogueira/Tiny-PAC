@@ -3,8 +3,6 @@ package pt.isec.pa.tinypac.model.data;
 import pt.isec.pa.tinypac.utils.GhostPosition;
 import pt.isec.pa.tinypac.utils.Stack;
 
-
-
 public abstract class Ghost extends GameObjects{
     private Boolean locked;
     private GhostPosition currentPosition;
@@ -84,5 +82,12 @@ public abstract class Ghost extends GameObjects{
     @Override
     public char getSymbol() {
         return 0;
+    }
+
+    public void reset() {
+        this.vulnerable = false;
+        this.locked = true;
+        this.movements.clear();
+        this.currentPosition = initialPosition;
     }
 }

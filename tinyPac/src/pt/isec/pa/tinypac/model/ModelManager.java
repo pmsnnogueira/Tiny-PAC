@@ -14,27 +14,14 @@ public class ModelManager implements IGameEngineEvolve {
 
     private Context context;
 
-    private GameManager gameManager;
-
     public ModelManager(GameEngine gameEngine){
         this.gameEngine = gameEngine;
-        this.gameManager = new GameManager();
-        this.context = new Context(gameManager);
+        this.context = new Context();
         this.gameEngine.registerClient(this);
-        startLevel();
     }
 
     public State getState(){
         return context.getState();
-    }
-    private void loadGame(){
-        gameManager.generateMapLevel();
-    }
-
-    public boolean startLevel(){
-        //Load dos ficheiros e carregamento do jogo
-        loadGame();
-        return true;
     }
 
     public boolean changeDirection(Direction direction){
@@ -57,7 +44,7 @@ public class ModelManager implements IGameEngineEvolve {
     }
 
     public String showGameInfo(){
-        return gameManager.showGameInfo();
+        return context.showGameInfo();
     }
 
     @Override

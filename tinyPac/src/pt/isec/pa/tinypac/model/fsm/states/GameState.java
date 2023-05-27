@@ -28,13 +28,23 @@ public class GameState extends StateAdapter {
 
         int result = data.controlGame();
         if(result == -1){
-            //Moreu ou recomeçar nivel
-            //changeState(State.WAIT_FOR_DIRECTIONS);
+            //Restart the level or GameOver
             System.out.println("Pacman died");
+            int resPac = data.pacmanManager();
+            if(resPac == 1){
+                //Pacman has lives and can continue game
+                changeState(State.WAIT_FOR_DIRECTIONS);
+                return;
+            }if(resPac == -1){
+                changeState(State.GameOver);
+            }
         }else if(result == 1){
-            System.out.println("Changing to GhostVulnerableState");
+            //System.out.println("Changing to GhostVulnerableState");
             data.ghostsVulnerable();
             changeState(State.GHOST_VULNERABLE);
+        }else if(result == 2){
+            //EndLevel
+            changeState(State.WAIT_FOR_DIRECTIONS);
         }
     }
 

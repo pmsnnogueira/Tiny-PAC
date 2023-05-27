@@ -14,6 +14,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.util.TreeMap;
 
 public class GameManager{
     private Game game;
@@ -55,8 +56,11 @@ public class GameManager{
     }
 
 
-    public boolean generateMapLevel(){
+    public boolean loadMapLevel(){
         //verificar se existem ficheiros dos mapas
+        if(game.isAnyFoodRemaining() && game.isAnyLiveRemaining())   //Load the Same Level
+            return true;
+
         ArrayList<String> listOfFiles = filesinFolder(LEVELS_PATH);
         StringBuilder fileName = new StringBuilder();
         int counter = game.getLevel();
@@ -137,9 +141,11 @@ public class GameManager{
                             maze.set(i, a, new Wall());
                     case 'W' ->   //Zona Warp
                             maze.set(i, a, new Warp());
-                    case 'o' ->   //Comida
+                    case 'o' ->  {  //Comida
                             //maze.set(i, a, new Empty());
                             maze.set(i, a, null);
+                            //game.incFoodRemaining();
+                    }
                     case 'F' ->   //fruta
                             maze.set(i, a, new Fruit());
                     case 'M' -> {   //LocalPacmanInicial
@@ -253,4 +259,7 @@ public class GameManager{
         game.ghostsVulnerable();
     }
 
+    public int pacmanManager() {
+        return game.pacmanManager();
+    }
 }

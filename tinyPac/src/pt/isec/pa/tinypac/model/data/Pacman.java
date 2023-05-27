@@ -7,18 +7,20 @@ import pt.isec.pa.tinypac.utils.Position;
 
 public class Pacman extends GameObjects{
     private PacmanPosition pacmanPosition;
+
+    private PacmanPosition initialPositon;
     private boolean power;
 
     public Pacman(Game game,Integer posX, Integer posY){
         super(game);
-        this.power = false;
         this.pacmanPosition = new PacmanPosition(posX, posY, game.getMazeRows(), game.getMazeColumns());
+        this.initialPositon = pacmanPosition;
+        this.power = false;
     }
 
     public PacmanPosition getCurrentPosition(){
         return new PacmanPosition(pacmanPosition);
     }
-
 
     @Override
     public boolean evolve() {
@@ -96,5 +98,9 @@ public class Pacman extends GameObjects{
     @Override
     public char getSymbol() {
         return '*';
+    }
+
+    public void reset() {
+        this.pacmanPosition = new PacmanPosition(initialPositon);
     }
 }

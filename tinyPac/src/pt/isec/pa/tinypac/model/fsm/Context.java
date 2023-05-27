@@ -1,7 +1,5 @@
 package pt.isec.pa.tinypac.model.fsm;
 
-import pt.isec.pa.tinypac.gameengine.IGameEngine;
-import pt.isec.pa.tinypac.gameengine.IGameEngineEvolve;
 import pt.isec.pa.tinypac.model.data.GameManager;
 import pt.isec.pa.tinypac.model.fsm.states.WaitForDirectionState;
 import pt.isec.pa.tinypac.utils.Direction;
@@ -14,11 +12,11 @@ public class Context {
 
     private long timeBeforePause;
 
-    public Context(GameManager data){
-        this.data = data;
-        state = new WaitForDirectionState(this, data);
+    public Context(){
+        this.data = new GameManager();
         this.previousState = null;
         this.timeBeforePause = 0;
+        this.state = new WaitForDirectionState(this,data);
     }
 
     public State getState(){
@@ -44,6 +42,10 @@ public class Context {
 
     public char[][] showMaze(){
         return data.showMaze();
+    }
+
+    public String showGameInfo(){
+        return data.showGameInfo();
     }
 
     public void evolve(long currentTime) {

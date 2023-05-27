@@ -7,7 +7,9 @@ import pt.isec.pa.tinypac.utils.Obstacles;
 import pt.isec.pa.tinypac.utils.PacmanPosition;
 
 
+import javax.swing.*;
 import java.util.ArrayList;
+import java.util.TreeMap;
 
 public class Game {
 
@@ -22,6 +24,7 @@ public class Game {
     private Pacman pacman;
     private Portal portal;
     private ArrayList<Ghost> ghosts;
+    private Integer foodRemaining;
 
 
     public Game(){
@@ -31,6 +34,25 @@ public class Game {
         this.maze = null;
         this.ghosts = new ArrayList<>();
         this.pacman = null;
+        this.foodRemaining = 0;
+    }
+
+    public void incFoodRemaining(){
+        this.foodRemaining++;
+    }
+
+    public Integer getFoodRemaining() {
+        return foodRemaining;
+    }
+
+    public Boolean isAnyFoodRemaining(){
+        if(getFoodRemaining() > 0)
+            return true;
+        return false;
+    }
+
+    public void setFoodRemaining(Integer foodRemaining) {
+        this.foodRemaining = foodRemaining;
     }
 
     public boolean changeDirection(Direction direction){
@@ -164,6 +186,10 @@ public class Game {
 
     public Integer controlGame(){
 
+        if(getFoodRemaining() == 0){    //Level Completed
+            return 2;
+        }
+
         for(Ghost ghost: ghosts){
             if(ghost.getPosX() == pacman.getPosX() && ghost.getPosY() == pacman.getPosY()){
                 //Ghost in same place as pacman
@@ -175,7 +201,8 @@ public class Game {
                 }
             }
         }
-        if(pacman.getPower()){
+
+        if(pacman.getPower()) {
             return 1;       //Pacman With powers
         }
 
@@ -243,4 +270,38 @@ public class Game {
         ghost.setVulnerable(true);
     }
 
+    public int pacmanManager() {
+
+        if(lives > 1){
+            //Pacman has lives to continue the level
+            lives--;
+            resetLevel();
+            return 1;
+        }
+        //GameOver
+        return -1;
+    }
+
+    private void resetGhosts(){
+        for(Ghost ghost : ghosts){
+            ghost.reset();
+        }
+    }
+    private void resetPacman() {
+        this.pacman.reset();
+    }
+
+    private void resetLevel() {
+        resetGhosts();
+        resetPacman();
+    }
+
+    public Integer getLives() {
+        return lives;
+    }
+    public Boolean isAnyLiveRemaining(){
+        if(getLives() > 1)
+            return true;
+        return false;
+    }
 }
