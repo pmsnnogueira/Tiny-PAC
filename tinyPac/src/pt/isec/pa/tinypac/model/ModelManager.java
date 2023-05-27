@@ -1,12 +1,14 @@
 package pt.isec.pa.tinypac.model;
 
 import pt.isec.pa.tinypac.gameengine.GameEngine;
+import pt.isec.pa.tinypac.gameengine.IGameEngine;
+import pt.isec.pa.tinypac.gameengine.IGameEngineEvolve;
 import pt.isec.pa.tinypac.model.data.GameManager;
 import pt.isec.pa.tinypac.model.fsm.Context;
 import pt.isec.pa.tinypac.model.fsm.State;
 import pt.isec.pa.tinypac.utils.Direction;
 
-public class ModelManager{
+public class ModelManager implements IGameEngineEvolve {
 
     private GameEngine gameEngine;
 
@@ -18,7 +20,7 @@ public class ModelManager{
         this.gameEngine = gameEngine;
         this.gameManager = new GameManager();
         this.context = new Context(gameManager);
-        this.gameEngine.registerClient(context);
+        this.gameEngine.registerClient(this);
         startLevel();
     }
 
@@ -58,4 +60,8 @@ public class ModelManager{
         return gameManager.showGameInfo();
     }
 
+    @Override
+    public void evolve(IGameEngine gameEngine, long currentTime) {
+        context.evolve(currentTime);
+    }
 }

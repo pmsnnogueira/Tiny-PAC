@@ -7,7 +7,7 @@ import pt.isec.pa.tinypac.model.fsm.states.WaitForDirectionState;
 import pt.isec.pa.tinypac.utils.Direction;
 
 
-public class Context implements IGameEngineEvolve {
+public class Context {
     private GameManager data;
     private IState state;
     private IState previousState;
@@ -45,8 +45,8 @@ public class Context implements IGameEngineEvolve {
     public char[][] showMaze(){
         return data.showMaze();
     }
-    @Override
-    public void evolve(IGameEngine gameEngine, long currentTime) {
+
+    public void evolve(long currentTime) {
         state.evolve(currentTime);
     }
 
