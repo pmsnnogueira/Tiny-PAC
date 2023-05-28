@@ -1,25 +1,36 @@
 package pt.isec.pa.tinypac.model.fsm;
 
-import pt.isec.pa.tinypac.gameengine.IGameEngine;
-import pt.isec.pa.tinypac.gameengine.IGameEngineEvolve;
 import pt.isec.pa.tinypac.model.data.GameManager;
 import pt.isec.pa.tinypac.model.fsm.states.WaitForDirectionState;
 import pt.isec.pa.tinypac.utils.Direction;
 
-
-public class Context implements IGameEngineEvolve {
-    private IState state;
+public class Context {
     private GameManager data;
+    private IState state;
+    private IState previousState;
+    private long timeBeforePause;
 
-    public Context(GameManager data){
-        this.data = data;
-        state = new WaitForDirectionState(this, data);
+    public Context(){
+        this.data = new GameManager();
+        this.previousState = null;
+        this.timeBeforePause = 0;
+        this.state = new WaitForDirectionState(this,data);
+
     }
+
+
+
 
     public State getState(){
         if(state == null)
             return null;
         return state.getState();
+    }
+
+    public State getPreviousState(){
+        if(previousState == null)
+            return null;
+        return previousState.getState();
     }
 
     //Nao mudar este changeState para public nem protected
@@ -35,16 +46,21 @@ public class Context implements IGameEngineEvolve {
         return data.showMaze();
     }
 
-    public GameManager getGameManager() {
-        return data;
+    public String showGameInfo(){
+        return data.showGameInfo();
     }
 
-    @Override
-    public void evolve(IGameEngine gameEngine, long currentTime) {
-        state.evolve(gameEngine,currentTime);
+    public void evolve(long currentTime) {
+        state.evolve(currentTime);
     }
 
-    public boolean pause(){
+    public boolean pause(long currentTime){
+        this.timeBeforePause = currentTime;
+        this.previousState = state;
         return state.pause();
+    }
+
+    public boolean resume(){
+        return state.resume();
     }
 }

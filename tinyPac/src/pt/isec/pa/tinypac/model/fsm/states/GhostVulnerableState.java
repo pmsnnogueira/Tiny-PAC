@@ -6,31 +6,27 @@ import pt.isec.pa.tinypac.model.fsm.State;
 import pt.isec.pa.tinypac.model.fsm.StateAdapter;
 import pt.isec.pa.tinypac.utils.Direction;
 
-public class WaitForDirectionState extends StateAdapter {
+public class GhostVulnerableState extends StateAdapter {
 
-    public WaitForDirectionState(Context context, GameManager data){
+    public GhostVulnerableState(Context context, GameManager data){
         super(context, data);
-        if(!data.loadMapLevel()){
-            System.out.println("\nCould not load levels\nClosing Game");
-            System.exit(-1);
-        }
     }
 
     @Override
     public State getState() {
-        return State.WAIT_FOR_DIRECTIONS;
+        return State.GHOST_VULNERABLE;
     }
 
     @Override
     public boolean changeDirection(Direction direction) {
-        data.changeDirection(direction);
-        changeState(State.LOCKED_GHOSTS);
-        return true;
+        return data.changeDirection(direction);
     }
-
     @Override
     public void evolve(long currentTime) {
+
         data.evolve(currentTime);
+
+        int result = data.controlGame();
     }
 
     @Override
@@ -38,6 +34,4 @@ public class WaitForDirectionState extends StateAdapter {
         changeState(State.PAUSE);
         return true;
     }
-
-
 }

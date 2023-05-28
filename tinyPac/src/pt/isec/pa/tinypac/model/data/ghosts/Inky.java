@@ -18,4 +18,9 @@ public class Inky extends Ghost{
     public boolean evolve() {
         return false;
     }
+
+    @Override
+    public void returnToBase() {
+        return;
+    }
 }

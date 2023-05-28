@@ -1,7 +1,5 @@
 package pt.isec.pa.tinypac.model.data;
 
-import pt.isec.pa.tinypac.gameengine.IGameEngine;
-import pt.isec.pa.tinypac.gameengine.IGameEngineEvolve;
 import pt.isec.pa.tinypac.model.data.ghosts.Blinky;
 import pt.isec.pa.tinypac.model.data.ghosts.Clyde;
 import pt.isec.pa.tinypac.model.data.ghosts.Inky;
@@ -16,18 +14,19 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.util.TreeMap;
 
-public class GameManager implements IGameEngineEvolve {
+public class GameManager{
     private Game game;
-    private final static String LEVELS_PATH = "src/pt/isec/pa/tinypac/levels/";
+    private final static String LEVELS_PATH = "files/levels/";
 
     public GameManager(){
         this.game = new Game();
     }
 
 
-    public boolean unlockGosts(){
-        return game.unlockGhosts();
+    public boolean unlockGosts(Boolean operation){
+        return game.changeLockGhosts(operation);
     }
 
 
@@ -57,8 +56,11 @@ public class GameManager implements IGameEngineEvolve {
     }
 
 
-    public boolean generateMapLevel(){
+    public boolean loadMapLevel(){
         //verificar se existem ficheiros dos mapas
+        if(game.isAnyFoodRemaining() && game.isAnyLiveRemaining())   //Load the Same Level
+            return true;
+
         ArrayList<String> listOfFiles = filesinFolder(LEVELS_PATH);
         StringBuilder fileName = new StringBuilder();
         int counter = game.getLevel();
@@ -130,6 +132,9 @@ public class GameManager implements IGameEngineEvolve {
 
         ArrayList<Integer[]> ghostCave = new ArrayList<>();
 
+        Integer pacmanCounter = 0;
+        Integer portalCounter = 0;
+
         for(int i = 0 ; i < game.getMazeRows() ; i++) {       //Y
             sb.deleteCharAt(sb.indexOf("\n",i * game.getMazeColumns()));
             for(int a = 0; a < game.getMazeColumns(); a++) {      //X
@@ -139,14 +144,17 @@ public class GameManager implements IGameEngineEvolve {
                             maze.set(i, a, new Wall());
                     case 'W' ->   //Zona Warp
                             maze.set(i, a, new Warp());
-                    case 'o' ->   //Comida
+                    case 'o' ->  {  //Comida
                             maze.set(i, a, new Ball());
                             //maze.set(i, a, null);
+                            game.incFoodRemaining();
+                    }
                     case 'F' ->   //fruta
                             maze.set(i, a, new Fruit());
                     case 'M' -> {   //LocalPacmanInicial
                         maze.set(i, a, new PacmanInitialPosition());
                         game.setPacman(new Pacman(game,a, i));
+                        pacmanCounter++;
                     }
                     case 'O' ->   //Bola com Poderes
                             maze.set(i, a, new Power());
@@ -154,6 +162,7 @@ public class GameManager implements IGameEngineEvolve {
                         Portal portal = new Portal(a,i); //x,y
                         maze.set(i, a, portal);
                         game.setPortal(portal);
+                        portalCounter++;
                     }
                     case 'y' -> {   //Caverna dos Fantasmas
                         maze.set(i, a, new GhostCave());
@@ -165,6 +174,9 @@ public class GameManager implements IGameEngineEvolve {
                 }
             }
         }
+
+        if(pacmanCounter != 1 || portalCounter == 0)
+            return null;
 
         game.setGhosts(ghostInitialPositioning(maze,ghostCave));
 
@@ -237,11 +249,24 @@ public class GameManager implements IGameEngineEvolve {
     }
 
 
-    @Override
-    public void evolve(IGameEngine gameEngine, long currentTime) {
-        //if(game != null)
-            if(!game.evolve())
-                gameEngine.stop();
+    public String showGameInfo(){
+        return game.showGameInfo();
     }
 
+    public void evolve(long currentTime) {
+        if(game != null)
+            game.evolve();
+    }
+
+    public Integer controlGame(){
+        return game.controlGame();
+    }
+
+    public void ghostsVulnerable(){
+        game.ghostsVulnerable();
+    }
+
+    public int pacmanManager() {
+        return game.pacmanManager();
+    }
 }

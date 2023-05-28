@@ -9,4 +9,5 @@ public abstract class GameObjects implements IMazeElement{
 
     abstract public boolean evolve();
 
+    abstract public void returnToBase();
 }

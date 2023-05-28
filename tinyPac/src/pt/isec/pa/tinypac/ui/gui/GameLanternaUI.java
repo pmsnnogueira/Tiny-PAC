@@ -49,6 +49,8 @@ public class GameLanternaUI implements IGameEngineEvolve {
     Terminal terminal;
     GameEngine gameEngine;
 
+    private static final Integer GAME_ENGINE_TIME = 250;
+
     public GameLanternaUI() throws IOException {
 
         terminal = new TerminalFactory().createTerminal();
@@ -56,9 +58,9 @@ public class GameLanternaUI implements IGameEngineEvolve {
 
         terminal.setCursorVisible(false);
 
+        gameMenu();
 
-
-        showMenu();
+       // showMenu();
     }
 
     private void printMenu(){
@@ -140,14 +142,8 @@ public class GameLanternaUI implements IGameEngineEvolve {
         this.gameEngine = new GameEngine();
         this.modelManager = new ModelManager(gameEngine);
         gameEngine.registerClient(this);
-
-
-        gameEngine.start(500);
+        gameEngine.start(GAME_ENGINE_TIME);
         gameEngine.waitForTheEnd();
-
-
-
-
     }
 
     private void showPauseMenu() {
@@ -165,9 +161,9 @@ public class GameLanternaUI implements IGameEngineEvolve {
             terminal.setCursorPosition(1,5);
             terminal.putString("===============================");
             terminal.flush();
-        }catch (IOException e){}
-
-
+        }catch (IOException e){
+            e.printStackTrace();
+        }
     }
 
 
@@ -175,7 +171,7 @@ public class GameLanternaUI implements IGameEngineEvolve {
     public void evolve(IGameEngine gameEngine, long currentTime) {
         try {
             switch (modelManager.getState()){
-                case WAIT_FOR_DIRECTIONS, LOCKED_GHOSTS, GAME:{
+                case WAIT_FOR_DIRECTIONS, LOCKED_GHOSTS, GAME, GHOST_VULNERABLE:{
                     showGame();
                     break;
                 }
@@ -189,17 +185,20 @@ public class GameLanternaUI implements IGameEngineEvolve {
             if(key != null){
                 switch (modelManager.getState()){
                     case PAUSE: {
-                        /*if(key.getKeyType() == KeyType.Escape){
-                            modelManager.pause();
-                        }*/
+                        if(key.getKeyType() == KeyType.Character && key.getCharacter().equals('3')){
+                            modelManager.resume();
+                            terminal.clearScreen();
+                            break;
+                        }
                     }
                     default:{
                         switch (key.getKeyType()){
-                            case Escape:{ modelManager.pause();
+                            case Escape:{
+                                modelManager.pause();
                                 break;
                             }
-                            case ArrowUp :{ modelManager.changeDirection(Direction.UP);
-
+                            case ArrowUp :{
+                                modelManager.changeDirection(Direction.UP);
                                 break;
                             }
                             case ArrowDown : {
@@ -230,10 +229,16 @@ public class GameLanternaUI implements IGameEngineEvolve {
     private void showGame() throws IOException {
 
         char[][] env = modelManager.showMaze();
+        String information = modelManager.showGameInfo();
         if(env == null)
             return;
         screen.startScreen();
         screen.doResizeIfNecessary();
+        terminal.resetColorAndSGR();        //tentar mudar isto para ser tudo pelo terminal
+        terminal.putString(information);
+        terminal.flush();
+        terminal.setCursorVisible(false);
+        terminal.setCursorPosition(0,2);
         for (int y = 0; y < env.length; y++) {
             for (int x = 0; x < env[0].length; x++) {
                 TextColor tc = switch(env[y][x]) {
@@ -257,7 +262,7 @@ public class GameLanternaUI implements IGameEngineEvolve {
                     case 'W' -> TextColor.ANSI.WHITE;
                     default -> TextColor.ANSI.BLACK;
                 };
-                screen.setCharacter(x,y, TextCharacter.fromCharacter(env[y][x],tc,bc)[0]);
+                screen.setCharacter(x,y + 1, TextCharacter.fromCharacter(env[y][x],tc,bc)[0]);
             }
         }
         screen.refresh();

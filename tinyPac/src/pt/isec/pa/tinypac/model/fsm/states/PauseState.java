@@ -1,6 +1,5 @@
 package pt.isec.pa.tinypac.model.fsm.states;
 
-import pt.isec.pa.tinypac.gameengine.IGameEngine;
 import pt.isec.pa.tinypac.model.data.GameManager;
 import pt.isec.pa.tinypac.model.fsm.Context;
 import pt.isec.pa.tinypac.model.fsm.State;
@@ -20,11 +19,13 @@ public class PauseState extends StateAdapter {
 
     @Override
     public boolean resume() {
-        return super.resume();
+
+        changeState(context.getPreviousState());
+        return true;
     }
 
     @Override
-    public void evolve(IGameEngine gameEngine, long currentTime) {
+    public void evolve(long currentTime) {
         return;
     }
 

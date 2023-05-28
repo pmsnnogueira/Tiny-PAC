@@ -15,6 +15,7 @@ public abstract class StateAdapter implements IState {
     }
 
     protected void changeState(State newState){
+        System.out.println("\n\tChanging State: [OldState:'" + context.getState() +"'] [newState: '" + newState+"']");
         context.changeState(newState.createState(context,data));
     }
 
@@ -24,7 +25,7 @@ public abstract class StateAdapter implements IState {
     }
 
     @Override
-    public void evolve(IGameEngine gameEngine, long currentTime) {
+    public void evolve(long currentTime) {
         return;
     }
 
