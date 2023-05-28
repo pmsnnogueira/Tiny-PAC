@@ -10,7 +10,9 @@ public class WaitForDirectionState extends StateAdapter {
 
     public WaitForDirectionState(Context context, GameManager data){
         super(context, data);
-        data.loadMapLevel();
+        if(!data.loadMapLevel()){
+            System.exit(-1);
+        }
     }
 
     @Override

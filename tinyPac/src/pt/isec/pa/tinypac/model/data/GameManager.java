@@ -132,6 +132,8 @@ public class GameManager{
 
         ArrayList<Integer[]> ghostCave = new ArrayList<>();
 
+        Integer pacmanCounter = 0;
+
         for(int i = 0 ; i < game.getMazeRows() ; i++) {       //Y
             sb.deleteCharAt(sb.indexOf("\n",i * game.getMazeColumns()));
             for(int a = 0; a < game.getMazeColumns(); a++) {      //X
@@ -151,6 +153,7 @@ public class GameManager{
                     case 'M' -> {   //LocalPacmanInicial
                         maze.set(i, a, new PacmanInitialPosition());
                         game.setPacman(new Pacman(game,a, i));
+                        pacmanCounter++;
                     }
                     case 'O' ->   //Bola com Poderes
                             maze.set(i, a, new Power());
@@ -169,6 +172,9 @@ public class GameManager{
                 }
             }
         }
+
+        if(pacmanCounter != 1)
+            return null;
 
         game.setGhosts(ghostInitialPositioning(maze,ghostCave));
 
@@ -246,9 +252,8 @@ public class GameManager{
     }
 
     public void evolve(long currentTime) {
-        //if(game != null)
+        if(game != null)
             game.evolve();
-                //gameEngine.stop();
     }
 
     public Integer controlGame(){

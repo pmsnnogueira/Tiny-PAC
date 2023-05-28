@@ -28,7 +28,7 @@ public class Game {
 
 
     public Game(){
-        this.level = 1;
+        this.level = 2;
         this.lives = 3;
         this.score = 0;
         this.maze = null;
@@ -187,6 +187,7 @@ public class Game {
     public Integer controlGame(){
 
         if(getFoodRemaining() == 0){    //Level Completed
+            incLevel();
             return 2;
         }
 
@@ -209,9 +210,20 @@ public class Game {
         return 0;
     }
 
+    private void incLevel() {
+        level++;
+    }
+
     private void pacmanEatGhost(Ghost ghost){
 
         
+
+
+    }
+
+    private void ghostEatPacman(){
+
+
 
 
     }
