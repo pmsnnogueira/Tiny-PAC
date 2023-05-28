@@ -1,4 +1,4 @@
-package pt.isec.pa.tinypac.ui.gui;
+package pt.isec.pa.tinypac.ui.guiLanterna;
 
 import com.googlecode.lanterna.TerminalSize;
 import com.googlecode.lanterna.TextCharacter;
