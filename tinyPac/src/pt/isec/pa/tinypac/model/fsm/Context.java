@@ -4,12 +4,10 @@ import pt.isec.pa.tinypac.model.data.GameManager;
 import pt.isec.pa.tinypac.model.fsm.states.WaitForDirectionState;
 import pt.isec.pa.tinypac.utils.Direction;
 
-
 public class Context {
     private GameManager data;
     private IState state;
     private IState previousState;
-
     private long timeBeforePause;
 
     public Context(){
@@ -17,7 +15,11 @@ public class Context {
         this.previousState = null;
         this.timeBeforePause = 0;
         this.state = new WaitForDirectionState(this,data);
+
     }
+
+
+
 
     public State getState(){
         if(state == null)

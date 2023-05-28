@@ -5,9 +5,8 @@ import pt.isec.pa.tinypac.model.data.Ghost;
 import pt.isec.pa.tinypac.model.data.IMazeElement;
 import pt.isec.pa.tinypac.model.data.Maze;
 import pt.isec.pa.tinypac.model.data.obstacles.Portal;
-import pt.isec.pa.tinypac.utils.Direction;
-import pt.isec.pa.tinypac.utils.GhostPosition;
 import pt.isec.pa.tinypac.utils.Obstacles;
+import pt.isec.pa.tinypac.utils.Position;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -48,7 +47,7 @@ public class Blinky extends Ghost{
 
         if(getVulnerable()){
             if(!isLastPositionEmpty()){
-                GhostPosition lastPositon = popLastPosition();
+                Position lastPositon = popLastPosition();
                 setPos(lastPositon.getPosX(), lastPositon.getPosY());
                 return;
             }

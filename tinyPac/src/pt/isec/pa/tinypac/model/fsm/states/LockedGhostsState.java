@@ -8,7 +8,7 @@ import pt.isec.pa.tinypac.utils.Direction;
 
 public class LockedGhostsState extends StateAdapter {
 
-    private static final long LOCKTIME = 5000;
+    private static final long LOCKTIME = 5;         //Seconds
     private long initialTime;
     private long maxTime;
 
@@ -29,7 +29,6 @@ public class LockedGhostsState extends StateAdapter {
         return data.changeDirection(direction);
     }
 
-
     public void evolve(long currentTime) {
         if(unlockGhosts(currentTime))
             changeState(State.GAME);
@@ -37,19 +36,22 @@ public class LockedGhostsState extends StateAdapter {
         data.evolve(currentTime);
     }
 
+    private long convertSecondsToNano(long seconds){
+        return seconds * 1000000000;
+    }
+
     private boolean unlockGhosts(long currentTime){
         if(initialTime == 0){
             initialTime = currentTime;
-            maxTime = initialTime + LOCKTIME;
+            maxTime = initialTime + convertSecondsToNano(LOCKTIME);
             return false;
         }
 
         if(currentTime >= maxTime) {
             System.out.println("Unlocking Ghosts");
-            data.unlockGosts();
+            data.unlockGosts(false);
             return true;
         }
-
         return false;
     }
 

@@ -29,13 +29,14 @@ public class GameState extends StateAdapter {
         int result = data.controlGame();
         if(result == -1){
             //Restart the level or GameOver
-            System.out.println("Pacman died");
+            //System.out.println("Pacman died");
             int resPac = data.pacmanManager();
             if(resPac == 1){
                 //Pacman has lives and can continue game
                 changeState(State.WAIT_FOR_DIRECTIONS);
                 return;
             }if(resPac == -1){
+
                 changeState(State.GameOver);
             }
         }else if(result == 1){

@@ -1,13 +1,13 @@
 package pt.isec.pa.tinypac.model.data;
 
-import pt.isec.pa.tinypac.utils.GhostPosition;
+import pt.isec.pa.tinypac.utils.Position;
 import pt.isec.pa.tinypac.utils.Stack;
 
 public abstract class Ghost extends GameObjects{
     private Boolean locked;
-    private GhostPosition currentPosition;
-    private final GhostPosition initialPosition;
-    private Stack<GhostPosition> movements;
+    private Position currentPosition;
+    private final Position initialPosition;
+    private Stack<Position> movements;
     private Boolean vulnerable;
     private static final char SYMBOL = 'G';
 
@@ -17,8 +17,8 @@ public abstract class Ghost extends GameObjects{
     public Ghost(Game game, int posX , int posY){
         super(game);
         this.locked = true;
-        this.initialPosition = new GhostPosition(posX,posY);
-        this.currentPosition = new GhostPosition(posX,posY);
+        this.initialPosition = new Position(posX,posY);
+        this.currentPosition = new Position(posX,posY);
         this.movements = new Stack();
         this.vulnerable = false;
     }
@@ -50,9 +50,9 @@ public abstract class Ghost extends GameObjects{
     }
 
     public void pushLastPosition(Integer posX, Integer posY){
-        this.movements.push(new GhostPosition(posX, posY));
+        this.movements.push(new Position(posX, posY));
     }
-    public GhostPosition popLastPosition(){
+    public Position popLastPosition(){
         return this.movements.pop();
     }
 
@@ -88,6 +88,6 @@ public abstract class Ghost extends GameObjects{
         this.vulnerable = false;
         this.locked = true;
         this.movements.clear();
-        this.currentPosition = initialPosition;
+        this.currentPosition = new Position(initialPosition);
     }
 }

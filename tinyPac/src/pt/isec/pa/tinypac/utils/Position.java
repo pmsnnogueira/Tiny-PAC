@@ -9,9 +9,9 @@ public class Position {
         this.posY = posY;
     }
 
-    public Position(PacmanPosition pacmanPosition){
-        this.posX = pacmanPosition.getPosX();
-        this.posY = pacmanPosition.getPosY();
+    public Position(Position position){
+        this.posX = position.getPosX();
+        this.posY = position.getPosY();
     }
 
     public void setPos(int posX , int posY){

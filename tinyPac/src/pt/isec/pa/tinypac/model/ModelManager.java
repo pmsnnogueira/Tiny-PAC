@@ -7,11 +7,11 @@ import pt.isec.pa.tinypac.model.data.GameManager;
 import pt.isec.pa.tinypac.model.fsm.Context;
 import pt.isec.pa.tinypac.model.fsm.State;
 import pt.isec.pa.tinypac.utils.Direction;
+import pt.isec.pa.tinypac.utils.Manager;
 
 public class ModelManager implements IGameEngineEvolve {
 
     private GameEngine gameEngine;
-
     private Context context;
 
     public ModelManager(GameEngine gameEngine){
@@ -19,6 +19,7 @@ public class ModelManager implements IGameEngineEvolve {
         this.context = new Context();
         this.gameEngine.registerClient(this);
     }
+
 
     public State getState(){
         return context.getState();

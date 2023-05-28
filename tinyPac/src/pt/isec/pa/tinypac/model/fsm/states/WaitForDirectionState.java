@@ -11,6 +11,7 @@ public class WaitForDirectionState extends StateAdapter {
     public WaitForDirectionState(Context context, GameManager data){
         super(context, data);
         if(!data.loadMapLevel()){
+            System.out.println("\nCould not load levels\nClosing Game");
             System.exit(-1);
         }
     }

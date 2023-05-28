@@ -18,15 +18,15 @@ import java.util.TreeMap;
 
 public class GameManager{
     private Game game;
-    private final static String LEVELS_PATH = "src/pt/isec/pa/tinypac/levels/";
+    private final static String LEVELS_PATH = "files/levels/";
 
     public GameManager(){
         this.game = new Game();
     }
 
 
-    public boolean unlockGosts(){
-        return game.unlockGhosts();
+    public boolean unlockGosts(Boolean operation){
+        return game.changeLockGhosts(operation);
     }
 
 
@@ -133,6 +133,7 @@ public class GameManager{
         ArrayList<Integer[]> ghostCave = new ArrayList<>();
 
         Integer pacmanCounter = 0;
+        Integer portalCounter = 0;
 
         for(int i = 0 ; i < game.getMazeRows() ; i++) {       //Y
             sb.deleteCharAt(sb.indexOf("\n",i * game.getMazeColumns()));
@@ -144,9 +145,9 @@ public class GameManager{
                     case 'W' ->   //Zona Warp
                             maze.set(i, a, new Warp());
                     case 'o' ->  {  //Comida
-                            //maze.set(i, a, new Empty());
-                            maze.set(i, a, null);
-                            //game.incFoodRemaining();
+                            maze.set(i, a, new Ball());
+                            //maze.set(i, a, null);
+                            game.incFoodRemaining();
                     }
                     case 'F' ->   //fruta
                             maze.set(i, a, new Fruit());
@@ -161,6 +162,7 @@ public class GameManager{
                         Portal portal = new Portal(a,i); //x,y
                         maze.set(i, a, portal);
                         game.setPortal(portal);
+                        portalCounter++;
                     }
                     case 'y' -> {   //Caverna dos Fantasmas
                         maze.set(i, a, new GhostCave());
@@ -173,7 +175,7 @@ public class GameManager{
             }
         }
 
-        if(pacmanCounter != 1)
+        if(pacmanCounter != 1 || portalCounter == 0)
             return null;
 
         game.setGhosts(ghostInitialPositioning(maze,ghostCave));

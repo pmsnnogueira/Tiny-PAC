@@ -142,14 +142,8 @@ public class GameLanternaUI implements IGameEngineEvolve {
         this.gameEngine = new GameEngine();
         this.modelManager = new ModelManager(gameEngine);
         gameEngine.registerClient(this);
-
-
         gameEngine.start(GAME_ENGINE_TIME);
         gameEngine.waitForTheEnd();
-
-
-
-
     }
 
     private void showPauseMenu() {
@@ -167,9 +161,9 @@ public class GameLanternaUI implements IGameEngineEvolve {
             terminal.setCursorPosition(1,5);
             terminal.putString("===============================");
             terminal.flush();
-        }catch (IOException e){}
-
-
+        }catch (IOException e){
+            e.printStackTrace();
+        }
     }
 
 

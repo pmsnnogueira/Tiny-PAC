@@ -1,19 +1,12 @@
 package pt.isec.pa.tinypac.model.data;
 
-
 import pt.isec.pa.tinypac.model.data.obstacles.*;
 import pt.isec.pa.tinypac.utils.Direction;
 import pt.isec.pa.tinypac.utils.Obstacles;
 import pt.isec.pa.tinypac.utils.PacmanPosition;
-
-
-import javax.swing.*;
 import java.util.ArrayList;
-import java.util.TreeMap;
 
 public class Game {
-
-
     private static final char LIVES_ICON = 'A';
     private Integer level;
     private Integer lives;
@@ -26,9 +19,8 @@ public class Game {
     private ArrayList<Ghost> ghosts;
     private Integer foodRemaining;
 
-
     public Game(){
-        this.level = 2;
+        this.level = 1;
         this.lives = 3;
         this.score = 0;
         this.maze = null;
@@ -39,6 +31,10 @@ public class Game {
 
     public void incFoodRemaining(){
         this.foodRemaining++;
+    }
+
+    private void decFoodRemaining() {
+        this.foodRemaining--;
     }
 
     public Integer getFoodRemaining() {
@@ -198,6 +194,7 @@ public class Game {
                     pacmanEatGhost(ghost);
                     //resetLevel();
                 }else{
+
                     return -1;          //Pacman MORREU
                 }
             }
@@ -216,16 +213,17 @@ public class Game {
 
     private void pacmanEatGhost(Ghost ghost){
 
-        
-
 
     }
 
     private void ghostEatPacman(){
+        pacman.reset();
+        decLives();
+        resetGhosts();
+    }
 
-
-
-
+    private void decLives() {
+        this.lives--;
     }
 
     public boolean eatFood(){
@@ -245,9 +243,11 @@ public class Game {
                 pacman.setPower(true);
 
             maze.set(pacmanPosition.getPosY(), pacmanPosition.getPosX(), null);
+            decFoodRemaining();
         }
         return false;
     }
+
 
     private void incrementPoints(IMazeElement element){
         if(element.getSymbol() == Obstacles.FRUIT.getSymbol()){
@@ -262,13 +262,13 @@ public class Game {
         }
     }
 
-    public boolean unlockGhosts() {
+    public boolean changeLockGhosts(Boolean operation) {
 
         if(ghosts == null)
             return false;
 
         for(Ghost a : ghosts)
-            a.setLocked(false);
+            a.setLocked(operation);
 
         return true;
     }
@@ -284,10 +284,12 @@ public class Game {
 
     public int pacmanManager() {
 
-        if(lives > 1){
+        if(isAnyLiveRemaining()){
             //Pacman has lives to continue the level
-            lives--;
-            resetLevel();
+            ghostEatPacman();
+            System.out.println("Pacman died: lives  " + lives);
+            if(!isAnyLiveRemaining())
+                return -1;          //GameOver
             return 1;
         }
         //GameOver
@@ -312,7 +314,7 @@ public class Game {
         return lives;
     }
     public Boolean isAnyLiveRemaining(){
-        if(getLives() > 1)
+        if(getLives() > 0)
             return true;
         return false;
     }
