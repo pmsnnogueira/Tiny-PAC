@@ -6,16 +6,30 @@ import pt.isec.pa.tinypac.gameengine.IGameEngineEvolve;
 import pt.isec.pa.tinypac.model.fsm.Context;
 import pt.isec.pa.tinypac.model.fsm.State;
 import pt.isec.pa.tinypac.utils.Direction;
+import pt.isec.pa.tinypac.utils.ProgramManager;
+
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 
 public class ModelManager implements IGameEngineEvolve {
+
+    public static final String PROP_MENU = "_menu_";
+    public static final String PROP_DATA = "_data_";
 
     private GameEngine gameEngine;
     private Context context;
 
-    public ModelManager(GameEngine gameEngine){
-        this.gameEngine = gameEngine;
-        this.context = new Context();
+    private ProgramManager programManager;
+    private PropertyChangeSupport pcs;
+
+    public ModelManager(){
+        this.gameEngine = new GameEngine();
+        //this.context = new Context();
+        this.context = null;
         this.gameEngine.registerClient(this);
+
+        this.programManager = ProgramManager.MAIN_MENU;
+        this.pcs = new PropertyChangeSupport(this);
     }
 
 
@@ -50,4 +64,28 @@ public class ModelManager implements IGameEngineEvolve {
     public void evolve(IGameEngine gameEngine, long currentTime) {
         context.evolve(currentTime);
     }
+
+    public void addPropertyChangeListener(PropertyChangeListener listener){
+        pcs.addPropertyChangeListener(listener);
+    }
+
+    public void addPropertyChangeListener(String property, PropertyChangeListener listener){
+        pcs.addPropertyChangeListener(listener);
+    }
+
+
+    public ProgramManager getProgramState(){
+        return programManager;
+    }
+
+    public void changeToTop5(){
+        this.programManager = ProgramManager.TOP5;
+        pcs.firePropertyChange(PROP_MENU,null,null);
+    }
+
+    public void changeToMainMenu(){
+        this.programManager = ProgramManager.MAIN_MENU;
+        pcs.firePropertyChange(PROP_MENU,null,null);
+    }
+
 }

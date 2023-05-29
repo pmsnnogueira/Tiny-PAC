@@ -6,7 +6,7 @@ import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
-import pt.isec.pa.tinypac.ui.gui.Manager;
+import pt.isec.pa.tinypac.model.ModelManager;
 import pt.isec.pa.tinypac.utils.ProgramManager;
 
 public class Top5Pane extends BorderPane {
@@ -16,10 +16,10 @@ public class Top5Pane extends BorderPane {
 
     private ToggleButton btnBackToMenu, btnExitGame;
 
-    private Manager manager;
+    private ModelManager manager;
 
     private static final Integer BTN_PREF_WIDTH = 100;
-    public Top5Pane(Manager manager) {
+    public Top5Pane(ModelManager manager) {
 
         this.manager = manager;
         createViews();
@@ -53,7 +53,7 @@ public class Top5Pane extends BorderPane {
     }
 
     private void registerHandlers() {
-        manager.addPropertyChangeListener(Manager.PROP_MENU, evt -> {
+        manager.addPropertyChangeListener(ModelManager.PROP_MENU, evt -> {
             updateState();
         });
 
@@ -77,7 +77,7 @@ public class Top5Pane extends BorderPane {
     }
 
     private void updateState(){
-        if(manager.getState() != ProgramManager.TOP5) {
+        if(manager.getProgramState() != ProgramManager.TOP5) {
             this.setVisible(false);
             return;
         }
@@ -85,6 +85,6 @@ public class Top5Pane extends BorderPane {
     }
 
     private void update() {
-        this.setVisible(manager.getState() == ProgramManager.TOP5);
+        this.setVisible(manager.getProgramState() == ProgramManager.TOP5);
     }
 }

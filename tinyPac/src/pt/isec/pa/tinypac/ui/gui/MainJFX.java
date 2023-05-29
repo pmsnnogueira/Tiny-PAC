@@ -3,14 +3,15 @@ package pt.isec.pa.tinypac.ui.gui;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import pt.isec.pa.tinypac.model.ModelManager;
 import pt.isec.pa.tinypac.ui.gui.views.RootPane;
 
 public class MainJFX extends Application {
 
-    private Manager manager;
+    private ModelManager manager;
     @Override
     public void start(Stage stage) throws Exception {
-        this.manager = new Manager();
+        this.manager = new ModelManager();
         configureStage(stage);
     }
 

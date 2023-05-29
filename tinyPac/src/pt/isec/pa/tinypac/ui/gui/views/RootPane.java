@@ -1,12 +1,12 @@
 package pt.isec.pa.tinypac.ui.gui.views;
 
 import javafx.scene.layout.*;
-import pt.isec.pa.tinypac.ui.gui.Manager;
+import pt.isec.pa.tinypac.model.ModelManager;
 
 public class RootPane extends BorderPane {
-    private Manager manager;
+    private ModelManager manager;
 
-    public RootPane(Manager manager) {
+    public RootPane(ModelManager manager) {
 
         this.manager = manager;
         createViews();

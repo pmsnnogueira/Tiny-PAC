@@ -7,7 +7,7 @@ import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
-import pt.isec.pa.tinypac.ui.gui.Manager;
+import pt.isec.pa.tinypac.model.ModelManager;
 import pt.isec.pa.tinypac.utils.ProgramManager;
 
 public class MainMenuPane extends BorderPane {
@@ -23,9 +23,9 @@ public class MainMenuPane extends BorderPane {
     private static final Integer BTN_PREF_HEIGHT = 100;
     private static final Integer BTN_SPACING = 5;
 
-    private Manager manager;
+    private ModelManager manager;
 
-    public MainMenuPane(Manager manager) {
+    public MainMenuPane(ModelManager manager) {
 
         this.manager = manager;
 
@@ -69,7 +69,7 @@ public class MainMenuPane extends BorderPane {
 
     private void registerHandlers() {
 
-        manager.addPropertyChangeListener(Manager.PROP_MENU, evt -> updateState());
+        manager.addPropertyChangeListener(ModelManager.PROP_MENU, evt -> updateState());
 
         btnPlayGame.setOnAction(actionEvent -> {
             //GamePane gamePane = new GamePane();
@@ -91,7 +91,7 @@ public class MainMenuPane extends BorderPane {
     }
 
     private void updateState(){
-        if(manager.getState() != ProgramManager.MAIN_MENU){
+        if(manager.getProgramState() != ProgramManager.MAIN_MENU){
             this.setVisible(false);
             return;
         }
@@ -99,7 +99,7 @@ public class MainMenuPane extends BorderPane {
     }
 
     private void update() {
-        this.setVisible(manager.getState() == ProgramManager.MAIN_MENU);
+        this.setVisible(manager.getProgramState() == ProgramManager.MAIN_MENU);
     }
 
 }
