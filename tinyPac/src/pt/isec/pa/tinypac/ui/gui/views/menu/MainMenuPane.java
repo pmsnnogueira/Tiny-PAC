@@ -8,6 +8,7 @@ import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import pt.isec.pa.tinypac.model.ModelManager;
+import pt.isec.pa.tinypac.model.fsm.State;
 import pt.isec.pa.tinypac.ui.gui.views.RootPane;
 import pt.isec.pa.tinypac.utils.ProgramManager;
 
@@ -25,12 +26,14 @@ public class MainMenuPane extends BorderPane {
     private static final Integer BTN_MAX_WIDTH = 200;
     private static final Integer BTN_PREF_HEIGHT = 100;
     private static final Integer BTN_SPACING = 5;
-
     private ModelManager manager;
+
+    private Boolean inGame;
 
     public MainMenuPane(ModelManager manager) {
 
         this.manager = manager;
+        this.inGame = false;
 
         createViews();
         registerHandlers();
@@ -78,10 +81,8 @@ public class MainMenuPane extends BorderPane {
             //GamePane gamePane = new GamePane();
             //((BorderPane)this.getScene().getRoot()).setCenter(gamePane);
             manager.changeToGame();
-            gameRootPane = new GameRootPane(manager);
-            ((RootPane)this.getScene().getRoot()).getChildren().add(gameRootPane);
-        });
 
+        });
 
         btnTop5.setOnAction(actionEvent -> {
 
@@ -99,8 +100,20 @@ public class MainMenuPane extends BorderPane {
     private void updateState(){
         if(manager.getProgramState() != ProgramManager.MAIN_MENU){
             this.setVisible(false);
+            if(manager.getProgramState() == ProgramManager.GAME){
+                if(gameRootPane == null){
+                    Platform.runLater(()-> {
+                        if(gameRootPane == null) {
+                            gameRootPane = new GameRootPane(manager);
+                            ((RootPane) this.getScene().getRoot()).getChildren().add(gameRootPane);
+                            System.out.println("Ola ");
+                        }
+                    });
+                }
+            }
             return;
         }
+
         this.setVisible(true);
     }
 
