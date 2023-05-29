@@ -21,7 +21,7 @@ public class Game {
 
     public Game(){
         this.level = 1;
-        this.lives = 3;
+        this.lives = 1;
         this.score = 0;
         this.maze = null;
         this.ghosts = new ArrayList<>();

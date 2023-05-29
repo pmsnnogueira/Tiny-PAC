@@ -1,4 +1,4 @@
-package pt.isec.pa.tinypac.ui.gui.views;
+package pt.isec.pa.tinypac.ui.gui.views.menu;
 
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;

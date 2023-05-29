@@ -2,6 +2,9 @@ package pt.isec.pa.tinypac.ui.gui.views;
 
 import javafx.scene.layout.*;
 import pt.isec.pa.tinypac.model.ModelManager;
+import pt.isec.pa.tinypac.ui.gui.views.menu.GameRootPane;
+import pt.isec.pa.tinypac.ui.gui.views.menu.MainMenuPane;
+import pt.isec.pa.tinypac.ui.gui.views.menu.Top5Pane;
 
 public class RootPane extends BorderPane {
     private ModelManager manager;
@@ -18,10 +21,8 @@ public class RootPane extends BorderPane {
 
        StackPane stackPane = new StackPane(
                new MainMenuPane(manager),
-               new Top5Pane(manager)
-
-
-
+               new Top5Pane(manager),
+               new GameRootPane(manager)
        );
        this.setCenter(stackPane);
     }

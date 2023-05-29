@@ -16,6 +16,8 @@ public class ModelManager implements IGameEngineEvolve {
     public static final String PROP_MENU = "_menu_";
     public static final String PROP_DATA = "_data_";
 
+    private static final Integer GAME_ENGINE_TIME = 250;
+
     private GameEngine gameEngine;
     private Context context;
 
@@ -23,10 +25,10 @@ public class ModelManager implements IGameEngineEvolve {
     private PropertyChangeSupport pcs;
 
     public ModelManager(){
-        this.gameEngine = new GameEngine();
+        //this.gameEngine = new GameEngine();
         //this.context = new Context();
         this.context = null;
-        this.gameEngine.registerClient(this);
+        //this.gameEngine.registerClient(this);
 
         this.programManager = ProgramManager.MAIN_MENU;
         this.pcs = new PropertyChangeSupport(this);
@@ -40,6 +42,7 @@ public class ModelManager implements IGameEngineEvolve {
     public boolean changeDirection(Direction direction){
         if(context.changeDirection(direction)) {
             System.out.println("New Direction: " + direction.toString());
+            pcs.firePropertyChange(PROP_DATA, null,null);
             return true;
         }
         return false;
@@ -62,7 +65,10 @@ public class ModelManager implements IGameEngineEvolve {
 
     @Override
     public void evolve(IGameEngine gameEngine, long currentTime) {
+
         context.evolve(currentTime);
+        pcs.firePropertyChange(PROP_DATA,null,null);
+        pcs.firePropertyChange(PROP_MENU,null,null);
     }
 
     public void addPropertyChangeListener(PropertyChangeListener listener){
@@ -80,6 +86,18 @@ public class ModelManager implements IGameEngineEvolve {
 
     public void changeToTop5(){
         this.programManager = ProgramManager.TOP5;
+        pcs.firePropertyChange(PROP_MENU,null,null);
+    }
+
+    public void changeToGame(){
+
+        this.context = new Context();
+        this.gameEngine = new GameEngine();
+        this.gameEngine.registerClient(this);
+
+        gameEngine.start(GAME_ENGINE_TIME);
+        //gameEngine.waitForTheEnd();
+        this.programManager = ProgramManager.GAME;
         pcs.firePropertyChange(PROP_MENU,null,null);
     }
 

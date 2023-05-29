@@ -1,4 +1,4 @@
-package pt.isec.pa.tinypac.ui.gui.views;
+package pt.isec.pa.tinypac.ui.gui.views.menu;
 
 import javafx.application.Platform;
 import javafx.geometry.Insets;
@@ -74,6 +74,7 @@ public class MainMenuPane extends BorderPane {
         btnPlayGame.setOnAction(actionEvent -> {
             //GamePane gamePane = new GamePane();
             //((BorderPane)this.getScene().getRoot()).setCenter(gamePane);
+            manager.changeToGame();
         });
 
 
