@@ -85,5 +85,6 @@ public class Top5Pane extends BorderPane {
     }
 
     private void update() {
+        this.setVisible(manager.getState() == ProgramManager.TOP5);
     }
 }

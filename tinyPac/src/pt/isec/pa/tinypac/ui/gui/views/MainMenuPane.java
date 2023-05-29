@@ -99,7 +99,7 @@ public class MainMenuPane extends BorderPane {
     }
 
     private void update() {
-
+        this.setVisible(manager.getState() == ProgramManager.MAIN_MENU);
     }
 
 }
