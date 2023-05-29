@@ -1,13 +1,14 @@
 package pt.isec.pa.tinypac.ui.gui.views;
 
 import javafx.scene.layout.*;
+import pt.isec.pa.tinypac.ui.gui.Manager;
 
 public class RootPane extends BorderPane {
+    private Manager manager;
 
-    private MainMenuPane mainMenu;
+    public RootPane(Manager manager) {
 
-    public RootPane() {
-
+        this.manager = manager;
         createViews();
         registerHandlers();
         update();
@@ -16,7 +17,11 @@ public class RootPane extends BorderPane {
     private void createViews() {
 
        StackPane stackPane = new StackPane(
-                mainMenu = new MainMenuPane()
+               new MainMenuPane(manager),
+               new Top5Pane(manager)
+
+
+
        );
        this.setCenter(stackPane);
     }

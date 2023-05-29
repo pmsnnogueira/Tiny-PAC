@@ -3,11 +3,9 @@ package pt.isec.pa.tinypac.model;
 import pt.isec.pa.tinypac.gameengine.GameEngine;
 import pt.isec.pa.tinypac.gameengine.IGameEngine;
 import pt.isec.pa.tinypac.gameengine.IGameEngineEvolve;
-import pt.isec.pa.tinypac.model.data.GameManager;
 import pt.isec.pa.tinypac.model.fsm.Context;
 import pt.isec.pa.tinypac.model.fsm.State;
 import pt.isec.pa.tinypac.utils.Direction;
-import pt.isec.pa.tinypac.utils.Manager;
 
 public class ModelManager implements IGameEngineEvolve {
 
