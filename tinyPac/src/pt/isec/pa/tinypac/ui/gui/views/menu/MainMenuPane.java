@@ -8,12 +8,15 @@ import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import pt.isec.pa.tinypac.model.ModelManager;
+import pt.isec.pa.tinypac.ui.gui.views.RootPane;
 import pt.isec.pa.tinypac.utils.ProgramManager;
 
 public class MainMenuPane extends BorderPane {
 
     private VBox menu;
     private ToggleGroup tgMenuButtons;
+
+    private GameRootPane gameRootPane;
 
     private ToggleButton btnPlayGame, btnTop5 ,btnExitGame;
 
@@ -75,6 +78,8 @@ public class MainMenuPane extends BorderPane {
             //GamePane gamePane = new GamePane();
             //((BorderPane)this.getScene().getRoot()).setCenter(gamePane);
             manager.changeToGame();
+            gameRootPane = new GameRootPane(manager);
+            ((RootPane)this.getScene().getRoot()).getChildren().add(gameRootPane);
         });
 
 

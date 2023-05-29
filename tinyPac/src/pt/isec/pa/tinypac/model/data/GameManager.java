@@ -269,4 +269,11 @@ public class GameManager{
     public int pacmanManager() {
         return game.pacmanManager();
     }
+
+    public Integer getMazeRows() {
+        return game.getMazeRows();
+    }
+    public Integer getMazeColumns() {
+        return game.getMazeColumns();
+    }
 }

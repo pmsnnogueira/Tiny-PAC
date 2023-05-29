@@ -59,6 +59,13 @@ public class ModelManager implements IGameEngineEvolve {
         return context.showMaze();
     }
 
+    public Integer getMazeRows(){
+        return context.getMazeRows();
+    }
+
+    public Integer getMazeColumns(){
+        return context.getMazeColumns();
+    }
     public String showGameInfo(){
         return context.showGameInfo();
     }

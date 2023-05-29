@@ -17,6 +17,8 @@ public class GamePane extends BorderPane {
     private VBox menu;
     private ToggleGroup tgMenuButtons;
     private ToggleButton btnChangeDirection;
+
+    private MazePane mazePane;
     private static final Integer MENU_MIN_WIDTH = 150;
     private static final Integer BTN_PREF_WIDTH = 150;
     private static final Integer BTN_MAX_WIDTH = 200;
@@ -33,6 +35,8 @@ public class GamePane extends BorderPane {
     private void createViews() {
         tgMenuButtons = new ToggleGroup();
 
+        this.mazePane = new MazePane(manager);
+
         btnChangeDirection = new ToggleButton("Change Pacman Direction");
         btnChangeDirection.setToggleGroup(tgMenuButtons);
         btnChangeDirection.setPrefHeight(BTN_PREF_HEIGHT);
@@ -40,7 +44,7 @@ public class GamePane extends BorderPane {
         btnChangeDirection.setMaxWidth(BTN_MAX_WIDTH);
         btnChangeDirection.setSelected(false);
 
-        menu = new VBox(btnChangeDirection);
+        menu = new VBox(btnChangeDirection, mazePane);
         menu.setSpacing(BTN_SPACING);
         menu.setMinWidth(MENU_MIN_WIDTH);
         menu.setBackground(new Background(new BackgroundFill(Color.BLACK, CornerRadii.EMPTY, Insets.EMPTY)));

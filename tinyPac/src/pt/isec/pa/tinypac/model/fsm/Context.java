@@ -15,11 +15,7 @@ public class Context {
         this.previousState = null;
         this.timeBeforePause = 0;
         this.state = new WaitForDirectionState(this,data);
-
     }
-
-
-
 
     public State getState(){
         if(state == null)
@@ -48,6 +44,18 @@ public class Context {
 
     public String showGameInfo(){
         return data.showGameInfo();
+    }
+
+    public Integer getMazeRows(){
+        return data.getMazeRows();
+    }
+    public Integer getMazeColumns(){
+        return data.getMazeColumns();
+    }
+
+
+    public Integer getMazecolumns(){
+        return data.getMazeColumns();
     }
 
     public void evolve(long currentTime) {
