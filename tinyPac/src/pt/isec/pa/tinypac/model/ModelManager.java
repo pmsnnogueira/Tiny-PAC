@@ -113,4 +113,7 @@ public class ModelManager implements IGameEngineEvolve {
         pcs.firePropertyChange(PROP_MENU,null,null);
     }
 
+    public char receiveElement(int row, int column) {
+        return context.receiveElement(row,column);
+    }
 }

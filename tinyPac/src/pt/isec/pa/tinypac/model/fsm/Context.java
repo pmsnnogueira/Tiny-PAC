@@ -71,4 +71,8 @@ public class Context {
     public boolean resume(){
         return state.resume();
     }
+
+    public char receiveElement(int row, int column) {
+        return data.receiveElement(row,column);
+    }
 }

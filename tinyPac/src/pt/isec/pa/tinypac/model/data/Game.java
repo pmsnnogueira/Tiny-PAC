@@ -318,4 +318,12 @@ public class Game {
             return true;
         return false;
     }
+
+    public char receiveElement(int row, int column) {
+        IMazeElement element = maze.get(row,column);
+        if(element == null)
+            return ' ';
+
+        return element.getSymbol();
+    }
 }

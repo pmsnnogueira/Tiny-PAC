@@ -276,4 +276,8 @@ public class GameManager{
     public Integer getMazeColumns() {
         return game.getMazeColumns();
     }
+
+    public char receiveElement(int row, int column) {
+        return game.receiveElement(row,column);
+    }
 }

@@ -102,7 +102,7 @@ public class MainMenuPane extends BorderPane {
             this.setVisible(false);
             if(manager.getProgramState() == ProgramManager.GAME){
                 if(gameRootPane == null){
-                    Platform.runLater(()-> {
+                    Platform.runLater(()-> {            //VER MELHOR ISTO
                         if(gameRootPane == null) {
                             gameRootPane = new GameRootPane(manager);
                             ((RootPane) this.getScene().getRoot()).getChildren().add(gameRootPane);
