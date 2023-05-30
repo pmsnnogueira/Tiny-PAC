@@ -68,9 +68,10 @@ public class MainMenuPane extends BorderPane {
         menu = new VBox(btnPlayGame, btnTop5,btnExitGame);
         menu.setSpacing(BTN_SPACING);
         menu.setMinWidth(MENU_MIN_WIDTH);
-        menu.setBackground(new Background(new BackgroundFill(Color.LIGHTBLUE, CornerRadii.EMPTY, Insets.EMPTY)));
+
         this.setCenter(menu);
         menu.setAlignment(Pos.CENTER);
+        this.setBackground(new Background(new BackgroundFill(Color.LIGHTBLUE, CornerRadii.EMPTY, Insets.EMPTY)));
     }
 
     private void registerHandlers() {
@@ -78,17 +79,12 @@ public class MainMenuPane extends BorderPane {
         manager.addPropertyChangeListener(ModelManager.PROP_MENU, evt -> updateState());
 
         btnPlayGame.setOnAction(actionEvent -> {
-            //GamePane gamePane = new GamePane();
-            //((BorderPane)this.getScene().getRoot()).setCenter(gamePane);
             manager.changeToGame();
 
         });
 
         btnTop5.setOnAction(actionEvent -> {
-
-            //Top5Pane top5 = new Top5Pane(manager);
             manager.changeToTop5();
-            //((RootPane)this.getScene().getRoot()).setCenter(top5);
         });
 
         btnExitGame.setOnAction(actionEvent -> {
@@ -100,20 +96,8 @@ public class MainMenuPane extends BorderPane {
     private void updateState(){
         if(manager.getProgramState() != ProgramManager.MAIN_MENU){
             this.setVisible(false);
-            if(manager.getProgramState() == ProgramManager.GAME){
-                if(gameRootPane == null){
-                    Platform.runLater(()-> {            //VER MELHOR ISTO
-                        if(gameRootPane == null) {
-                            gameRootPane = new GameRootPane(manager);
-                            ((RootPane) this.getScene().getRoot()).getChildren().add(gameRootPane);
-                            System.out.println("Ola ");
-                        }
-                    });
-                }
-            }
             return;
         }
-
         this.setVisible(true);
     }
 

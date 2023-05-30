@@ -32,6 +32,8 @@ public class GamePane extends BorderPane {
     }
 
     private void createViews() {
+
+        this.setBackground(new Background(new BackgroundFill(Color.BLACK, CornerRadii.EMPTY, Insets.EMPTY)));
         tgMenuButtons = new ToggleGroup();
 
         this.mazePane = new MazePane(manager);
@@ -43,11 +45,10 @@ public class GamePane extends BorderPane {
         btnChangeDirection.setMaxWidth(BTN_MAX_WIDTH);
         btnChangeDirection.setSelected(false);
 
-        menu = new VBox(btnChangeDirection, mazePane);
+        menu = new VBox(mazePane,btnChangeDirection);
        // menu = new VBox(btnChangeDirection);
-        menu.setSpacing(BTN_SPACING);
-        menu.setMinWidth(MENU_MIN_WIDTH);
-        menu.setBackground(new Background(new BackgroundFill(Color.BLACK, CornerRadii.EMPTY, Insets.EMPTY)));
+        //menu.setMinWidth(1000);
+        //menu.setMinHeight(Integer.MAX_VALUE);
         this.setCenter(menu);
         menu.setAlignment(Pos.CENTER);
     }

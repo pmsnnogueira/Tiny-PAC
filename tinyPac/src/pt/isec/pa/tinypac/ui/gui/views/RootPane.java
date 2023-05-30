@@ -21,6 +21,7 @@ public class RootPane extends BorderPane {
 
        StackPane stackPane = new StackPane(
                new MainMenuPane(manager),
+               new GameRootPane(manager),
                new Top5Pane(manager)
        );
        this.setCenter(stackPane);
