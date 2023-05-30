@@ -20,6 +20,9 @@ public class MazePane extends BorderPane {
 
     private Image wallImage;
     private Image ballImage;
+    private Image fruitImage;
+    private Image pacmanImage;
+    private Image powerImage;
     public MazePane(ModelManager manager) {
 
         this.manager = manager;
@@ -28,7 +31,10 @@ public class MazePane extends BorderPane {
 
         this.wallImage = new Image(getClass().getResourceAsStream("/pt/isec/pa/tinypac/ui/gui/resources/wall.png"));
 
-        this.ballImage = new Image(getClass().getResourceAsStream("/pt/isec/pa/tinypac/ui/gui/resources/whitedot.png"));
+        this.ballImage = new Image(getClass().getResourceAsStream("/pt/isec/pa/tinypac/ui/gui/resources/ball.png"));
+        this.fruitImage = new Image(getClass().getResourceAsStream("/pt/isec/pa/tinypac/ui/gui/resources/fruit.png"));
+        this.pacmanImage = new Image(getClass().getResourceAsStream("/pt/isec/pa/tinypac/ui/gui/resources/pacman.png"));
+        this.powerImage= new Image(getClass().getResourceAsStream("/pt/isec/pa/tinypac/ui/gui/resources/power.png"));
 
         createViews();
         registerHandlers();
@@ -51,17 +57,8 @@ public class MazePane extends BorderPane {
 
         for (int row = 0; row < rows; row++) {
             for (int column = 0; column < columns; column++) {
-                ImageView imageView = new ImageView();
-                char element = manager.receiveElement(row,column);
-                if(element == Obstacles.WALL.getSymbol()) {
-                    imageView.setImage(wallImage);
-                    //this.gridPane.add(imageView, column, row);
-                }else if(element == Obstacles.BALL.getSymbol()){
-                    imageView.setImage(ballImage);
-                }
-                else
-                    continue;
 
+                ImageView imageView = getImageInPosition(row,column);
                 imageView.setFitWidth(CELL_WIDTH);
                 imageView.setFitHeight(CELL_HEIGHT);
 
@@ -72,6 +69,34 @@ public class MazePane extends BorderPane {
         gridPane.setVgap(2);
         gridPane.setHgap(2);
         this.getChildren().add(gridPane);
+    }
+
+    private ImageView getImageInPosition(Integer row, Integer column){
+        char element = manager.receiveElement(row,column);
+        return getImage(element);
+    }
+
+    private ImageView getImage(char element){
+
+        ImageView imageView = new ImageView();
+
+        if(element == Obstacles.WALL.getSymbol()) {
+            imageView.setImage(wallImage);
+        }else if(element == Obstacles.BALL.getSymbol()){
+            imageView.setImage(ballImage);
+        }else if(element == Obstacles.PACMAN.getSymbol()){
+            imageView.setImage(pacmanImage);
+        }else if(element == Obstacles.FRUIT.getSymbol()){
+            imageView.setImage(fruitImage);
+        } else if(element == Obstacles.POWER.getSymbol()){
+            imageView.setImage(powerImage);
+        } else if(element == Obstacles.WARP.getSymbol()){
+            //imageView.setImage(fruitImage);
+        }else if(element == Obstacles.PORTAL.getSymbol()){
+            //imageView.setImage(fruitImage);
+        }
+
+        return imageView;
     }
 
     private void updateState(){

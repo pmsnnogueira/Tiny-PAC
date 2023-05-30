@@ -14,7 +14,6 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
-import java.util.TreeMap;
 
 public class GameManager{
     private Game game;
@@ -278,6 +277,6 @@ public class GameManager{
     }
 
     public char receiveElement(int row, int column) {
-        return game.receiveElement(row,column);
+        return game.getCharElementInPosition(row,column);
     }
 }
