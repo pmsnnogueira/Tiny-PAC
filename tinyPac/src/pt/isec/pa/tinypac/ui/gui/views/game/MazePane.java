@@ -23,6 +23,7 @@ public class MazePane extends VBox {
     private Image fruitImage;
     private Image pacmanImage;
     private Image powerImage;
+    private Image blinkyImage;
     public MazePane(ModelManager manager) {
 
         this.manager = manager;
@@ -31,11 +32,11 @@ public class MazePane extends VBox {
         this.gridPane = null;
 
         this.wallImage = new Image(getClass().getResourceAsStream("/pt/isec/pa/tinypac/ui/gui/resources/wall.png"));
-
         this.ballImage = new Image(getClass().getResourceAsStream("/pt/isec/pa/tinypac/ui/gui/resources/ball.png"));
         this.fruitImage = new Image(getClass().getResourceAsStream("/pt/isec/pa/tinypac/ui/gui/resources/fruit.png"));
         this.pacmanImage = new Image(getClass().getResourceAsStream("/pt/isec/pa/tinypac/ui/gui/resources/pacman.png"));
         this.powerImage= new Image(getClass().getResourceAsStream("/pt/isec/pa/tinypac/ui/gui/resources/power.png"));
+        this.blinkyImage= new Image(getClass().getResourceAsStream("/pt/isec/pa/tinypac/ui/gui/resources/blinky.png"));
 
         createViews();
         registerHandlers();
@@ -48,7 +49,7 @@ public class MazePane extends VBox {
 
     private void registerHandlers() {
         manager.addPropertyChangeListener(ModelManager.PROP_GAME, evt -> updateState());
-        //manager.addPropertyChangeListener(ModelManager.PROP_DATA, evt -> updateState());
+        manager.addPropertyChangeListener(ModelManager.PROP_DATA, evt -> update());
     }
 
     private void initializeImagesGrid(){
@@ -96,13 +97,14 @@ public class MazePane extends VBox {
             //imageView.setImage(fruitImage);
         }else if(element == Obstacles.PORTAL.getSymbol()){
             //imageView.setImage(fruitImage);
+        }else if(element == Obstacles.BLINKY.getSymbol()){
+            imageView.setImage(blinkyImage);
         }
 
         return imageView;
     }
 
     private void updateState(){
-        System.out.println("Here");
         if(manager.getState() == State.PAUSE || manager.getState() == State.GameOver){
             this.setVisible(false);
             return;
@@ -119,5 +121,18 @@ public class MazePane extends VBox {
 
     private void update() {
         this.setVisible(manager.getProgramState() == ProgramManager.GAME);
+        if(gridPane != null){
+            Platform.runLater(()->{
+                System.out.println("Ola");
+                for (int row = 0; row < rows; row++) {
+                    for (int column = 0; column < columns; column++) {
+                        ImageView imageView = getImageInPosition(row,column);
+                        imageView.setFitWidth(CELL_WIDTH);
+                        imageView.setFitHeight(CELL_HEIGHT);
+                        gridPane.add(imageView, column, row);
+                    }
+                }
+            });
+        }
     }
 }

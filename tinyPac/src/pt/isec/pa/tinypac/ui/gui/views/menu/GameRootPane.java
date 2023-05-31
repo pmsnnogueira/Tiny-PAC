@@ -7,7 +7,6 @@ import javafx.scene.paint.Color;
 import pt.isec.pa.tinypac.model.ModelManager;
 import pt.isec.pa.tinypac.ui.gui.views.game.GamePane;
 import pt.isec.pa.tinypac.utils.ProgramManager;
-import pt.isec.pa.tinypac.utils.Stack;
 
 public class GameRootPane extends BorderPane {
     private ModelManager manager;

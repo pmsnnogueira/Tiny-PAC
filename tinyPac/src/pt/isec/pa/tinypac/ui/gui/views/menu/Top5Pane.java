@@ -58,21 +58,11 @@ public class Top5Pane extends BorderPane {
         });
 
         btnBackToMenu.setOnAction(actionEvent -> {
-
             manager.changeToMainMenu();
-
-            /*MainMenuPane mainMenu = new MainMenuPane();
-            ((BorderPane)this.getScene().getRoot()).setCenter(mainMenu);*/
-
         });
 
         btnExitGame.setOnAction(actionEvent -> {
-
             manager.changeToMainMenu();
-
-            /*MainMenuPane mainMenu = new MainMenuPane();
-            ((BorderPane)this.getScene().getRoot()).setCenter(mainMenu);*/
-
         });
     }
 

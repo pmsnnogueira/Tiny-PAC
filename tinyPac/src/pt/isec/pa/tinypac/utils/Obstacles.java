@@ -9,7 +9,7 @@ import pt.isec.pa.tinypac.model.data.obstacles.Power;
 public enum Obstacles {
 
     WALL('x'),WARP('W'),BALL('o', Ball.BALL_POINTS),FRUIT('F', Fruit.FRUIT_POINTS),PACMAN_INITIAL_POSITION('M'),
-    PACMAN('*'),
+    PACMAN('*'), BLINKY('B'), PINKY('P'),
     POWER('O',Power.POWER_POINTS),PORTAL('Y'),GHOST_CAVE('y');
 
 
