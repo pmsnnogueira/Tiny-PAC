@@ -269,7 +269,7 @@ public class Blinky extends Ghost{
 
     @Override
     public char getSymbol() {
-        return 'B';
+        return Obstacles.BLINKY.getSymbol();
     }
 
 }

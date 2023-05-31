@@ -97,7 +97,7 @@ public class Pacman extends GameObjects{
 
     @Override
     public char getSymbol() {
-        return '*';
+        return Obstacles.PACMAN.getSymbol();
     }
 
     public void reset() {

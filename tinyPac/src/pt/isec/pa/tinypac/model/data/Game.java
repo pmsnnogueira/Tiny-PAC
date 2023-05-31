@@ -21,7 +21,7 @@ public class Game {
 
     public Game(){
         this.level = 1;
-        this.lives = 3;
+        this.lives = 1;
         this.score = 0;
         this.maze = null;
         this.ghosts = new ArrayList<>();
@@ -118,24 +118,53 @@ public class Game {
 
         for (int i = 0; i < mazeRows; i++) {
             for (int a = 0; a < mazeColumns; a++) {
-
-                if(i == pacman.getPosY() && a == pacman.getPosX())
-                    gameBoard[i][a] = pacman.getSymbol();
-
-                for (Ghost aux : ghosts) {
-                    if (aux.getPosY() == i && aux.getPosX() == a) {
-                        gameBoard[i][a] = aux.getSymbol();
-                    }
-                }
-
-                if (gameBoard[i][a] == Obstacles.GHOST_CAVE.getSymbol()
-                        || gameBoard[i][a] == Obstacles.PACMAN_INITIAL_POSITION.getSymbol()) {
-                    gameBoard[i][a] = ' ';
-                }
-
+                gameBoard[i][a] = getCharAtMazeElement(gameBoard,i,a);
             }
         }
         return gameBoard;
+    }
+
+    public char getCharAtMazeElement(Integer row, Integer column){
+
+        char[][] gameBoard = maze.getMaze();
+        if(gameBoard == null)
+            return ' ';
+
+        return getCharAtMazeElement(gameBoard, row,column);
+    }
+
+    private char getCharAtMazeElement(char[][] gameBoard, Integer row, Integer column){
+
+        if(row == pacman.getPosY() && column == pacman.getPosX())
+            return Obstacles.PACMAN.getSymbol();            //Return Pacman Position
+
+        for (Ghost aux : ghosts)
+            if (aux.getPosY() == row && aux.getPosX() == column)
+                return aux.getSymbol();
+
+        if (gameBoard[row][column] == Obstacles.GHOST_CAVE.getSymbol()
+                || gameBoard[row][column] == Obstacles.PACMAN_INITIAL_POSITION.getSymbol())
+            return gameBoard[row][column] = ' ';
+
+        if(gameBoard[row][column] == Obstacles.WALL.getSymbol())
+            return Obstacles.WALL.getSymbol();
+
+        if(gameBoard[row][column] == Obstacles.FRUIT.getSymbol())
+            return Obstacles.FRUIT.getSymbol();
+
+        if(gameBoard[row][column] == Obstacles.BALL.getSymbol())
+            return Obstacles.BALL.getSymbol();
+
+        if(gameBoard[row][column] == Obstacles.PORTAL.getSymbol())
+            return Obstacles.PORTAL.getSymbol();
+
+        if(gameBoard[row][column] == Obstacles.POWER.getSymbol())
+            return Obstacles.POWER.getSymbol();
+
+        if(gameBoard[row][column] == Obstacles.WARP.getSymbol())
+            return Obstacles.WARP.getSymbol();
+
+        return ' ';
     }
 
     public void setLevel(Integer level){
@@ -317,5 +346,9 @@ public class Game {
         if(getLives() > 0)
             return true;
         return false;
+    }
+
+    public char getCharElementInPosition(int row, int column) {
+        return getCharAtMazeElement(row,column);
     }
 }

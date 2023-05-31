@@ -44,7 +44,7 @@ public class Pinky extends Ghost {
 
     @Override
     public char getSymbol() {
-        return 'P';
+        return Obstacles.PINKY.getSymbol();
     }
 
     private void printValidPositions(ArrayList<Integer> validDirections){

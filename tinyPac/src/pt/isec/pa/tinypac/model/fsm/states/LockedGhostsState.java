@@ -8,7 +8,7 @@ import pt.isec.pa.tinypac.utils.Direction;
 
 public class LockedGhostsState extends StateAdapter {
 
-    private static final long LOCKTIME = 5;         //Seconds
+    private static final long LOCKTIME = 1;         //Seconds
     private long initialTime;
     private long maxTime;
 

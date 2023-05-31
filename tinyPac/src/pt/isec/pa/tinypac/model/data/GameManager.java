@@ -14,7 +14,6 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
-import java.util.TreeMap;
 
 public class GameManager{
     private Game game;
@@ -268,5 +267,16 @@ public class GameManager{
 
     public int pacmanManager() {
         return game.pacmanManager();
+    }
+
+    public Integer getMazeRows() {
+        return game.getMazeRows();
+    }
+    public Integer getMazeColumns() {
+        return game.getMazeColumns();
+    }
+
+    public char receiveElement(int row, int column) {
+        return game.getCharElementInPosition(row,column);
     }
 }

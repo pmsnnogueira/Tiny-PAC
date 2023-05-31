@@ -1,4 +1,4 @@
-package pt.isec.pa.tinypac.ui.gui;
+package pt.isec.pa.tinypac.ui.guiLanterna;
 
 import com.googlecode.lanterna.TerminalSize;
 import com.googlecode.lanterna.TextCharacter;
@@ -140,7 +140,7 @@ public class GameLanternaUI implements IGameEngineEvolve {
     private void gameMenu(){
 
         this.gameEngine = new GameEngine();
-        this.modelManager = new ModelManager(gameEngine);
+        this.modelManager = new ModelManager();
         gameEngine.registerClient(this);
         gameEngine.start(GAME_ENGINE_TIME);
         gameEngine.waitForTheEnd();
