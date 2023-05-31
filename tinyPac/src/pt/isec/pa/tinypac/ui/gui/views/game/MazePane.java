@@ -47,8 +47,8 @@ public class MazePane extends VBox {
     }
 
     private void registerHandlers() {
-        manager.addPropertyChangeListener(ModelManager.PROP_MENU, evt -> updateState());
-        manager.addPropertyChangeListener(ModelManager.PROP_DATA, evt -> updateState());
+        manager.addPropertyChangeListener(ModelManager.PROP_GAME, evt -> updateState());
+        //manager.addPropertyChangeListener(ModelManager.PROP_DATA, evt -> updateState());
     }
 
     private void initializeImagesGrid(){
@@ -102,6 +102,7 @@ public class MazePane extends VBox {
     }
 
     private void updateState(){
+        System.out.println("Here");
         if(manager.getState() == State.PAUSE || manager.getState() == State.GameOver){
             this.setVisible(false);
             return;

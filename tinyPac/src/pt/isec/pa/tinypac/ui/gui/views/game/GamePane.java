@@ -54,8 +54,8 @@ public class GamePane extends BorderPane {
     }
 
     private void registerHandlers() {
-        manager.addPropertyChangeListener(ModelManager.PROP_MENU, evt -> updateState());
-        manager.addPropertyChangeListener(ModelManager.PROP_DATA, evt -> updateState());
+        manager.addPropertyChangeListener(ModelManager.PROP_GAME, evt -> updateState());
+        //manager.addPropertyChangeListener(ModelManager.PROP_DATA, evt -> updateState());
 
         btnChangeDirection.setOnAction(actionEvent -> {
             manager.changeDirection(Direction.UP);

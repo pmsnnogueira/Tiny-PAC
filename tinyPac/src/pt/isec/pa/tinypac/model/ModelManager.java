@@ -15,6 +15,7 @@ public class ModelManager implements IGameEngineEvolve {
 
     public static final String PROP_MENU = "_menu_";
     public static final String PROP_DATA = "_data_";
+    public static final String PROP_GAME = "_gameMenu_";
 
     private static final Integer GAME_ENGINE_TIME = 250;
 
@@ -75,7 +76,7 @@ public class ModelManager implements IGameEngineEvolve {
 
         context.evolve(currentTime);
         pcs.firePropertyChange(PROP_DATA,null,null);
-        pcs.firePropertyChange(PROP_MENU,null,null);
+        pcs.firePropertyChange(PROP_GAME,null,null);
     }
 
     public void addPropertyChangeListener(PropertyChangeListener listener){
@@ -83,7 +84,7 @@ public class ModelManager implements IGameEngineEvolve {
     }
 
     public void addPropertyChangeListener(String property, PropertyChangeListener listener){
-        pcs.addPropertyChangeListener(listener);
+        pcs.addPropertyChangeListener(property,listener);
     }
 
 
@@ -105,7 +106,7 @@ public class ModelManager implements IGameEngineEvolve {
         gameEngine.start(GAME_ENGINE_TIME);
         //gameEngine.waitForTheEnd();
         this.programManager = ProgramManager.GAME;
-        pcs.firePropertyChange(PROP_MENU,null,null);
+        pcs.firePropertyChange(PROP_GAME,null,null);
     }
 
     public void changeToMainMenu(){

@@ -29,7 +29,7 @@ public class GameRootPane extends BorderPane {
     }
 
     private void registerHandlers() {
-        manager.addPropertyChangeListener(ModelManager.PROP_MENU, evt -> updateState());
+        manager.addPropertyChangeListener(ModelManager.PROP_GAME, evt -> updateState());
     }
 
     private void updateState(){
