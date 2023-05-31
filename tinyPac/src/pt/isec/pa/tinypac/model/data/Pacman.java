@@ -18,6 +18,17 @@ public class Pacman extends GameObjects{
         this.power = false;
     }
 
+    /*public Pacman(Pacman pacman){
+        super(getGame());
+        this.pacmanPosition = pacman.getCurrentPosition();
+        this.initialPositon = pacman.getInitialPositon();
+        this.power = pacman.getPower();
+    }*/
+
+    public PacmanPosition getInitialPositon() {
+        return initialPositon;
+    }
+
     public PacmanPosition getCurrentPosition(){
         return new PacmanPosition(pacmanPosition);
     }

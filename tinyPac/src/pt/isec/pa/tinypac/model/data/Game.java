@@ -29,6 +29,28 @@ public class Game {
         this.foodRemaining = 0;
     }
 
+    public Game(Game game){
+        this.level = game.getLevel();
+        this.lives = game.getLives();
+        this.score = game.getScore();
+        this.maze = game.getMaze();
+        this.ghosts = game.getGhosts();
+        this.pacman = game.getPacman();
+        this.foodRemaining = game.getFoodRemaining();
+    }
+
+    public Integer getScore() {
+        return score;
+    }
+
+    public ArrayList<Ghost> getGhosts() {
+        return new ArrayList<>(ghosts);
+    }
+
+    public Pacman getPacman() {
+        return pacman;
+    }
+
     public void incFoodRemaining(){
         this.foodRemaining++;
     }
@@ -126,6 +148,8 @@ public class Game {
 
     public char getCharAtMazeElement(Integer row, Integer column){
 
+        if(maze == null)
+            return ' ';
         char[][] gameBoard = maze.getMaze();
         if(gameBoard == null)
             return ' ';

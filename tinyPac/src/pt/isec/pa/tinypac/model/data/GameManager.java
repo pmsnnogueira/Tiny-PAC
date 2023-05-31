@@ -36,6 +36,9 @@ public class GameManager{
         return false;
     }
 
+    public Game getGame() {
+        return new Game(game);
+    }
 
     private ArrayList<String> filesinFolder(String folderName){
 
@@ -54,13 +57,20 @@ public class GameManager{
         return null;
     }
 
-
     public boolean loadMapLevel(){
+        return loadMapLevel(LEVELS_PATH);
+    }
+
+    public boolean loadMapLevel(String folder){
+
+        if(folder == null)
+            return false;
+
         //verificar se existem ficheiros dos mapas
         if(game.isAnyFoodRemaining() && game.isAnyLiveRemaining())   //Load the Same Level
             return true;
 
-        ArrayList<String> listOfFiles = filesinFolder(LEVELS_PATH);
+        ArrayList<String> listOfFiles = filesinFolder(folder);
         StringBuilder fileName = new StringBuilder();
         int counter = game.getLevel();
 
