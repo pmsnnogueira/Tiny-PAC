@@ -42,4 +42,11 @@ class GameManagerTest {
 
         Assertions.assertEquals(expected,gameManager.loadMapLevel(folder));
     }
+
+    @Test
+    void loadLevelsExistingFolderWithutLevels() {
+        Boolean expected = false;
+        String folder = "files/";
+        Assertions.assertEquals(expected,gameManager.loadMapLevel(folder));
+    }
 }

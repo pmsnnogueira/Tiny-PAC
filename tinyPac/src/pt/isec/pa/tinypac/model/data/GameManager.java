@@ -77,13 +77,16 @@ public class GameManager{
         if(listOfFiles == null)
             return false;
 
-        do {
-            fileName.delete(0, fileName.length());
+       for(int i = 0; i < listOfFiles.size(); i++){
+            fileName.delete(0, fileName.length());      //Remover a barra
             fileName.append("Level").append((counter < 10) ? "0" + counter : + counter).append(".txt");
             counter--;
-        } while (!listOfFiles.contains(fileName.toString()));
+            if(listOfFiles.contains(fileName.toString()))
+                break;
 
-
+            if(i == listOfFiles.size() - 1)     //Nao encontrou nenhum ficheiro com o nome pretendido
+                return false;
+        }
         fileName.insert(0 , LEVELS_PATH);
 
         //Verificar para todos os ficheiros com o directory.listFiles
@@ -194,6 +197,9 @@ public class GameManager{
     }
 
     public ArrayList<Ghost> ghostInitialPositioning(Maze maze,ArrayList<Integer[]> ghostCave){
+
+        if(maze == null || ghostCave == null || ghostCave.isEmpty())
+            return null;
 
         ArrayList<Ghost> ghosts = new ArrayList<>();
 
