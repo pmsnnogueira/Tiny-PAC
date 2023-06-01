@@ -43,6 +43,10 @@ public class Game {
         return score;
     }
 
+    public void setScore(Integer score) {
+        this.score = score;
+    }
+
     public ArrayList<Ghost> getGhosts() {
         return new ArrayList<>(ghosts);
     }
@@ -134,6 +138,9 @@ public class Game {
 
     public char[][] showMaze() {
         char[][] gameBoard;
+
+        if(maze == null)
+            return null;
         gameBoard = maze.getMaze();
         if(gameBoard == null)
             return null;

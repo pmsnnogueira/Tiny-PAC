@@ -10,9 +10,7 @@ public abstract class Ghost extends GameObjects{
     private Stack<Position> movements;
     private Boolean vulnerable;
     private static final char SYMBOL = 'G';
-
     public static final int GHOST_POINTS = 200;
-
 
     public Ghost(Game game, int posX , int posY){
         super(game);

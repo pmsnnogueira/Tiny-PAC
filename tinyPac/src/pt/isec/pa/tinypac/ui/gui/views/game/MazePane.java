@@ -2,6 +2,7 @@ package pt.isec.pa.tinypac.ui.gui.views.game;
 
 import javafx.application.Platform;
 import javafx.geometry.Insets;
+import javafx.scene.Node;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
@@ -48,8 +49,9 @@ public class MazePane extends VBox {
     }
 
     private void registerHandlers() {
-        manager.addPropertyChangeListener(ModelManager.PROP_GAME, evt -> updateState());
-        manager.addPropertyChangeListener(ModelManager.PROP_DATA, evt -> update());
+        //manager.addPropertyChangeListener(ModelManager.PROP_GAME, evt -> updateState());
+        manager.addPropertyChangeListener(ModelManager.PROP_GAME, evt -> Platform.runLater(() -> updateState()));                 //TESTAR ISTO
+        manager.addPropertyChangeListener(ModelManager.PROP_DATA, evt -> Platform.runLater(() -> updateState()));
     }
 
     private void initializeImagesGrid(){
@@ -77,6 +79,16 @@ public class MazePane extends VBox {
     private ImageView getImageInPosition(Integer row, Integer column){
         char element = manager.receiveElement(row,column);
         return getImage(element);
+    }
+    private void removeContentAt(int row, int column) {
+        for (int i = 0; i < gridPane.getChildren().size(); i++) {
+            int rowIndex = GridPane.getRowIndex(gridPane.getChildren().get(i));
+            int columnIndex = GridPane.getColumnIndex(gridPane.getChildren().get(i));
+            if (rowIndex == row && columnIndex == column) {
+                gridPane.getChildren().remove(i);
+                break;
+            }
+        }
     }
 
     private ImageView getImage(char element){
@@ -110,29 +122,37 @@ public class MazePane extends VBox {
             return;
         }
         if(gridPane == null){
-            Platform.runLater(()->{
-                if(gridPane == null) {
-                    initializeImagesGrid();
+            if(gridPane == null) {
+                System.out.println("Ola");
+                initializeImagesGrid();
+            }
+        }
+
+        if(gridPane != null){
+            for (int row = 0; row < rows; row++) {
+                for (int column = 0; column < columns; column++) {
+                    ImageView imageView = getImageInPosition(row,column);
+                    imageView.setFitWidth(CELL_WIDTH);
+                    imageView.setFitHeight(CELL_HEIGHT);
+                    removeContentAt(row,column);
+                    gridPane.add(imageView, column, row);
                 }
-            });
+            }
         }
         this.setVisible(true);
     }
 
+    /*private ImageView getImageInGridPane(int row, int col){
+
+        for (Node node : gridPane.getChildren()) {
+            if (GridPane.getRowIndex(node) == row && GridPane.getColumnIndex(node) == col) {
+                return (ImageView) node;
+            }
+        }
+        return null;
+    }*/
+
     private void update() {
         this.setVisible(manager.getProgramState() == ProgramManager.GAME);
-        if(gridPane != null){
-            Platform.runLater(()->{
-                System.out.println("Ola");
-                for (int row = 0; row < rows; row++) {
-                    for (int column = 0; column < columns; column++) {
-                        ImageView imageView = getImageInPosition(row,column);
-                        imageView.setFitWidth(CELL_WIDTH);
-                        imageView.setFitHeight(CELL_HEIGHT);
-                        gridPane.add(imageView, column, row);
-                    }
-                }
-            });
-        }
     }
 }
