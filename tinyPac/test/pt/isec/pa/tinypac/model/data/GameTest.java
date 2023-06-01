@@ -42,6 +42,28 @@ class GameTest {
         Assertions.assertEquals(expected , c);
     }
 
+    @DisplayName("Test the getLevel() method")
+    @Test
+    public void getLevel() {
+
+        int level = 2;
+
+        game.setLevel(level);
+        assertEquals(level,game.getLevel());
+    }
+
+    @DisplayName("Test the getLevel() method")
+    @Test
+    public void getScore() {
+
+        int score = 256;
+
+        game.setScore(256);
+        assertEquals(score,game.getScore());
+    }
+
+
+
 
 
    /* @DisplayName("Test the incFoodRemaining() method")

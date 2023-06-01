@@ -49,4 +49,5 @@ class GameManagerTest {
         String folder = "files/";
         Assertions.assertEquals(expected,gameManager.loadMapLevel(folder));
     }
+
 }
