@@ -2,13 +2,16 @@ package pt.isec.pa.tinypac.ui.gui.views.game;
 
 import javafx.application.Platform;
 import javafx.geometry.Insets;
+import javafx.scene.Node;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import pt.isec.pa.tinypac.model.ModelManager;
 import pt.isec.pa.tinypac.model.fsm.State;
 import pt.isec.pa.tinypac.ui.gui.resources.ImageManager;
+import pt.isec.pa.tinypac.utils.Direction;
 import pt.isec.pa.tinypac.utils.Obstacles;
 import pt.isec.pa.tinypac.utils.ProgramManager;
 
@@ -30,12 +33,14 @@ public class MazePane extends VBox {
 
     private void createViews() {
         this.setBackground(new Background(new BackgroundFill(Color.BLACK, CornerRadii.EMPTY, Insets.EMPTY)));
+        initializeImagesGrid();
     }
 
     private void registerHandlers() {
         //manager.addPropertyChangeListener(ModelManager.PROP_GAME, evt -> updateState());
-        manager.addPropertyChangeListener(ModelManager.PROP_GAME, evt -> Platform.runLater(() -> updateState()));                 //TESTAR ISTO
-        manager.addPropertyChangeListener(ModelManager.PROP_DATA, evt -> Platform.runLater(() -> updateState()));
+        manager.addPropertyChangeListener(ModelManager.PROP_GAME, evt -> Platform.runLater(() -> update()));                 //TESTAR ISTO
+        //manager.addPropertyChangeListener(ModelManager.PROP_DATA, evt -> Platform.runLater(() -> updateState()));
+
     }
 
     private void initializeImagesGrid(){
@@ -98,22 +103,19 @@ public class MazePane extends VBox {
         return new ImageView(ImageManager.getImage(imageName));
     }
 
-    private void updateState(){
+    private void update(){
+
         if(manager.getState() == State.PAUSE || manager.getState() == State.GameOver){
             this.setVisible(false);
             return;
-        }
-        if(gridPane == null){
-            if(gridPane == null) {
-                System.out.println("Ola");
-                initializeImagesGrid();
-            }
         }
 
         if(gridPane != null){
             for (int row = 0; row < manager.getMazeRows(); row++) {
                 for (int column = 0; column < manager.getMazeColumns(); column++) {
                     ImageView imageView = getImageInPosition(row,column);
+                    if(imageView.getImage().equals(getImageInGridPane(row,column).getImage()))
+                        continue;
                     imageView.setFitWidth(CELL_WIDTH);
                     imageView.setFitHeight(CELL_HEIGHT);
                     removeContentAt(row,column);
@@ -124,7 +126,23 @@ public class MazePane extends VBox {
         this.setVisible(true);
     }
 
-    /*private ImageView getImageInGridPane(int row, int col){
+    private boolean areImagesEqual(Image image1, Image image2) {
+        if (image1.getWidth() != image2.getWidth() || image1.getHeight() != image2.getHeight()) {
+            return false;
+        }
+
+        for (int x = 0; x < image1.getWidth(); x++) {
+            for (int y = 0; y < image1.getHeight(); y++) {
+                if (image1.getPixelReader().getArgb(x, y) != image2.getPixelReader().getArgb(x, y)) {
+                    return false;
+                }
+            }
+        }
+
+        return true;
+    }
+
+    private ImageView getImageInGridPane(int row, int col){
 
         for (Node node : gridPane.getChildren()) {
             if (GridPane.getRowIndex(node) == row && GridPane.getColumnIndex(node) == col) {
@@ -132,9 +150,5 @@ public class MazePane extends VBox {
             }
         }
         return null;
-    }*/
-
-    private void update() {
-        this.setVisible(manager.getProgramState() == ProgramManager.GAME);
     }
 }

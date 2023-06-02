@@ -4,6 +4,7 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import pt.isec.pa.tinypac.model.ModelManager;
@@ -63,6 +64,21 @@ public class Top5Pane extends BorderPane {
 
         btnExitGame.setOnAction(actionEvent -> {
             manager.changeToMainMenu();
+        });
+
+        setOnKeyPressed(keyEvent -> {
+            if(keyEvent.getCode() == KeyCode.UP || keyEvent.getCode() == KeyCode.W)
+                System.out.println("Ola");
+
+            if(keyEvent.getCode() == KeyCode.RIGHT || keyEvent.getCode() == KeyCode.D)
+                System.out.println("Ola");
+
+            if(keyEvent.getCode() == KeyCode.LEFT || keyEvent.getCode() == KeyCode.A)
+                System.out.println("Ola");
+
+            if(keyEvent.getCode() == KeyCode.DOWN || keyEvent.getCode() == KeyCode.S)
+                System.out.println("Ola");
+
         });
     }
 

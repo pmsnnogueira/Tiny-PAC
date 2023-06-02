@@ -17,7 +17,7 @@ public class ModelManager implements IGameEngineEvolve {
     public static final String PROP_DATA = "_data_";
     public static final String PROP_GAME = "_gameMenu_";
 
-    private static final Integer GAME_ENGINE_TIME = 250;
+    private static final Integer GAME_ENGINE_TIME = 750;
 
     private GameEngine gameEngine;
     private Context context;
@@ -42,8 +42,8 @@ public class ModelManager implements IGameEngineEvolve {
 
     public boolean changeDirection(Direction direction){
         if(context.changeDirection(direction)) {
-            System.out.println("New Direction: " + direction.toString());
-            pcs.firePropertyChange(PROP_DATA, null,null);
+            //System.out.println("New Direction: " + direction.toString());
+            pcs.firePropertyChange(PROP_GAME, null,null);
             return true;
         }
         return false;
@@ -75,7 +75,8 @@ public class ModelManager implements IGameEngineEvolve {
     public void evolve(IGameEngine gameEngine, long currentTime) {
 
         context.evolve(currentTime);
-        pcs.firePropertyChange(PROP_DATA,null,null);
+        //pcs.firePropertyChange(PROP_DATA,null,null);
+        System.out.println("Ola");
         pcs.firePropertyChange(PROP_GAME,null,null);
     }
 
