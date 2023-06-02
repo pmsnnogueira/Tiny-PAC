@@ -2,13 +2,13 @@ package pt.isec.pa.tinypac.ui.gui.views.game;
 
 import javafx.application.Platform;
 import javafx.geometry.Insets;
-import javafx.scene.Node;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import pt.isec.pa.tinypac.model.ModelManager;
 import pt.isec.pa.tinypac.model.fsm.State;
+import pt.isec.pa.tinypac.ui.gui.resources.ImageManager;
 import pt.isec.pa.tinypac.utils.Obstacles;
 import pt.isec.pa.tinypac.utils.ProgramManager;
 
@@ -17,27 +17,11 @@ public class MazePane extends VBox {
     private static final double CELL_WIDTH = 12.5;
     private static final double CELL_HEIGHT = 12.5;
     private GridPane gridPane;
-    private Integer rows;
-    private Integer columns;
-    private Image wallImage;
-    private Image ballImage;
-    private Image fruitImage;
-    private Image pacmanImage;
-    private Image powerImage;
-    private Image blinkyImage;
+
     public MazePane(ModelManager manager) {
 
         this.manager = manager;
-        this.rows = 0;
-        this.columns = 0;
         this.gridPane = null;
-
-        this.wallImage = new Image(getClass().getResourceAsStream("/pt/isec/pa/tinypac/ui/gui/resources/wall.png"));
-        this.ballImage = new Image(getClass().getResourceAsStream("/pt/isec/pa/tinypac/ui/gui/resources/ball.png"));
-        this.fruitImage = new Image(getClass().getResourceAsStream("/pt/isec/pa/tinypac/ui/gui/resources/fruit.png"));
-        this.pacmanImage = new Image(getClass().getResourceAsStream("/pt/isec/pa/tinypac/ui/gui/resources/pacman.png"));
-        this.powerImage= new Image(getClass().getResourceAsStream("/pt/isec/pa/tinypac/ui/gui/resources/power.png"));
-        this.blinkyImage= new Image(getClass().getResourceAsStream("/pt/isec/pa/tinypac/ui/gui/resources/blinky.png"));
 
         createViews();
         registerHandlers();
@@ -56,12 +40,10 @@ public class MazePane extends VBox {
 
     private void initializeImagesGrid(){
 
-        this.rows = manager.getMazeRows();
-        this.columns = manager.getMazeColumns();
         this.gridPane = new GridPane();
 
-        for (int row = 0; row < rows; row++) {
-            for (int column = 0; column < columns; column++) {
+        for (int row = 0; row < manager.getMazeRows(); row++) {
+            for (int column = 0; column < manager.getMazeColumns(); column++) {
 
                 ImageView imageView = getImageInPosition(row,column);
                 imageView.setFitWidth(CELL_WIDTH);
@@ -93,27 +75,27 @@ public class MazePane extends VBox {
 
     private ImageView getImage(char element){
 
-        ImageView imageView = new ImageView();
+        String imageName = "";
 
         if(element == Obstacles.WALL.getSymbol()) {
-            imageView.setImage(wallImage);
+            imageName = "wall.png";
         }else if(element == Obstacles.BALL.getSymbol()){
-            imageView.setImage(ballImage);
+            imageName = "ball.png";
         }else if(element == Obstacles.PACMAN.getSymbol()){
-            imageView.setImage(pacmanImage);
+            imageName = "pacman.png";
         }else if(element == Obstacles.FRUIT.getSymbol()){
-            imageView.setImage(fruitImage);
+            imageName = "fruit.png";
         } else if(element == Obstacles.POWER.getSymbol()){
-            imageView.setImage(powerImage);
+            imageName = "power.png";
         } else if(element == Obstacles.WARP.getSymbol()){
             //imageView.setImage(fruitImage);
         }else if(element == Obstacles.PORTAL.getSymbol()){
             //imageView.setImage(fruitImage);
         }else if(element == Obstacles.BLINKY.getSymbol()){
-            imageView.setImage(blinkyImage);
+            imageName = "blinky.png";
         }
 
-        return imageView;
+        return new ImageView(ImageManager.getImage(imageName));
     }
 
     private void updateState(){
@@ -129,8 +111,8 @@ public class MazePane extends VBox {
         }
 
         if(gridPane != null){
-            for (int row = 0; row < rows; row++) {
-                for (int column = 0; column < columns; column++) {
+            for (int row = 0; row < manager.getMazeRows(); row++) {
+                for (int column = 0; column < manager.getMazeColumns(); column++) {
                     ImageView imageView = getImageInPosition(row,column);
                     imageView.setFitWidth(CELL_WIDTH);
                     imageView.setFitHeight(CELL_HEIGHT);
