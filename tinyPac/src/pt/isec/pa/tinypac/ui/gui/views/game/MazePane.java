@@ -67,7 +67,7 @@ public class MazePane extends VBox {
            imageView.setFitWidth(CELL_WIDTH);
            imageView.setFitHeight(CELL_HEIGHT);
            images[i] = imageView;
-           //images[i].setUserData(i);
+           images[i].setUserData(i);
            tilePane.getChildren().add(images[i]);
         }
        this.getChildren().addAll(flowPane);
