@@ -19,6 +19,13 @@ public class Blinky extends Ghost{
     private static final int DOWN = 4;
     private int direction;
 
+    private static final double UPDATE_INTERVAL = 0.016; // Fixed time step in seconds
+    private static final int SPEED = 2; // Speed in pixels per second
+    private double accumulatedTime = 0.0;
+    private long lastUpdateTime = System.nanoTime();
+    private double moveInterval = 0.5; // Adjust this value to control the movement speed
+
+
     public Blinky(Game game,int posX, int posY){
         super(game,posX, posY);
         this.direction = UP;
@@ -59,7 +66,6 @@ public class Blinky extends Ghost{
 
     @Override
     public boolean evolve() {
-
         Maze maze = game.getMaze();
 
         if(cruzamento(maze, direction)){
@@ -76,9 +82,30 @@ public class Blinky extends Ghost{
         }
 
 
-        move(maze, direction);
+        // Accumulate elapsed time
+        double deltaTime = getDeltaTime();
+        accumulatedTime += deltaTime;
+
+        // Check if enough time has accumulated for movement
+        if (accumulatedTime >= moveInterval) {
+            // Perform movement
+            int distance = (int) (accumulatedTime / moveInterval); // Calculate the distance based on accumulated time and move interval
+            System.out.println(distance);
+            move(maze, direction, distance);
+
+            // Reset accumulated time
+            accumulatedTime = 0.0;
+        }
+
 
         return true;
+    }
+
+    private double getDeltaTime() {
+        long currentTime = System.nanoTime();
+        double deltaTime = (currentTime - lastUpdateTime) / 1e9; // Convert nanoseconds to seconds
+        lastUpdateTime = currentTime;
+        return deltaTime;
     }
 
     private Integer oppositeDirection(Integer direction){
@@ -109,27 +136,30 @@ public class Blinky extends Ghost{
         pushLastPosition(posX,posY);
     }
 
-    private boolean move(Maze maze, int direction){
+    private boolean move(Maze maze, int direction, int distance){
+        for (int i = 0; i < distance; i++) {
+            int nextPosX = getPosX();
+            int nextPosY = getPosY();
 
-        int nextPosX = getPosX();
-        int nextPosY = getPosY();
+            addLastMove(getPosX(), getPosY());
 
-        addLastMove(getPosX(),getPosY());
+            switch (direction) {
+                case UP -> nextPosY--;
+                case DOWN -> nextPosY++;
+                case LEFT -> nextPosX--;
+                case RIGHT -> nextPosX++;
+            }
 
-        switch (direction){
-            case UP -> nextPosY--;
-            case DOWN -> nextPosY++;
-            case LEFT -> nextPosX--;
-            case RIGHT -> nextPosX++;
+            IMazeElement mazeElement = maze.get(nextPosY, nextPosX);
+            if (mazeElement == null || mazeElement.getSymbol() != Obstacles.WALL.getSymbol()) {
+                setPos(nextPosX, nextPosY);
+                return true;
+            }else{
+                return false;
+            }
         }
 
-        IMazeElement mazeElement = maze.get(nextPosY, nextPosX);
-        if(mazeElement == null || mazeElement.getSymbol() != Obstacles.WALL.getSymbol()){
-            setPos(nextPosX, nextPosY);
-            return true;
-        }
-
-        return false;
+        return true;
     }
 
     private boolean cruzamento(Maze maze, int direction){

@@ -74,8 +74,6 @@ public class ModelManager implements IGameEngineEvolve {
     @Override
     public void evolve(IGameEngine gameEngine, long currentTime) {
         context.evolve(currentTime);
-        //pcs.firePropertyChange(PROP_DATA,null,null);
-        System.out.println("Ola" + currentTime);
         pcs.firePropertyChange(PROP_GAME,null,null);
     }
 
