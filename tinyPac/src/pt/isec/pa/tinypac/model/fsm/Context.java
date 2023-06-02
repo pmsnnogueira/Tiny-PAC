@@ -75,4 +75,12 @@ public class Context {
     public char receiveElement(int row, int column) {
         return data.receiveElement(row,column);
     }
+
+    public Direction getDirection() {
+        return data.getDirection();
+    }
+
+    public boolean charIsGhost(char c) {
+        return data.charIsGhosts(c);
+    }
 }

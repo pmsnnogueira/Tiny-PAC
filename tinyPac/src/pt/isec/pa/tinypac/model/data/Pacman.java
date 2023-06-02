@@ -114,4 +114,8 @@ public class Pacman extends GameObjects{
     public void reset() {
         this.pacmanPosition = new PacmanPosition(initialPositon);
     }
+
+    public Direction getDirection() {
+        return pacmanPosition.getDirection();
+    }
 }

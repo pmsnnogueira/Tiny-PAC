@@ -295,4 +295,12 @@ public class GameManager{
     public char receiveElement(int row, int column) {
         return game.getCharElementInPosition(row,column);
     }
+
+    public Direction getDirection() {
+        return game.getDirection();
+    }
+
+    public boolean charIsGhosts(char c) {
+        return game.charIsGhosts(c);
+    }
 }

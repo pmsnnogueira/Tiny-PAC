@@ -87,8 +87,18 @@ public class MazePane extends VBox {
         }else if(element == Obstacles.BALL.getSymbol()){
             imageName = "ball.png";
         }else if(element == Obstacles.PACMAN.getSymbol()){
-            imageName = "pacman.png";
-        }else if(element == Obstacles.FRUIT.getSymbol()){
+           if(manager.getDirection() == null)
+                imageName = "pacman_left.png";
+           else {
+               switch (manager.getDirection()) {
+                   case UP -> imageName = "pacman_up.png";
+                   case RIGHT -> imageName = "pacman_right.png";
+                   case LEFT -> imageName = "pacman_left.png";
+                   case DOWN -> imageName = "pacman_down.png";
+                   default -> imageName = "pacman_up.png";
+               }
+           }
+        } else if(element == Obstacles.FRUIT.getSymbol()){
             imageName = "fruit.png";
         } else if(element == Obstacles.POWER.getSymbol()){
             imageName = "power.png";
@@ -96,12 +106,31 @@ public class MazePane extends VBox {
             //imageView.setImage(fruitImage);
         }else if(element == Obstacles.PORTAL.getSymbol()){
             //imageView.setImage(fruitImage);
-        }else if(element == Obstacles.BLINKY.getSymbol()){
-            imageName = "blinky.png";
         }
+
+        if(manager.charIsGhosts(element))
+            switch (manager.getState()) {
+                case WAIT_FOR_DIRECTIONS, LOCKED_GHOSTS, GAME -> {
+                    if (element == Obstacles.BLINKY.getSymbol()) {
+                        imageName = "redGhost.gif";
+                    } else if (element == Obstacles.PINKY.getSymbol()) {
+                        imageName = "pinkGhost.gif";
+                    } else if (element == Obstacles.CLYDE.getSymbol()) {
+                        imageName = "yellowGhost.gif";
+                    } else if (element == Obstacles.INKY.getSymbol()) {
+                        imageName = "blueGhost.gif";
+                    }
+                }
+                case GHOST_VULNERABLE -> {
+                    imageName = "vulnerableGhost.gif";
+                }
+            }
+
 
         return new ImageView(ImageManager.getImage(imageName));
     }
+
+
 
     private void update(){
 

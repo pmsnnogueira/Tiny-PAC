@@ -7,6 +7,7 @@ import pt.isec.pa.tinypac.model.data.Maze;
 import pt.isec.pa.tinypac.model.data.obstacles.Portal;
 import pt.isec.pa.tinypac.utils.Direction;
 import pt.isec.pa.tinypac.utils.Obstacles;
+import pt.isec.pa.tinypac.utils.Position;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
@@ -99,7 +100,7 @@ public class Pinky extends Ghost {
     @Override
     public boolean evolve() {
 
-        /*Maze maze = game.getMaze();
+        Maze maze = game.getMaze();
 
         if(verifyMinimumDistance(cornerDirection)){
             //Mudar a direcao do canto
@@ -121,13 +122,23 @@ public class Pinky extends Ghost {
             }
         }
 
-        move(maze, direction);*/
+        move(maze, direction);
 
         return true;
     }
 
     @Override
-    public void returnToBase() {
+    public void returnToBase(){
+
+        if(getVulnerable()){
+            if(!isLastPositionEmpty()){
+                Position lastPositon = popLastPosition();
+                setPos(lastPositon.getPosX(), lastPositon.getPosY());
+                return;
+            }
+            //unlockGhost();
+        }
+
         return;
     }
 

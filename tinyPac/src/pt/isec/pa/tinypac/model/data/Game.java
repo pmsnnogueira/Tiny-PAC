@@ -374,12 +374,21 @@ public class Game {
         return lives;
     }
     public Boolean isAnyLiveRemaining(){
-        if(getLives() > 0)
-            return true;
-        return false;
+        return getLives() > 0;
     }
 
     public char getCharElementInPosition(int row, int column) {
         return getCharAtMazeElement(row,column);
+    }
+
+    public Direction getDirection() {
+        return pacman.getDirection();
+    }
+
+    public boolean charIsGhosts(char c) {
+        return c == Obstacles.BLINKY.getSymbol() ||
+                c == Obstacles.PINKY.getSymbol() ||
+                c == Obstacles.CLYDE.getSymbol() ||
+                c == Obstacles.INKY.getSymbol();
     }
 }

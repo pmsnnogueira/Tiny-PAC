@@ -117,4 +117,12 @@ public class ModelManager implements IGameEngineEvolve {
     public char receiveElement(int row, int column) {
         return context.receiveElement(row,column);
     }
+
+    public Direction getDirection() {
+        return context.getDirection();
+    }
+
+    public boolean charIsGhosts(char c) {
+        return context.charIsGhost(c);
+    }
 }
