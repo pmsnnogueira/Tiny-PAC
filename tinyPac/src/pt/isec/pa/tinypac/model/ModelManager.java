@@ -17,7 +17,7 @@ public class ModelManager implements IGameEngineEvolve {
     public static final String PROP_DATA = "_data_";
     public static final String PROP_GAME = "_gameMenu_";
 
-    private static final Integer GAME_ENGINE_TIME = 750;
+    private static final Integer GAME_ENGINE_TIME = 500;
 
     private GameEngine gameEngine;
     private Context context;
@@ -73,10 +73,9 @@ public class ModelManager implements IGameEngineEvolve {
 
     @Override
     public void evolve(IGameEngine gameEngine, long currentTime) {
-
         context.evolve(currentTime);
         //pcs.firePropertyChange(PROP_DATA,null,null);
-        System.out.println("Ola");
+        System.out.println("Ola" + currentTime);
         pcs.firePropertyChange(PROP_GAME,null,null);
     }
 

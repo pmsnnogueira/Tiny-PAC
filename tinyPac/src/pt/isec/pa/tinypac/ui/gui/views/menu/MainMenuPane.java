@@ -77,8 +77,6 @@ public class MainMenuPane extends BorderPane {
 
     private void registerHandlers() {
 
-        manager.addPropertyChangeListener(ModelManager.PROP_MENU, evt -> updateState());
-
         btnPlayGame.setOnAction(actionEvent -> {
             manager.changeToGame();
 

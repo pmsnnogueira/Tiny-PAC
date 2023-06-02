@@ -1,5 +1,6 @@
 package pt.isec.pa.tinypac.ui.gui.views.menu;
 
+import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.ToggleButton;
@@ -54,9 +55,8 @@ public class Top5Pane extends BorderPane {
     }
 
     private void registerHandlers() {
-        manager.addPropertyChangeListener(ModelManager.PROP_MENU, evt -> {
-            updateState();
-        });
+
+        manager.addPropertyChangeListener(ModelManager.PROP_MENU, evt -> update());
 
         btnBackToMenu.setOnAction(actionEvent -> {
             manager.changeToMainMenu();

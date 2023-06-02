@@ -2,7 +2,10 @@ package pt.isec.pa.tinypac.ui.gui.views.game;
 
 import javafx.application.Platform;
 import javafx.geometry.Insets;
+import javafx.geometry.Orientation;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
+import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
@@ -19,13 +22,12 @@ public class MazePane extends VBox {
     private ModelManager manager;
     private static final double CELL_WIDTH = 12.5;
     private static final double CELL_HEIGHT = 12.5;
-    private GridPane gridPane;
+    private TilePane tilePane;
+    private ImageView[] images;
 
     public MazePane(ModelManager manager) {
 
         this.manager = manager;
-        this.gridPane = null;
-
         createViews();
         registerHandlers();
         update();
@@ -45,38 +47,36 @@ public class MazePane extends VBox {
 
     private void initializeImagesGrid(){
 
-        this.gridPane = new GridPane();
+       tilePane = new TilePane(Orientation.HORIZONTAL);
 
-        for (int row = 0; row < manager.getMazeRows(); row++) {
-            for (int column = 0; column < manager.getMazeColumns(); column++) {
+       tilePane.setPrefColumns(manager.getMazeColumns());
+       tilePane.setPrefTileHeight(CELL_HEIGHT);
+       tilePane.setPrefTileWidth(CELL_WIDTH);
 
-                ImageView imageView = getImageInPosition(row,column);
-                imageView.setFitWidth(CELL_WIDTH);
-                imageView.setFitHeight(CELL_HEIGHT);
+       FlowPane flowPane = new FlowPane(tilePane);
+       flowPane.setAlignment(Pos.CENTER);
+       AnchorPane.setTopAnchor(flowPane,0.0);
+       AnchorPane.setBottomAnchor(flowPane,0.0);
+       AnchorPane.setLeftAnchor(flowPane,0.0);
+       AnchorPane.setRightAnchor(flowPane,0.0);
 
-                gridPane.add(imageView, column, row);
-            }
+       images = new ImageView[manager.getMazeRows() * manager.getMazeColumns()];
+       for(int i = 0 ;i < images.length; i++) {
+
+           ImageView imageView = getImageInPosition((i / manager.getMazeColumns()),(i % manager.getMazeColumns()));
+           imageView.setFitWidth(CELL_WIDTH);
+           imageView.setFitHeight(CELL_HEIGHT);
+           images[i] = imageView;
+           //images[i].setUserData(i);
+           tilePane.getChildren().add(images[i]);
         }
-
-        gridPane.setVgap(2);
-        gridPane.setHgap(2);
-        this.getChildren().add(gridPane);
+       this.getChildren().addAll(flowPane);
     }
-
     private ImageView getImageInPosition(Integer row, Integer column){
         char element = manager.receiveElement(row,column);
         return getImage(element);
     }
-    private void removeContentAt(int row, int column) {
-        for (int i = 0; i < gridPane.getChildren().size(); i++) {
-            int rowIndex = GridPane.getRowIndex(gridPane.getChildren().get(i));
-            int columnIndex = GridPane.getColumnIndex(gridPane.getChildren().get(i));
-            if (rowIndex == row && columnIndex == column) {
-                gridPane.getChildren().remove(i);
-                break;
-            }
-        }
-    }
+
 
     private ImageView getImage(char element){
 
@@ -110,45 +110,6 @@ public class MazePane extends VBox {
             return;
         }
 
-        if(gridPane != null){
-            for (int row = 0; row < manager.getMazeRows(); row++) {
-                for (int column = 0; column < manager.getMazeColumns(); column++) {
-                    ImageView imageView = getImageInPosition(row,column);
-                    if(imageView.getImage().equals(getImageInGridPane(row,column).getImage()))
-                        continue;
-                    imageView.setFitWidth(CELL_WIDTH);
-                    imageView.setFitHeight(CELL_HEIGHT);
-                    removeContentAt(row,column);
-                    gridPane.add(imageView, column, row);
-                }
-            }
-        }
         this.setVisible(true);
-    }
-
-    private boolean areImagesEqual(Image image1, Image image2) {
-        if (image1.getWidth() != image2.getWidth() || image1.getHeight() != image2.getHeight()) {
-            return false;
-        }
-
-        for (int x = 0; x < image1.getWidth(); x++) {
-            for (int y = 0; y < image1.getHeight(); y++) {
-                if (image1.getPixelReader().getArgb(x, y) != image2.getPixelReader().getArgb(x, y)) {
-                    return false;
-                }
-            }
-        }
-
-        return true;
-    }
-
-    private ImageView getImageInGridPane(int row, int col){
-
-        for (Node node : gridPane.getChildren()) {
-            if (GridPane.getRowIndex(node) == row && GridPane.getColumnIndex(node) == col) {
-                return (ImageView) node;
-            }
-        }
-        return null;
     }
 }

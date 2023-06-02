@@ -33,8 +33,6 @@ public class GameRootPane extends BorderPane {
         setOnKeyPressed(keyEvent -> {
             gamePane.handleKeyPress(keyEvent); // Delegate key event handling to the GamePane
         });
-
-
     }
 
     private void update(){
