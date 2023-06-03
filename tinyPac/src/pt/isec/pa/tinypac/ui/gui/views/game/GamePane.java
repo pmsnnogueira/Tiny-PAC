@@ -50,7 +50,7 @@ public class GamePane extends BorderPane {
         btnChangeDirection.setMaxWidth(BTN_MAX_WIDTH);
         btnChangeDirection.setSelected(false);
 
-        menu = new VBox(mazePane,btnChangeDirection);
+        menu = new VBox(mazePane/*,btnChangeDirection*/);
        // menu = new VBox(btnChangeDirection);
         //menu.setMinWidth(1000);
         //menu.setMinHeight(Integer.MAX_VALUE);

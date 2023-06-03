@@ -82,20 +82,9 @@ public class Blinky extends Ghost{
         }
 
 
-        // Accumulate elapsed time
-        double deltaTime = getDeltaTime();
-        accumulatedTime += deltaTime;
 
-        // Check if enough time has accumulated for movement
-        if (accumulatedTime >= moveInterval) {
-            // Perform movement
-            int distance = (int) (accumulatedTime / moveInterval); // Calculate the distance based on accumulated time and move interval
-            System.out.println(distance);
-            move(maze, direction, distance);
 
-            // Reset accumulated time
-            accumulatedTime = 0.0;
-        }
+            move(maze, direction, 1);
 
 
         return true;

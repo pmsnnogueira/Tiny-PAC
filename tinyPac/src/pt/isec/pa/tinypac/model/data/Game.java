@@ -19,6 +19,9 @@ public class Game {
     private ArrayList<Ghost> ghosts;
     private Integer foodRemaining;
 
+    private static int currentTick = 1;
+    private int tickAtBeginningOfFunction = 1;
+    private int maxTick = 50;
     public Game(){
         this.level = 1;
         this.lives = 1;
@@ -214,30 +217,51 @@ public class Game {
 
     public boolean evolve() {
 
+        tickAtBeginningOfFunction = 1;
+        maxTick = 50;
+        int counterPacman = 0;
+
         if(ghosts == null || pacman == null)
             return false;
 
-        evolvePacman();
-        eatFood();
+        while (tickAtBeginningOfFunction <= maxTick){
 
+            try {
+                Thread.sleep(20);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+            if(currentTick % pacman.getTicksToMove() == 0){
+                evolvePacman();
+                eatFood();
+                counterPacman++;
+            }
+            evolveGhosts();
+            tickAtBeginningOfFunction++;
+            currentTick++;
+        }
+        /*evolvePacman();
+        eatFood();*/
 
-        evolveGhosts();
+        //evolveGhosts();
 
         return true;
     }
 
-    public void evolvePacman(){
-        pacman.evolve();
-    }
-
     public void evolveGhosts(){
         for(Ghost ghost : ghosts){
-            if(!ghost.getLocked() && !ghost.getVulnerable()){
-                ghost.evolve();
-            } else if(ghost.getVulnerable()){
-                ghost.returnToBase();
+            if(currentTick % ghost.getTicksToMove() == 0) {
+                if (!ghost.getLocked() && !ghost.getVulnerable()) {
+                    ghost.evolve();
+                } else if (ghost.getVulnerable()) {
+                    ghost.returnToBase();
+                }
             }
         }
+    }
+
+    public void evolvePacman(){
+        pacman.evolve();
     }
 
     public Integer controlGame(){
