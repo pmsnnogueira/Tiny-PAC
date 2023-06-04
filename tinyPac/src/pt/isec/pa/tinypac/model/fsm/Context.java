@@ -83,4 +83,8 @@ public class Context {
     public boolean charIsGhost(char c) {
         return data.charIsGhosts(c);
     }
+
+    public int getScore() {
+        return data.getScore();
+    }
 }

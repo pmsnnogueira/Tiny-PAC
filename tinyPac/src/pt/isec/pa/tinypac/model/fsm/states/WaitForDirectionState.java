@@ -24,7 +24,7 @@ public class WaitForDirectionState extends StateAdapter {
     @Override
     public boolean changeDirection(Direction direction) {
         data.changeDirection(direction);
-        changeState(State.LOCKED_GHOSTS);
+        changeState(State.GameOver);
         return true;
     }
 

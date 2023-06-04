@@ -303,4 +303,8 @@ public class GameManager{
     public boolean charIsGhosts(char c) {
         return game.charIsGhosts(c);
     }
+
+    public int getScore() {
+        return game.getScore();
+    }
 }

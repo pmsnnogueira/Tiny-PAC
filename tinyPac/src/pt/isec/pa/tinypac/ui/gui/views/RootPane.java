@@ -1,12 +1,11 @@
 package pt.isec.pa.tinypac.ui.gui.views;
 
-import javafx.scene.input.KeyCode;
 import javafx.scene.layout.*;
 import pt.isec.pa.tinypac.model.ModelManager;
+import pt.isec.pa.tinypac.ui.gui.resources.ImageManager;
 import pt.isec.pa.tinypac.ui.gui.views.menu.GameRootPane;
 import pt.isec.pa.tinypac.ui.gui.views.menu.MainMenuPane;
 import pt.isec.pa.tinypac.ui.gui.views.menu.Top5Pane;
-import pt.isec.pa.tinypac.utils.Direction;
 
 public class RootPane extends BorderPane {
     private ModelManager manager;
@@ -26,6 +25,8 @@ public class RootPane extends BorderPane {
                new GameRootPane(manager),
                new Top5Pane(manager)
        );
+
+
        this.setCenter(stackPane);
     }
 

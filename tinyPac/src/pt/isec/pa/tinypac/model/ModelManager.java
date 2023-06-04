@@ -123,4 +123,8 @@ public class ModelManager implements IGameEngineEvolve {
     public boolean charIsGhosts(char c) {
         return context.charIsGhost(c);
     }
+
+    public int getScore() {
+        return context.getScore();
+    }
 }
