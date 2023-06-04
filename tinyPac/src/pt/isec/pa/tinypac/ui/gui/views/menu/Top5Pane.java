@@ -3,6 +3,8 @@ package pt.isec.pa.tinypac.ui.gui.views.menu;
 import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.input.KeyCode;
@@ -13,14 +15,22 @@ import pt.isec.pa.tinypac.utils.ProgramManager;
 
 public class Top5Pane extends BorderPane {
 
-    private VBox menu;
-    private ToggleGroup tgMenuButtons;
+    private ToggleButton btnMenu ,btnExitGame;
+    private static final Integer BTN_MIN_WIDTH = 100;
+    private static final Integer BTN_PREF_WIDTH = 120;
+    private static final Integer BTN_MAX_WIDTH = 150;
 
-    private ToggleButton btnBackToMenu, btnExitGame;
+
+    private static final Integer BTN_MIN_HEIGHT = 50;
+    private static final Integer BTN_PREF_HEIGHT = 75;
+    private static final Integer BTN_MAX_HEIGHT = 80;
+
+    private static final Integer BTN_SPACING = 15;
+
+    private VBox top5List;
 
     private ModelManager manager;
 
-    private static final Integer BTN_PREF_WIDTH = 100;
     public Top5Pane(ModelManager manager) {
 
         this.manager = manager;
@@ -29,65 +39,84 @@ public class Top5Pane extends BorderPane {
         update();
     }
 
-
+    private TilePane getLine(double width, String... strings) {
+        TilePane tilePane = new TilePane();
+        for (int i = 0; i <strings.length; i++) {
+            Label label = new Label(strings[i]);
+            tilePane.getChildren().add(label);
+        }
+        tilePane.setPrefWidth(width);
+        tilePane.setPrefTileWidth((width - 20)/strings.length);
+        return tilePane;
+    }
 
     private void createViews() {
 
-        tgMenuButtons = new ToggleGroup();
 
-        btnBackToMenu = new ToggleButton("Back To Menu");
-        btnBackToMenu.setToggleGroup(tgMenuButtons);
-        btnBackToMenu.setPrefHeight(100);
-        btnBackToMenu.setPrefWidth(BTN_PREF_WIDTH);
-        btnBackToMenu.setSelected(false);
+        Label lbMain = new Label("Tiny-PAC");
+        lbMain.getStyleClass().add("mainLabel");
+        lbMain.setPadding(new Insets(0,0,25,0));
+
+        TilePane titlePane = getLine(
+                450,
+                "Username",
+                "Score"
+        );
+        titlePane.setStyle("-fx-background-color: #c0c0c0;");
+        top5List = new VBox();
+        VBox listWithTitle = new VBox(titlePane,top5List);
+        listWithTitle.setBorder(new Border(new BorderStroke(Color.DARKGRAY,BorderStrokeStyle.SOLID,
+                CornerRadii.EMPTY,new BorderWidths(2))));
+
+
+        ToggleGroup tgMenuButtons = new ToggleGroup();
+        btnMenu = new ToggleButton("Back To Menu");
+        btnMenu.setMinHeight(BTN_MIN_HEIGHT);
+        btnMenu.setPrefHeight(BTN_PREF_HEIGHT);
+        btnMenu.setMaxHeight(BTN_MAX_HEIGHT);
+        btnMenu.setMinWidth(BTN_MIN_WIDTH);
+        btnMenu.setPrefWidth(BTN_PREF_WIDTH + 20);
+        btnMenu.setMaxWidth(BTN_MAX_WIDTH + 20);
+        btnMenu.getStyleClass().add("mainButton");
+        btnMenu.setSelected(false);
 
         btnExitGame = new ToggleButton("Exit");
-        btnExitGame.setToggleGroup(tgMenuButtons);
-        btnExitGame.setPrefHeight(100);
+        btnExitGame.setMinHeight(BTN_MIN_HEIGHT);
+        btnExitGame.setPrefHeight(BTN_PREF_HEIGHT);
+        btnExitGame.setMaxHeight(BTN_MAX_HEIGHT);
+        btnExitGame.setMinWidth(BTN_MIN_WIDTH);
         btnExitGame.setPrefWidth(BTN_PREF_WIDTH);
+        btnExitGame.setMaxWidth(BTN_MAX_WIDTH);
+        btnExitGame.getStyleClass().add("mainButton");
         btnExitGame.setSelected(false);
 
-        menu = new VBox(btnBackToMenu, btnExitGame);
-        menu.setMinWidth(250);
-        menu.setBackground(new Background(new BackgroundFill(Color.LIGHTBLUE, CornerRadii.EMPTY, Insets.EMPTY)));
-        this.setCenter(menu);
+        tgMenuButtons.getToggles().addAll(btnMenu,btnExitGame);
+
+        HBox menu = new HBox(btnMenu,btnExitGame);
+        menu.setSpacing(BTN_SPACING);
         menu.setAlignment(Pos.CENTER);
+        menu.setPadding(new Insets(20,0,0,0));
+
+
+        VBox vBoxList = new VBox(lbMain, listWithTitle , menu);
+        vBoxList.setFillWidth(false);
+        vBoxList.setSpacing(10);
+        vBoxList.setAlignment(Pos.CENTER);
+
+        this.setCenter(vBoxList);
     }
 
     private void registerHandlers() {
 
         manager.addPropertyChangeListener(ModelManager.PROP_MENU, evt -> update());
 
-        btnBackToMenu.setOnAction(actionEvent -> {
+        btnMenu.setOnAction(actionEvent -> {
             manager.changeToMainMenu();
         });
 
         btnExitGame.setOnAction(actionEvent -> {
-            manager.changeToMainMenu();
+            Platform.exit();
         });
-
-        setOnKeyPressed(keyEvent -> {
-            if(keyEvent.getCode() == KeyCode.UP || keyEvent.getCode() == KeyCode.W)
-                System.out.println("Ola");
-
-            if(keyEvent.getCode() == KeyCode.RIGHT || keyEvent.getCode() == KeyCode.D)
-                System.out.println("Ola");
-
-            if(keyEvent.getCode() == KeyCode.LEFT || keyEvent.getCode() == KeyCode.A)
-                System.out.println("Ola");
-
-            if(keyEvent.getCode() == KeyCode.DOWN || keyEvent.getCode() == KeyCode.S)
-                System.out.println("Ola");
-
-        });
-    }
-
-    private void updateState(){
-        if(manager.getProgramState() != ProgramManager.TOP5) {
-            this.setVisible(false);
-            return;
-        }
-        this.setVisible(true);
     }
 
     private void update() {

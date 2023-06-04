@@ -1,0 +1,21 @@
+.mainLabel{
+    -fx-font-family: "Courier New";
+    -fx-font-weight: bold;
+    -fx-font-size: 40;
+    -fx-text-fill: #ffffff;
+}
+
+.mainButton{
+    -fx-background-radius: 2.5em;
+    -fx-background-color: linear-gradient(from 25px 25px to 100px 100px, #DAA442, #797574);
+    -fx-font-family: "Courier New";
+    -fx-font-size: 15;
+    -fx-font-weight: bold;
+    -fx-text-fill: #ffffff;
+}
+
+.mainButton:hover {
+    -fx-background-color: #383838;
+    -fx-scale-y: 1.1;
+    -fx-scale-x: 1.1;
+}
