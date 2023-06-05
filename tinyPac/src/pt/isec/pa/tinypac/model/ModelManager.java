@@ -10,6 +10,7 @@ import pt.isec.pa.tinypac.utils.ProgramManager;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
+import java.io.File;
 
 public class ModelManager implements IGameEngineEvolve {
 
@@ -50,9 +51,11 @@ public class ModelManager implements IGameEngineEvolve {
     }
 
     public boolean pause(){
+        gameEngine.pause();
         return context.pause(gameEngine.getInterval());
     }
     public boolean resume(){
+        gameEngine.resume();
         return context.resume();
     }
 
@@ -95,14 +98,15 @@ public class ModelManager implements IGameEngineEvolve {
         pcs.firePropertyChange(PROP_MENU,null,null);
     }
 
-    public void changeToGame(){
-
+    public void initGame(){
         this.context = new Context();
         this.gameEngine = new GameEngine();
         this.gameEngine.registerClient(this);
+    }
+
+    public void changeToGame(){
 
         gameEngine.start(GAME_ENGINE_TIME);
-        //gameEngine.waitForTheEnd();
         this.programManager = ProgramManager.GAME;
         pcs.firePropertyChange(PROP_GAME,null,null);
     }
@@ -144,9 +148,17 @@ public class ModelManager implements IGameEngineEvolve {
         pcs.firePropertyChange(PROP_GAME,null,null);
     }
 
-    public void changeToSaveAndExit() {
+    public void changeToSaveAndExit(File file) {
 
-        context.saveGame();
+        context.saveGame(file);
         pcs.firePropertyChange(PROP_GAME,null,null);
+    }
+
+    public boolean checkIfSavedGamesExist() {
+        return context.checkIfSavedGamesExist();
+    }
+
+    public void loadSavedGame() {
+        context.loadSavedGame();
     }
 }

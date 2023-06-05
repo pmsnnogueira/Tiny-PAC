@@ -4,9 +4,15 @@ import pt.isec.pa.tinypac.model.data.obstacles.*;
 import pt.isec.pa.tinypac.utils.Direction;
 import pt.isec.pa.tinypac.utils.Obstacles;
 import pt.isec.pa.tinypac.utils.PacmanPosition;
+
+import java.io.Serial;
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Game {
+public class Game implements Serializable {
+    @Serial
+    private static final long serialVersionUID = 1L;
+
     private static final char LIVES_ICON = 'A';
     private Integer level;
     private Integer lives;
@@ -25,7 +31,7 @@ public class Game {
     public Game(){
         this.level = 1;
         this.lives = 3;
-        this.score = 500;
+        this.score = 0;
         this.maze = null;
         this.ghosts = new ArrayList<>();
         this.pacman = null;

@@ -1,6 +1,11 @@
 package pt.isec.pa.tinypac.utils;
 
-public class Position {
+import java.io.Serial;
+import java.io.Serializable;
+
+public class Position implements Serializable {
+    @Serial
+    private static final long serialVersionUID = 1L;
     private int posX;
     private int posY;
 

@@ -4,6 +4,8 @@ import pt.isec.pa.tinypac.model.data.GameManager;
 import pt.isec.pa.tinypac.model.fsm.states.WaitForDirectionState;
 import pt.isec.pa.tinypac.utils.Direction;
 
+import java.io.File;
+
 public class Context {
     private GameManager data;
     private IState state;
@@ -82,6 +84,16 @@ public class Context {
         return data.getScore();
     }
 
-    public void saveGame() {
+
+    public boolean checkIfSavedGamesExist() {
+        return data.checkIfSavedGamesExist();
+    }
+
+    public void saveGame(File file) {
+        data.saveGame(file);
+    }
+
+    public void loadSavedGame() {
+        data.loadSavedGame();
     }
 }

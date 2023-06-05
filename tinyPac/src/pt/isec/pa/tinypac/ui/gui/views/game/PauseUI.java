@@ -9,11 +9,14 @@ import javafx.scene.control.ToggleGroup;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.*;
+import javafx.stage.FileChooser;
 import pt.isec.pa.tinypac.model.ModelManager;
 import pt.isec.pa.tinypac.model.fsm.State;
 import pt.isec.pa.tinypac.ui.gui.resources.ImageManager;
 import pt.isec.pa.tinypac.utils.Direction;
 import pt.isec.pa.tinypac.utils.ProgramManager;
+
+import java.io.File;
 
 public class PauseUI extends BorderPane {
     private ModelManager manager;
@@ -116,7 +119,17 @@ public class PauseUI extends BorderPane {
 
 
         btnSaveExit.setOnAction(actionEvent -> {
-            manager.changeToSaveAndExit();
+            FileChooser fileChooser = new FileChooser();
+            fileChooser.setTitle("Save Game");
+            fileChooser.setInitialDirectory(new File("."));
+            fileChooser.getExtensionFilters().addAll(
+                    new FileChooser.ExtensionFilter("Drawing (*.json)",".json"),
+                    new FileChooser.ExtensionFilter("All Files","*.*")
+            );
+            File hFile = fileChooser.showSaveDialog(getScene().getWindow());
+            if(hFile != null){
+                manager.changeToSaveAndExit(hFile);
+            }
         });
 
         btnExit.setOnAction(actionEvent -> {

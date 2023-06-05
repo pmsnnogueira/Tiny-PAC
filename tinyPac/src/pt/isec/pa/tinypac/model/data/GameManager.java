@@ -8,10 +8,7 @@ import pt.isec.pa.tinypac.model.data.obstacles.*;
 import pt.isec.pa.tinypac.utils.Direction;
 import pt.isec.pa.tinypac.utils.Obstacles;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -306,5 +303,25 @@ public class GameManager{
 
     public int getScore() {
         return game.getScore();
+    }
+
+    public boolean checkIfSavedGamesExist() {
+
+        return true;
+    }
+
+
+    public void saveGame(File file){
+        
+        try (ObjectOutputStream oos = new ObjectOutputStream(
+                new FileOutputStream(file))
+        ){
+            oos.writeObject(game);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    public void loadSavedGame() {
     }
 }

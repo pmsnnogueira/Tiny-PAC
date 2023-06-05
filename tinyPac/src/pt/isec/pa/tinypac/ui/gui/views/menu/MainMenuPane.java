@@ -3,12 +3,16 @@ package pt.isec.pa.tinypac.ui.gui.views.menu;
 import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 import pt.isec.pa.tinypac.model.ModelManager;
 import pt.isec.pa.tinypac.model.fsm.State;
 import pt.isec.pa.tinypac.ui.gui.resources.CSSManager;
@@ -84,6 +88,41 @@ public class MainMenuPane extends BorderPane {
         menu.setSpacing(BTN_SPACING);
         menu.setAlignment(Pos.CENTER);
         this.setCenter(menu);
+
+
+    }
+
+    private void createPopUpLoadGame(){
+        if(manager.checkIfSavedGamesExist()){
+            //Create PopUpMenu
+            Stage dlg = new Stage();
+            Label label = new Label("Do you want to load the saved Game?");
+            Button btnNo = new Button("No");
+            Button btnYes = new Button("Yes");
+
+            VBox vBox = new VBox();
+            HBox hbButtons = new HBox(btnNo,btnYes);
+            hbButtons.setAlignment(Pos.CENTER);
+            vBox.getChildren().addAll(label,hbButtons);
+
+            vBox.setAlignment(Pos.CENTER);
+            Scene scene = new Scene(vBox,300,70);
+            dlg.setScene(scene);
+            dlg.setTitle("Load Game");
+            dlg.initModality(Modality.APPLICATION_MODAL);
+            dlg.initOwner(this.getScene().getWindow());
+            dlg.showAndWait();
+
+            dlg.setAlwaysOnTop(true);
+
+            btnNo.setOnAction(actionEvent -> {
+                return;
+            });
+
+            btnYes.setOnAction(actionEvent -> {
+                manager.loadSavedGame();
+            });
+        }
     }
 
     private void registerHandlers() {
@@ -91,6 +130,9 @@ public class MainMenuPane extends BorderPane {
         manager.addPropertyChangeListener(ModelManager.PROP_MENU, evt -> update());
 
         btnPlayGame.setOnAction(actionEvent -> {
+            manager.initGame();
+            createPopUpLoadGame();
+
             manager.changeToGame();
         });
 

@@ -5,7 +5,13 @@ import pt.isec.pa.tinypac.utils.Obstacles;
 import pt.isec.pa.tinypac.utils.PacmanPosition;
 import pt.isec.pa.tinypac.utils.Position;
 
-public class Pacman extends GameObjects{
+import java.io.Serial;
+import java.io.Serializable;
+
+public class Pacman extends GameObjects implements Serializable {
+    @Serial
+    private static final long serialVersionUID = 1L;
+
     private PacmanPosition pacmanPosition;
 
     private PacmanPosition initialPositon;

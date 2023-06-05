@@ -3,7 +3,12 @@ package pt.isec.pa.tinypac.model.data;
 import pt.isec.pa.tinypac.utils.Position;
 import pt.isec.pa.tinypac.utils.Stack;
 
-public abstract class Ghost extends GameObjects{
+import java.io.Serial;
+import java.io.Serializable;
+
+public abstract class Ghost extends GameObjects implements Serializable {
+    @Serial
+    private static final long serialVersionUID = 1L;
     private Boolean locked;
     private Position currentPosition;
     private final Position initialPosition;
