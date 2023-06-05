@@ -89,8 +89,8 @@ public class Context {
         return data.checkIfSavedGamesExist();
     }
 
-    public void saveGame(File file) {
-        data.saveGame(file);
+    public void saveGame() {
+        data.saveGame();
     }
 
     public void loadSavedGame() {

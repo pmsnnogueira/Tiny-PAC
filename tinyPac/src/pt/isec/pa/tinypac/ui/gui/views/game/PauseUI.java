@@ -119,17 +119,7 @@ public class PauseUI extends BorderPane {
 
 
         btnSaveExit.setOnAction(actionEvent -> {
-            FileChooser fileChooser = new FileChooser();
-            fileChooser.setTitle("Save Game");
-            fileChooser.setInitialDirectory(new File("."));
-            fileChooser.getExtensionFilters().addAll(
-                    new FileChooser.ExtensionFilter("Drawing (*.json)",".json"),
-                    new FileChooser.ExtensionFilter("All Files","*.*")
-            );
-            File hFile = fileChooser.showSaveDialog(getScene().getWindow());
-            if(hFile != null){
-                manager.changeToSaveAndExit(hFile);
-            }
+            manager.changeToSaveAndExit();
         });
 
         btnExit.setOnAction(actionEvent -> {

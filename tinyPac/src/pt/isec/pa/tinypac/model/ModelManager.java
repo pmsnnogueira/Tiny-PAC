@@ -148,9 +148,9 @@ public class ModelManager implements IGameEngineEvolve {
         pcs.firePropertyChange(PROP_GAME,null,null);
     }
 
-    public void changeToSaveAndExit(File file) {
+    public void changeToSaveAndExit() {
 
-        context.saveGame(file);
+        context.saveGame();
         pcs.firePropertyChange(PROP_GAME,null,null);
     }
 

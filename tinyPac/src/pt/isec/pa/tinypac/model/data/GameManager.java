@@ -16,6 +16,10 @@ public class GameManager{
     private Game game;
     private final static String LEVELS_PATH = "files/levels/";
 
+    private final static String SAVE_PATH = "files/saves/";
+
+    private final static String SAVE_NAME = "tiny_Pac01.json";
+
     public GameManager(){
         this.game = new Game();
     }
@@ -310,9 +314,16 @@ public class GameManager{
         return true;
     }
 
+    public void saveGame(){
 
-    public void saveGame(File file){
-        
+        File file = new File(SAVE_PATH + SAVE_NAME);
+        if(file != null)
+            saveGame(file);
+
+    }
+
+    private void saveGame(File file){
+
         try (ObjectOutputStream oos = new ObjectOutputStream(
                 new FileOutputStream(file))
         ){
