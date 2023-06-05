@@ -120,6 +120,7 @@ public class PauseUI extends BorderPane {
 
         btnSaveExit.setOnAction(actionEvent -> {
             manager.changeToSaveAndExit();
+            Platform.exit();
         });
 
         btnExit.setOnAction(actionEvent -> {

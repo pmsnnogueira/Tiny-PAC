@@ -311,7 +311,11 @@ public class GameManager{
 
     public boolean checkIfSavedGamesExist() {
 
-        return true;
+        File f = new File(SAVE_PATH + SAVE_NAME);
+        if(f.exists())
+            return true;
+
+        return false;
     }
 
     public void saveGame(){
@@ -333,6 +337,22 @@ public class GameManager{
         }
     }
 
-    public void loadSavedGame() {
+    public void loadSavedGame(){
+
+        File file = new File(SAVE_PATH + SAVE_NAME);
+        if(file != null)
+            loadSavedGame(file);
+
+    }
+
+    private void loadSavedGame(File file) {
+
+        try (ObjectInputStream oos = new ObjectInputStream(
+                new FileInputStream(file))
+        ){
+            game = (Game) oos.readObject();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 }

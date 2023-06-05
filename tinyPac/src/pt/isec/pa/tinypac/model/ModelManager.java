@@ -99,9 +99,12 @@ public class ModelManager implements IGameEngineEvolve {
     }
 
     public void initGame(){
-        this.context = new Context();
-        this.gameEngine = new GameEngine();
-        this.gameEngine.registerClient(this);
+        if(context == null)
+            this.context = new Context();
+        if(gameEngine == null) {
+            this.gameEngine = new GameEngine();
+            this.gameEngine.registerClient(this);
+        }
     }
 
     public void changeToGame(){

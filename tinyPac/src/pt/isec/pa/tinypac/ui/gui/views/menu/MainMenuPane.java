@@ -13,6 +13,7 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import pt.isec.pa.tinypac.model.ModelManager;
 import pt.isec.pa.tinypac.model.fsm.State;
 import pt.isec.pa.tinypac.ui.gui.resources.CSSManager;
@@ -34,6 +35,8 @@ public class MainMenuPane extends BorderPane {
 
     private static final Integer BTN_SPACING = 15;
     private ModelManager manager;
+
+    ToggleButton btnNo, btnYes;
 
     public MainMenuPane(ModelManager manager) {
 
@@ -97,11 +100,23 @@ public class MainMenuPane extends BorderPane {
             //Create PopUpMenu
             Stage dlg = new Stage();
             Label label = new Label("Do you want to load the saved Game?");
-            Button btnNo = new Button("No");
-            Button btnYes = new Button("Yes");
+            btnNo = new ToggleButton("No");
+            btnYes = new ToggleButton("Yes");
+
+            btnNo.setOnAction(e -> {
+                manager.changeToGame();
+                dlg.close();
+            });
+
+            btnYes.setOnAction(e -> {
+                manager.loadSavedGame();
+                manager.changeToGame();
+                dlg.close();
+            });
 
             VBox vBox = new VBox();
             HBox hbButtons = new HBox(btnNo,btnYes);
+            hbButtons.setSpacing(2.5);
             hbButtons.setAlignment(Pos.CENTER);
             vBox.getChildren().addAll(label,hbButtons);
 
@@ -112,16 +127,7 @@ public class MainMenuPane extends BorderPane {
             dlg.initModality(Modality.APPLICATION_MODAL);
             dlg.initOwner(this.getScene().getWindow());
             dlg.showAndWait();
-
             dlg.setAlwaysOnTop(true);
-
-            btnNo.setOnAction(actionEvent -> {
-                return;
-            });
-
-            btnYes.setOnAction(actionEvent -> {
-                manager.loadSavedGame();
-            });
         }
     }
 
@@ -132,8 +138,6 @@ public class MainMenuPane extends BorderPane {
         btnPlayGame.setOnAction(actionEvent -> {
             manager.initGame();
             createPopUpLoadGame();
-
-            manager.changeToGame();
         });
 
         btnTop5.setOnAction(actionEvent -> {
