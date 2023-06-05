@@ -36,6 +36,9 @@ public class GameManager{
         return false;
     }
 
+    public Game getGame() {
+        return new Game(game);
+    }
 
     private ArrayList<String> filesinFolder(String folderName){
 
@@ -54,26 +57,36 @@ public class GameManager{
         return null;
     }
 
-
     public boolean loadMapLevel(){
+        return loadMapLevel(LEVELS_PATH);
+    }
+
+    public boolean loadMapLevel(String folder){
+
+        if(folder == null)
+            return false;
+
         //verificar se existem ficheiros dos mapas
         if(game.isAnyFoodRemaining() && game.isAnyLiveRemaining())   //Load the Same Level
             return true;
 
-        ArrayList<String> listOfFiles = filesinFolder(LEVELS_PATH);
+        ArrayList<String> listOfFiles = filesinFolder(folder);
         StringBuilder fileName = new StringBuilder();
         int counter = game.getLevel();
 
         if(listOfFiles == null)
             return false;
 
-        do {
-            fileName.delete(0, fileName.length());
+       for(int i = 0; i < listOfFiles.size(); i++){
+            fileName.delete(0, fileName.length());      //Remover a barra
             fileName.append("Level").append((counter < 10) ? "0" + counter : + counter).append(".txt");
             counter--;
-        } while (!listOfFiles.contains(fileName.toString()));
+            if(listOfFiles.contains(fileName.toString()))
+                break;
 
-
+            if(i == listOfFiles.size() - 1)     //Nao encontrou nenhum ficheiro com o nome pretendido
+                return false;
+        }
         fileName.insert(0 , LEVELS_PATH);
 
         //Verificar para todos os ficheiros com o directory.listFiles
@@ -185,6 +198,9 @@ public class GameManager{
 
     public ArrayList<Ghost> ghostInitialPositioning(Maze maze,ArrayList<Integer[]> ghostCave){
 
+        if(maze == null || ghostCave == null || ghostCave.isEmpty())
+            return null;
+
         ArrayList<Ghost> ghosts = new ArrayList<>();
 
         int numPositions = 0;
@@ -278,5 +294,17 @@ public class GameManager{
 
     public char receiveElement(int row, int column) {
         return game.getCharElementInPosition(row,column);
+    }
+
+    public Direction getDirection() {
+        return game.getDirection();
+    }
+
+    public boolean charIsGhosts(char c) {
+        return game.charIsGhosts(c);
+    }
+
+    public int getScore() {
+        return game.getScore();
     }
 }

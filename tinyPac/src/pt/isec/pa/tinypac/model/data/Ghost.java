@@ -10,9 +10,9 @@ public abstract class Ghost extends GameObjects{
     private Stack<Position> movements;
     private Boolean vulnerable;
     private static final char SYMBOL = 'G';
-
     public static final int GHOST_POINTS = 200;
 
+    private Integer ticksToMove;
 
     public Ghost(Game game, int posX , int posY){
         super(game);
@@ -21,6 +21,7 @@ public abstract class Ghost extends GameObjects{
         this.currentPosition = new Position(posX,posY);
         this.movements = new Stack();
         this.vulnerable = false;
+        this.ticksToMove = 500;
     }
 
     public void setPos(int posX , int posY){
@@ -89,5 +90,9 @@ public abstract class Ghost extends GameObjects{
         this.locked = true;
         this.movements.clear();
         this.currentPosition = new Position(initialPosition);
+    }
+
+    public int getTicksToMove() {
+        return ticksToMove;
     }
 }

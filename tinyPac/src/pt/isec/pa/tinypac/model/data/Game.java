@@ -19,6 +19,9 @@ public class Game {
     private ArrayList<Ghost> ghosts;
     private Integer foodRemaining;
 
+    private static int currentTick = 1;
+    private int tickAtBeginningOfFunction = 1;
+    private int maxTick = 50;
     public Game(){
         this.level = 1;
         this.lives = 1;
@@ -27,6 +30,32 @@ public class Game {
         this.ghosts = new ArrayList<>();
         this.pacman = null;
         this.foodRemaining = 0;
+    }
+
+    public Game(Game game){
+        this.level = game.getLevel();
+        this.lives = game.getLives();
+        this.score = game.getScore();
+        this.maze = game.getMaze();
+        this.ghosts = game.getGhosts();
+        this.pacman = game.getPacman();
+        this.foodRemaining = game.getFoodRemaining();
+    }
+
+    public Integer getScore() {
+        return score;
+    }
+
+    public void setScore(Integer score) {
+        this.score = score;
+    }
+
+    public ArrayList<Ghost> getGhosts() {
+        return new ArrayList<>(ghosts);
+    }
+
+    public Pacman getPacman() {
+        return pacman;
     }
 
     public void incFoodRemaining(){
@@ -112,6 +141,9 @@ public class Game {
 
     public char[][] showMaze() {
         char[][] gameBoard;
+
+        if(maze == null)
+            return null;
         gameBoard = maze.getMaze();
         if(gameBoard == null)
             return null;
@@ -126,6 +158,8 @@ public class Game {
 
     public char getCharAtMazeElement(Integer row, Integer column){
 
+        if(maze == null)
+            return ' ';
         char[][] gameBoard = maze.getMaze();
         if(gameBoard == null)
             return ' ';
@@ -183,30 +217,51 @@ public class Game {
 
     public boolean evolve() {
 
+        tickAtBeginningOfFunction = 1;
+        maxTick = 50;
+        int counterPacman = 0;
+
         if(ghosts == null || pacman == null)
             return false;
 
-        evolvePacman();
-        eatFood();
+        while (tickAtBeginningOfFunction <= maxTick){
 
+            try {
+                Thread.sleep(20);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+            if(currentTick % pacman.getTicksToMove() == 0){
+                evolvePacman();
+                eatFood();
+                counterPacman++;
+            }
+            evolveGhosts();
+            tickAtBeginningOfFunction++;
+            currentTick++;
+        }
+        /*evolvePacman();
+        eatFood();*/
 
-        evolveGhosts();
+        //evolveGhosts();
 
         return true;
     }
 
-    public void evolvePacman(){
-        pacman.evolve();
-    }
-
     public void evolveGhosts(){
         for(Ghost ghost : ghosts){
-            if(!ghost.getLocked() && !ghost.getVulnerable()){
-                ghost.evolve();
-            } else if(ghost.getVulnerable()){
-                ghost.returnToBase();
+            if(currentTick % ghost.getTicksToMove() == 0) {
+                if (!ghost.getLocked() && !ghost.getVulnerable()) {
+                    ghost.evolve();
+                } else if (ghost.getVulnerable()) {
+                    ghost.returnToBase();
+                }
             }
         }
+    }
+
+    public void evolvePacman(){
+        pacman.evolve();
     }
 
     public Integer controlGame(){
@@ -343,12 +398,21 @@ public class Game {
         return lives;
     }
     public Boolean isAnyLiveRemaining(){
-        if(getLives() > 0)
-            return true;
-        return false;
+        return getLives() > 0;
     }
 
     public char getCharElementInPosition(int row, int column) {
         return getCharAtMazeElement(row,column);
+    }
+
+    public Direction getDirection() {
+        return pacman.getDirection();
+    }
+
+    public boolean charIsGhosts(char c) {
+        return c == Obstacles.BLINKY.getSymbol() ||
+                c == Obstacles.PINKY.getSymbol() ||
+                c == Obstacles.CLYDE.getSymbol() ||
+                c == Obstacles.INKY.getSymbol();
     }
 }

@@ -17,7 +17,7 @@ public class ModelManager implements IGameEngineEvolve {
     public static final String PROP_DATA = "_data_";
     public static final String PROP_GAME = "_gameMenu_";
 
-    private static final Integer GAME_ENGINE_TIME = 250;
+    private static final Integer GAME_ENGINE_TIME = 500;
 
     private GameEngine gameEngine;
     private Context context;
@@ -42,8 +42,8 @@ public class ModelManager implements IGameEngineEvolve {
 
     public boolean changeDirection(Direction direction){
         if(context.changeDirection(direction)) {
-            System.out.println("New Direction: " + direction.toString());
-            pcs.firePropertyChange(PROP_DATA, null,null);
+            //System.out.println("New Direction: " + direction.toString());
+            pcs.firePropertyChange(PROP_GAME, null,null);
             return true;
         }
         return false;
@@ -73,9 +73,7 @@ public class ModelManager implements IGameEngineEvolve {
 
     @Override
     public void evolve(IGameEngine gameEngine, long currentTime) {
-
         context.evolve(currentTime);
-        pcs.firePropertyChange(PROP_DATA,null,null);
         pcs.firePropertyChange(PROP_GAME,null,null);
     }
 
@@ -110,11 +108,45 @@ public class ModelManager implements IGameEngineEvolve {
     }
 
     public void changeToMainMenu(){
+        if(programManager == ProgramManager.GAME){
+            gameEngine.stop();
+            gameEngine = null;
+            context = null;
+        }
         this.programManager = ProgramManager.MAIN_MENU;
+        pcs.firePropertyChange(PROP_GAME,null,null);
         pcs.firePropertyChange(PROP_MENU,null,null);
     }
 
     public char receiveElement(int row, int column) {
         return context.receiveElement(row,column);
+    }
+
+    public Direction getDirection() {
+        return context.getDirection();
+    }
+
+    public boolean charIsGhosts(char c) {
+        return context.charIsGhost(c);
+    }
+
+    public int getScore() {
+        return context.getScore();
+    }
+
+    public void changeToPause() {
+        pause();
+        pcs.firePropertyChange(PROP_GAME,null,null);
+    }
+
+    public void changeToResume() {
+        resume();
+        pcs.firePropertyChange(PROP_GAME,null,null);
+    }
+
+    public void changeToSaveAndExit() {
+
+        context.saveGame();
+        pcs.firePropertyChange(PROP_GAME,null,null);
     }
 }

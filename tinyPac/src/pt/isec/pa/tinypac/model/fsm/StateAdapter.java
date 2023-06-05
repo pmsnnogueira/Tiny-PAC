@@ -1,6 +1,5 @@
 package pt.isec.pa.tinypac.model.fsm;
 
-import pt.isec.pa.tinypac.gameengine.IGameEngine;
 import pt.isec.pa.tinypac.model.data.GameManager;
 import pt.isec.pa.tinypac.utils.Direction;
 

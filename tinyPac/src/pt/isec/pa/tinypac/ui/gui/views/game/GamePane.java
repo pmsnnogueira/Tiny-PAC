@@ -4,12 +4,16 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import pt.isec.pa.tinypac.model.ModelManager;
 import pt.isec.pa.tinypac.model.fsm.State;
 import pt.isec.pa.tinypac.utils.Direction;
 import pt.isec.pa.tinypac.utils.ProgramManager;
+
+import java.awt.*;
 
 public class GamePane extends BorderPane {
 
@@ -29,6 +33,7 @@ public class GamePane extends BorderPane {
         createViews();
         registerHandlers();
         update();
+        requestFocus();
     }
 
     private void createViews() {
@@ -45,7 +50,7 @@ public class GamePane extends BorderPane {
         btnChangeDirection.setMaxWidth(BTN_MAX_WIDTH);
         btnChangeDirection.setSelected(false);
 
-        menu = new VBox(mazePane,btnChangeDirection);
+        menu = new VBox(mazePane/*,btnChangeDirection*/);
        // menu = new VBox(btnChangeDirection);
         //menu.setMinWidth(1000);
         //menu.setMinHeight(Integer.MAX_VALUE);
@@ -54,23 +59,34 @@ public class GamePane extends BorderPane {
     }
 
     private void registerHandlers() {
-        manager.addPropertyChangeListener(ModelManager.PROP_GAME, evt -> updateState());
+        manager.addPropertyChangeListener(ModelManager.PROP_GAME, evt -> update());
         //manager.addPropertyChangeListener(ModelManager.PROP_DATA, evt -> updateState());
-
-        btnChangeDirection.setOnAction(actionEvent -> {
-            manager.changeDirection(Direction.UP);
-        });
     }
 
-    private void updateState(){
-        if(manager.getState() == State.PAUSE || manager.getState() == State.GameOver){
+    private void update(){
+        if(manager.getProgramState() != ProgramManager.GAME || manager.getState() == State.PAUSE || manager.getState() == State.GameOver){
             this.setVisible(false);
             return;
         }
         this.setVisible(true);
     }
 
-    private void update() {
-        this.setVisible(manager.getProgramState() == ProgramManager.GAME);
+    public void handleKeyPress(KeyEvent keyEvent) {
+
+        if(keyEvent.getCode() == KeyCode.UP || keyEvent.getCode() == KeyCode.W)
+            manager.changeDirection(Direction.UP);
+
+        if(keyEvent.getCode() == KeyCode.RIGHT || keyEvent.getCode() == KeyCode.D)
+            manager.changeDirection(Direction.RIGHT);
+
+        if(keyEvent.getCode() == KeyCode.LEFT || keyEvent.getCode() == KeyCode.A)
+            manager.changeDirection(Direction.LEFT);
+
+        if(keyEvent.getCode() == KeyCode.DOWN || keyEvent.getCode() == KeyCode.S)
+            manager.changeDirection(Direction.DOWN);
+
+        if(keyEvent.getCode() == KeyCode.ESCAPE)
+            manager.changeToPause();
+
     }
 }

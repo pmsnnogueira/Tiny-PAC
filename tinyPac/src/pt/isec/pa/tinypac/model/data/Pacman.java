@@ -11,11 +11,25 @@ public class Pacman extends GameObjects{
     private PacmanPosition initialPositon;
     private boolean power;
 
+    private Integer ticksToMove;
+
     public Pacman(Game game,Integer posX, Integer posY){
         super(game);
         this.pacmanPosition = new PacmanPosition(posX, posY, game.getMazeRows(), game.getMazeColumns());
         this.initialPositon = new PacmanPosition(pacmanPosition);
         this.power = false;
+        this.ticksToMove = 75;
+    }
+
+    /*public Pacman(Pacman pacman){
+        super(getGame());
+        this.pacmanPosition = pacman.getCurrentPosition();
+        this.initialPositon = pacman.getInitialPositon();
+        this.power = pacman.getPower();
+    }*/
+
+    public PacmanPosition getInitialPositon() {
+        return initialPositon;
     }
 
     public PacmanPosition getCurrentPosition(){
@@ -102,5 +116,13 @@ public class Pacman extends GameObjects{
 
     public void reset() {
         this.pacmanPosition = new PacmanPosition(initialPositon);
+    }
+
+    public Direction getDirection() {
+        return pacmanPosition.getDirection();
+    }
+
+    public Integer getTicksToMove() {
+        return ticksToMove;
     }
 }

@@ -7,14 +7,14 @@ import pt.isec.pa.tinypac.utils.Direction;
 public class Context {
     private GameManager data;
     private IState state;
-    private IState previousState;
+    private State previousState;
     private long timeBeforePause;
 
     public Context(){
         this.data = new GameManager();
-        this.previousState = null;
         this.timeBeforePause = 0;
         this.state = new WaitForDirectionState(this,data);
+        this.previousState = getState();
     }
 
     public State getState(){
@@ -24,9 +24,7 @@ public class Context {
     }
 
     public State getPreviousState(){
-        if(previousState == null)
-            return null;
-        return previousState.getState();
+        return previousState;
     }
 
     //Nao mudar este changeState para public nem protected
@@ -53,18 +51,14 @@ public class Context {
         return data.getMazeColumns();
     }
 
-
-    public Integer getMazecolumns(){
-        return data.getMazeColumns();
-    }
-
     public void evolve(long currentTime) {
         state.evolve(currentTime);
     }
 
     public boolean pause(long currentTime){
         this.timeBeforePause = currentTime;
-        this.previousState = state;
+        if(getState() != State.PAUSE)
+            this.previousState = getState();
         return state.pause();
     }
 
@@ -74,5 +68,20 @@ public class Context {
 
     public char receiveElement(int row, int column) {
         return data.receiveElement(row,column);
+    }
+
+    public Direction getDirection() {
+        return data.getDirection();
+    }
+
+    public boolean charIsGhost(char c) {
+        return data.charIsGhosts(c);
+    }
+
+    public int getScore() {
+        return data.getScore();
+    }
+
+    public void saveGame() {
     }
 }
