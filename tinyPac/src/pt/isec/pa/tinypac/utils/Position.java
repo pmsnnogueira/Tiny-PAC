@@ -51,10 +51,14 @@ public class Position implements Serializable {
         if (obj == null)
             return false;
 
-        if (this.getClass() == obj.getClass()) {
+        /*if (this.getClass() == obj.getClass()) {
             return (((Position) obj).getPosX() == this.getPosX() && ((Position) obj).getPosY() == this.getPosY());
-        }
-        return false;
+        }*/
+
+        if(!(obj instanceof Position aux))
+            return false;
+
+        return (aux.getPosX() == this.getPosX() && aux.getPosY() == this.getPosY());
     }
 
     @Override
