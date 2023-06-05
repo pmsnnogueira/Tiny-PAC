@@ -1,5 +1,7 @@
 package pt.isec.pa.tinypac.utils;
 
+import javafx.geometry.Pos;
+
 import java.io.Serial;
 import java.io.Serializable;
 
@@ -38,5 +40,25 @@ public class Position implements Serializable {
 
     public void setPosX(int posX) {
         this.posX = posX;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+
+        if (obj == this)
+            return true;
+
+        if (obj == null)
+            return false;
+
+        if (this.getClass() == obj.getClass()) {
+            return (((Position) obj).getPosX() == this.getPosX() && ((Position) obj).getPosY() == this.getPosY());
+        }
+        return false;
+    }
+
+    @Override
+    public int hashCode() {
+        return getPosY() + getPosX();
     }
 }

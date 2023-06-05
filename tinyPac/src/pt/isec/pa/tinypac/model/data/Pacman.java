@@ -53,17 +53,23 @@ public class Pacman extends GameObjects implements Serializable {
 
         int[] nextDirections = pacmanPosition.getNextPosition();//Next x and y
         IMazeElement element = maze.get(nextDirections[1], nextDirections[0]);
+        if(element != null && element.getSymbol() == Obstacles.WARP.getSymbol()){      //Teleport
+            Position pos = game.getRandomWarpPosition(new Position(nextDirections[0],nextDirections[1]));
+            pacmanPosition.setPos(pos.getPosX(), pos.getPosY());
+            System.out.println("Vou passar");
+            return true;
+        }
         if(element == null) {
             pacmanPosition.setPos(nextDirections[0], nextDirections[1]);
             return true;
         }
 
+
+
         if(element.getSymbol() == Obstacles.WALL.getSymbol()){
             return false;
         }
-        if(element.getSymbol() == Obstacles.WARP.getSymbol()){
-            Position pos = game.getRandomWarpPosition();
-        }
+
         pacmanPosition.setPos(nextDirections[0] , nextDirections[1]);
 
         return true;

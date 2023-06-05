@@ -18,12 +18,6 @@ public class Warp implements IMazeElement , Serializable {
         this.symbol = Obstacles.WARP.getSymbol();
         this.position = new Position(posX, posY);
     }
-
-    @Override
-    public boolean equals(Object obj) {
-        return false;
-    }
-
     @Override
     public char getSymbol() {
         return symbol;
@@ -35,5 +29,9 @@ public class Warp implements IMazeElement , Serializable {
 
     public Integer getPositionY() {
         return position.getPosY();
+    }
+
+    public Position getPosition() {
+        return new Position(position);
     }
 }

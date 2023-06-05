@@ -9,6 +9,7 @@ import pt.isec.pa.tinypac.utils.Position;
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Random;
 
 public class Game implements Serializable {
     @Serial
@@ -445,11 +446,17 @@ public class Game implements Serializable {
                 c == Obstacles.INKY.getSymbol();
     }
 
-    public Position getRandomWarpPosition() {
-        for(Warp aux : warps){
-            if(aux)
-        }
-        return new Position()
+    public Position getRandomWarpPosition(Position position) {
 
+        ArrayList<Warp> aux = new ArrayList<>(warps);
+
+        for(Warp warp : warps){
+            if(warp.getPosition().equals(position)){
+                aux.remove(warp);
+                break;
+            }
+        }
+        int index = new Random().nextInt(aux.size());
+        return aux.get(index).getPosition();
     }
 }
