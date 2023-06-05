@@ -4,6 +4,7 @@ import pt.isec.pa.tinypac.model.data.obstacles.*;
 import pt.isec.pa.tinypac.utils.Direction;
 import pt.isec.pa.tinypac.utils.Obstacles;
 import pt.isec.pa.tinypac.utils.PacmanPosition;
+import pt.isec.pa.tinypac.utils.Position;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -23,6 +24,7 @@ public class Game implements Serializable {
     private Pacman pacman;
     private Portal portal;
     private ArrayList<Ghost> ghosts;
+    private ArrayList<Warp> warps;
     private Integer foodRemaining;
 
     private static int currentTick = 1;
@@ -36,6 +38,7 @@ public class Game implements Serializable {
         this.ghosts = new ArrayList<>();
         this.pacman = null;
         this.foodRemaining = 0;
+        this.warps = new ArrayList<>();
     }
 
     public Game(Game game){
@@ -46,6 +49,25 @@ public class Game implements Serializable {
         this.ghosts = game.getGhosts();
         this.pacman = game.getPacman();
         this.foodRemaining = game.getFoodRemaining();
+    }
+
+    public void addWarps(Warp warp){
+        this.warps.add(warp);
+    }
+
+    public ArrayList<Warp> getWarps(){
+        return new ArrayList<>(warps);
+    }
+    public Integer getSizeWarps(){
+        return warps.size();
+    }
+    public Warp getSpecificWarps(Integer posX, Integer posY){
+
+        for(Warp aux : warps){
+            if(aux.getPositionX() == posX && aux.getPositionY() == posY)
+                return aux;
+        }
+        return null;
     }
 
     public Integer getScore() {
@@ -421,5 +443,13 @@ public class Game implements Serializable {
                 c == Obstacles.PINKY.getSymbol() ||
                 c == Obstacles.CLYDE.getSymbol() ||
                 c == Obstacles.INKY.getSymbol();
+    }
+
+    public Position getRandomWarpPosition() {
+        for(Warp aux : warps){
+            if(aux)
+        }
+        return new Position()
+
     }
 }

@@ -17,7 +17,6 @@ public class GameManager{
     private final static String LEVELS_PATH = "files/levels/";
 
     private final static String SAVE_PATH = "files/saves/";
-
     private final static String SAVE_NAME = "tiny_Pac01.json";
 
     public GameManager(){
@@ -154,23 +153,30 @@ public class GameManager{
                 char c = sb.charAt((i * game.getMazeColumns()) + a);
                 switch (c) {
                     case 'x' ->   //Parede
-                            maze.set(i, a, new Wall());
-                    case 'W' ->   //Zona Warp
-                            maze.set(i, a, new Warp());
-                    case 'o' ->  {  //Comida
-                            maze.set(i, a, new Ball());
-                            //maze.set(i, a, null);
-                            game.incFoodRemaining();
+                        maze.set(i, a, new Wall());
+                    case 'W' ->  { //Zona Warp
+                        Warp warp = new Warp(a,i);
+                        maze.set(i, a, warp);
+                        game.addWarps(warp);
                     }
-                    case 'F' ->   //fruta
-                            maze.set(i, a, new Fruit());
+                    case 'o' ->  {  //Comida
+                        maze.set(i, a, new Ball());
+                        //maze.set(i, a, null);
+                        game.incFoodRemaining();
+                    }
+                    case 'F' -> {  //fruta
+                        maze.set(i, a, new Fruit());
+                        game.incFoodRemaining();
+                    }
                     case 'M' -> {   //LocalPacmanInicial
                         maze.set(i, a, new PacmanInitialPosition());
                         game.setPacman(new Pacman(game,a, i));
                         pacmanCounter++;
                     }
-                    case 'O' ->   //Bola com Poderes
-                            maze.set(i, a, new Power());
+                    case 'O' -> {   //Bola com Poderes
+                        maze.set(i, a, new Power());
+                        game.incFoodRemaining();
+                    }
                     case 'Y' -> {   //Portal
                         Portal portal = new Portal(a,i); //x,y
                         maze.set(i, a, portal);
@@ -188,7 +194,7 @@ public class GameManager{
             }
         }
 
-        if(pacmanCounter != 1 || portalCounter == 0)
+        if(pacmanCounter != 1 || portalCounter == 0 || game.getSizeWarps() > 2 || game.getSizeWarps() == 1)
             return null;
 
         game.setGhosts(ghostInitialPositioning(maze,ghostCave));

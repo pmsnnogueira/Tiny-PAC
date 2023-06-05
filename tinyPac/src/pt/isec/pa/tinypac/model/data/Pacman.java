@@ -61,6 +61,9 @@ public class Pacman extends GameObjects implements Serializable {
         if(element.getSymbol() == Obstacles.WALL.getSymbol()){
             return false;
         }
+        if(element.getSymbol() == Obstacles.WARP.getSymbol()){
+            Position pos = game.getRandomWarpPosition();
+        }
         pacmanPosition.setPos(nextDirections[0] , nextDirections[1]);
 
         return true;
