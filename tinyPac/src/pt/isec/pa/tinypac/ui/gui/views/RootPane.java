@@ -35,7 +35,7 @@ public class RootPane extends BorderPane {
                                 BackgroundPosition.CENTER,
                                 new BackgroundSize(100,100,true,true,true,false)
                         )
-                ));
+        ));
 
        this.setCenter(stackPane);
     }

@@ -64,7 +64,7 @@ public class GamePane extends BorderPane {
     }
 
     private void update(){
-        if(manager.getState() == State.PAUSE || manager.getState() == State.GameOver){
+        if(manager.getProgramState() != ProgramManager.GAME || manager.getState() == State.PAUSE || manager.getState() == State.GameOver){
             this.setVisible(false);
             return;
         }
@@ -84,5 +84,9 @@ public class GamePane extends BorderPane {
 
         if(keyEvent.getCode() == KeyCode.DOWN || keyEvent.getCode() == KeyCode.S)
             manager.changeDirection(Direction.DOWN);
+
+        if(keyEvent.getCode() == KeyCode.ESCAPE)
+            manager.changeToPause();
+
     }
 }

@@ -108,7 +108,13 @@ public class ModelManager implements IGameEngineEvolve {
     }
 
     public void changeToMainMenu(){
+        if(programManager == ProgramManager.GAME){
+            gameEngine.stop();
+            gameEngine = null;
+            context = null;
+        }
         this.programManager = ProgramManager.MAIN_MENU;
+        pcs.firePropertyChange(PROP_GAME,null,null);
         pcs.firePropertyChange(PROP_MENU,null,null);
     }
 
@@ -126,5 +132,21 @@ public class ModelManager implements IGameEngineEvolve {
 
     public int getScore() {
         return context.getScore();
+    }
+
+    public void changeToPause() {
+        pause();
+        pcs.firePropertyChange(PROP_GAME,null,null);
+    }
+
+    public void changeToResume() {
+        resume();
+        pcs.firePropertyChange(PROP_GAME,null,null);
+    }
+
+    public void changeToSaveAndExit() {
+
+        context.saveGame();
+        pcs.firePropertyChange(PROP_GAME,null,null);
     }
 }

@@ -134,7 +134,7 @@ public class MazePane extends VBox {
 
     private void update(){
 
-        if(manager.getState() == State.PAUSE || manager.getState() == State.GameOver){
+        if(manager.getProgramState() != ProgramManager.GAME || manager.getState() == State.PAUSE || manager.getState() == State.GameOver){
             this.setVisible(false);
             return;
         }

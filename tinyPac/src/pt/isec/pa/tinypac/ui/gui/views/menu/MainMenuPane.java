@@ -12,6 +12,7 @@ import javafx.scene.paint.Color;
 import pt.isec.pa.tinypac.model.ModelManager;
 import pt.isec.pa.tinypac.model.fsm.State;
 import pt.isec.pa.tinypac.ui.gui.resources.CSSManager;
+import pt.isec.pa.tinypac.ui.gui.resources.FontManager;
 import pt.isec.pa.tinypac.ui.gui.resources.ImageManager;
 import pt.isec.pa.tinypac.ui.gui.views.RootPane;
 import pt.isec.pa.tinypac.utils.ProgramManager;
@@ -42,6 +43,7 @@ public class MainMenuPane extends BorderPane {
     private void createViews() {
 
         Label lbMain = new Label("Tiny-PAC");
+        lbMain.setFont(FontManager.getFont("joystixmonospace.ttf"));
         lbMain.getStyleClass().add("mainLabel");
         lbMain.setPadding(new Insets(0,0,25,0));
 

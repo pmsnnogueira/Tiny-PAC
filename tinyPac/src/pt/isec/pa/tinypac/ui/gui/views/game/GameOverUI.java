@@ -1,5 +1,6 @@
 package pt.isec.pa.tinypac.ui.gui.views.game;
 
+import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
@@ -9,6 +10,8 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import pt.isec.pa.tinypac.model.ModelManager;
 import pt.isec.pa.tinypac.model.fsm.State;
+import pt.isec.pa.tinypac.ui.gui.resources.ImageManager;
+import pt.isec.pa.tinypac.utils.ProgramManager;
 
 public class GameOverUI extends BorderPane {
     private ModelManager manager;
@@ -18,8 +21,8 @@ public class GameOverUI extends BorderPane {
 
     private static final Integer MENU_MIN_WIDTH = 150;
 
-    private static final Integer BTN_MIN_WIDTH = 150;
-    private static final Integer BTN_PREF_WIDTH = 150;
+    private static final Integer BTN_MIN_WIDTH = 170;
+    private static final Integer BTN_PREF_WIDTH = 180;
     private static final Integer BTN_MAX_WIDTH = 200;
 
 
@@ -39,13 +42,20 @@ public class GameOverUI extends BorderPane {
 
     private void createViews() {
 
-        this.setBackground(new Background(new BackgroundFill(Color.LIGHTBLUE, CornerRadii.EMPTY, Insets.EMPTY)));
+        this.setBackground(
+                new Background(
+                        new BackgroundImage(
+                                ImageManager.getImage("background_Gameover.jpg"),
+                                BackgroundRepeat.REPEAT,BackgroundRepeat.REPEAT,
+                                BackgroundPosition.CENTER,
+                                new BackgroundSize(BackgroundSize.AUTO,BackgroundSize.AUTO,true,true,true,false)
+                        )
+        ));
 
         //Menu
         VBox vBox = new VBox();
-        Label lbState = new Label("GameOver");
         Label lbPoints = new Label("Score: " + manager.getScore());
-        lbState.setAlignment(Pos.CENTER);
+        lbPoints.getStyleClass().add("mainLabel");
         lbPoints.setAlignment(Pos.CENTER);
 
         //Buttons
@@ -58,9 +68,8 @@ public class GameOverUI extends BorderPane {
         btnBackToMainMenu.setPrefHeight(BTN_PREF_HEIGHT);
         btnBackToMainMenu.setMinHeight(BTN_MIN_HEIGHT);
         btnBackToMainMenu.setMaxHeight(BTN_MAX_HEIGHT);
-        btnBackToMainMenu.setStyle(
-                "-fx-background-radius: 5em; "
-        );
+
+        btnBackToMainMenu.getStyleClass().add("gameOverButton");
         btnBackToMainMenu.setSelected(false);
 
         btnExit = new ToggleButton("Exit Game");
@@ -71,26 +80,36 @@ public class GameOverUI extends BorderPane {
         btnExit.setPrefHeight(BTN_PREF_HEIGHT);
         btnExit.setMinHeight(BTN_MIN_HEIGHT);
         btnExit.setMaxHeight(BTN_MAX_HEIGHT);
-        btnExit.setStyle(
-                "-fx-background-radius: 5em; "
-        );
+        btnExit.getStyleClass().add("gameOverButton");
         btnExit.setSelected(false);
 
         HBox hBoxButtons = new HBox(btnBackToMainMenu,btnExit);
         hBoxButtons.setAlignment(Pos.CENTER);
         hBoxButtons.setSpacing(BTN_SPACING);
 
-        vBox.getChildren().addAll(lbState,lbPoints,hBoxButtons);
-        this.setCenter(hBoxButtons);
+        vBox.setAlignment(Pos.CENTER);
+        vBox.setPadding(new Insets(50,0,0,15));
+        vBox.setSpacing(5);
+
+        vBox.getChildren().addAll(lbPoints,hBoxButtons);
+        this.setCenter(vBox);
     }
 
     private void registerHandlers() {
         manager.addPropertyChangeListener(ModelManager.PROP_GAME, evt -> update());
         //manager.addPropertyChangeListener(ModelManager.PROP_DATA, evt -> updateState());
+
+        btnBackToMainMenu.setOnAction(actionEvent -> {
+            manager.changeToMainMenu();
+        });
+
+        btnExit.setOnAction(actionEvent -> {
+            Platform.exit();
+        });
     }
 
     private void update(){
-        if(manager.getState() != State.GameOver){
+        if(manager.getProgramState() != ProgramManager.GAME || manager.getState() != State.GameOver){
             this.setVisible(false);
             return;
         }

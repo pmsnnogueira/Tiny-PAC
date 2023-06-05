@@ -14,9 +14,4 @@ public interface IState {
     boolean pause();
 
     boolean resume();
-
-
-
-
-
 }
