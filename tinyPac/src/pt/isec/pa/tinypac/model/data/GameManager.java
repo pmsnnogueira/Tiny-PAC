@@ -231,8 +231,8 @@ public class GameManager{
                 numPositions = ghostCave.size();
                 int randomIndex = (int) (Math.random() * numPositions);
                 randomPosition = ghostCave.get(randomIndex);
-                element = maze.get(randomPosition[0], randomPosition[1]);
-            } while (element == null || element.getSymbol() != 'y');
+                element = maze.get(randomPosition[1], randomPosition[0]);
+            } while (element == null || element.getSymbol() != Obstacles.GHOST_CAVE.getSymbol());
 
             switch (i){
                 case 0: {

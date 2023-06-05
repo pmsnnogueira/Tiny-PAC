@@ -335,7 +335,7 @@ public class Inky extends Ghost {
                 possibleDirections.add(UP);
             if(portal.getPosY() > getPosY())
                 possibleDirections.add(DOWN);
-            
+
             return possibleDirections;
         }
 
