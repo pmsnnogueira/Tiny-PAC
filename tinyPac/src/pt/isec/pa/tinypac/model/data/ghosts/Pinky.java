@@ -329,11 +329,11 @@ public class Pinky extends Ghost {
         if(currentElement.getSymbol() == Obstacles.GHOST_CAVE.getSymbol()){
             if(portal.getPosX() < getPosX())
                 possibleDirections.add(LEFT);
-            else if(portal.getPosX() > getPosX())
+            if(portal.getPosX() > getPosX())
                 possibleDirections.add(RIGHT);
-            else if(portal.getPosY() < getPosY())
+            if(portal.getPosY() < getPosY())
                 possibleDirections.add(UP);
-            else if(portal.getPosY() > getPosY())
+            if(portal.getPosY() > getPosY())
                 possibleDirections.add(DOWN);
 
             return possibleDirections;

@@ -209,7 +209,7 @@ public class GameManager{
         Ghost ghost = null;
 
         //Posicionar o Blinky por tras da porta, pois ele so anda para a frente
-        for(int i = 0; i < ghostCave.size() ; i++){
+        /*for(int i = 0; i < ghostCave.size() ; i++){
             randomPosition = ghostCave.get(i);
             IMazeElement element = maze.get(randomPosition[1] - 1, randomPosition[0]);
             if(element == null)
@@ -221,10 +221,10 @@ public class GameManager{
                 ghostCave.remove(randomPosition);
                 break;
             }
-        }
+        }*/
 
 
-        for(int i = 0; i < 3;i++){
+        for(int i = 0; i < 4;i++){
 
             IMazeElement element = null;
             do {
@@ -245,6 +245,10 @@ public class GameManager{
                 }
                 case 2: {
                     ghost = new Pinky(game, randomPosition[0], randomPosition[1]);
+                    break;
+                }
+                case 3: {
+                    ghost = new Blinky(game, randomPosition[0], randomPosition[1]);
                     break;
                 }
             }

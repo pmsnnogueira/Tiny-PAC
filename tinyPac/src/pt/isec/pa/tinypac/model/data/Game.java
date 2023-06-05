@@ -231,7 +231,7 @@ public class Game implements Serializable {
         if(ghosts == null || pacman == null)
             return false;
 
-        while (tickAtBeginningOfFunction <= maxTick){
+        /*while (tickAtBeginningOfFunction <= maxTick){
 
             try {
                 Thread.sleep(20);
@@ -246,24 +246,24 @@ public class Game implements Serializable {
             evolveGhosts();
             tickAtBeginningOfFunction++;
             currentTick++;
-        }
-        /*evolvePacman();
-        eatFood();*/
+        }*/
+        evolvePacman();
+        eatFood();
 
-        //evolveGhosts();
+        evolveGhosts();
 
         return true;
     }
 
     public void evolveGhosts(){
         for(Ghost ghost : ghosts){
-            if(currentTick % ghost.getTicksToMove() == 0) {
+            //if(currentTick % ghost.getTicksToMove() == 0) {
                 if (!ghost.getLocked() && !ghost.getVulnerable()) {
                     ghost.evolve();
                 } else if (ghost.getVulnerable()) {
                     ghost.returnToBase();
                 }
-            }
+            //}
         }
     }
 
