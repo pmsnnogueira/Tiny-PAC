@@ -24,8 +24,8 @@ public class Game {
     private int maxTick = 50;
     public Game(){
         this.level = 1;
-        this.lives = 1;
-        this.score = 0;
+        this.lives = 3;
+        this.score = 500;
         this.maze = null;
         this.ghosts = new ArrayList<>();
         this.pacman = null;
@@ -134,6 +134,7 @@ public class Game {
         for(int i = 0; i < lives ; i++){
             info += LIVES_ICON;
         }
+        info += "\n\tlevel: " + level;
 
        return info;
     }

@@ -6,6 +6,7 @@ import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
@@ -47,21 +48,27 @@ public class MazePane extends VBox {
 
     private void initializeImagesGrid(){
 
-       tilePane = new TilePane(Orientation.HORIZONTAL);
 
-       tilePane.setPrefColumns(manager.getMazeColumns());
-       tilePane.setPrefTileHeight(CELL_HEIGHT);
-       tilePane.setPrefTileWidth(CELL_WIDTH);
+        Label label = new Label(manager.showGameInfo());
+        label.getStyleClass().add("gameInfoLabel");
+        label.setPadding(new Insets(0,0,5,0));
+        label.setAlignment(Pos.CENTER);
+        this.getChildren().add(label);
 
-       FlowPane flowPane = new FlowPane(tilePane);
-       flowPane.setAlignment(Pos.CENTER);
-       AnchorPane.setTopAnchor(flowPane,0.0);
-       AnchorPane.setBottomAnchor(flowPane,0.0);
-       AnchorPane.setLeftAnchor(flowPane,0.0);
-       AnchorPane.setRightAnchor(flowPane,0.0);
+        tilePane = new TilePane(Orientation.HORIZONTAL);
+        tilePane.setPrefColumns(manager.getMazeColumns());
+        tilePane.setPrefTileHeight(CELL_HEIGHT);
+        tilePane.setPrefTileWidth(CELL_WIDTH);
 
-       images = new ImageView[manager.getMazeRows() * manager.getMazeColumns()];
-       for(int i = 0 ;i < images.length; i++) {
+        FlowPane flowPane = new FlowPane(tilePane);
+        flowPane.setAlignment(Pos.CENTER);
+        AnchorPane.setTopAnchor(flowPane,0.0);
+        AnchorPane.setBottomAnchor(flowPane,0.0);
+        AnchorPane.setLeftAnchor(flowPane,0.0);
+        AnchorPane.setRightAnchor(flowPane,0.0);
+
+        images = new ImageView[manager.getMazeRows() * manager.getMazeColumns()];
+        for(int i = 0 ;i < images.length; i++) {
 
            ImageView imageView = getImageInPosition((i / manager.getMazeColumns()),(i % manager.getMazeColumns()));
            imageView.setFitWidth(CELL_WIDTH);
@@ -70,7 +77,9 @@ public class MazePane extends VBox {
            images[i].setUserData(i);
            tilePane.getChildren().add(images[i]);
         }
-       this.getChildren().addAll(flowPane);
+
+        this.setAlignment(Pos.CENTER);
+        this.getChildren().addAll(flowPane);
     }
     private ImageView getImageInPosition(Integer row, Integer column){
         char element = manager.receiveElement(row,column);

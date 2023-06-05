@@ -1,5 +1,5 @@
 .mainLabel{
-    //-fx-font-family: "Courier New";
+    -fx-font-family: "Courier New";
     -fx-font-weight: bold;
     -fx-font-size: 40;
     -fx-text-fill: #ffffff;
@@ -33,3 +33,11 @@
     -fx-scale-y: 1.1;
     -fx-scale-x: 1.1;
 }
+
+.gameInfoLabel{
+    -fx-font-family: "Courier New";
+    -fx-font-weight: bold;
+    -fx-font-size: 18;
+    -fx-text-fill: #ffffff;
+}
+
