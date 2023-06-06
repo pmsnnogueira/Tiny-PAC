@@ -46,6 +46,7 @@ public class GameState extends StateAdapter {
             return;
         }else if(result == 2){
             //EndLevel
+            System.out.println("End Level");
             changeState(State.WAIT_FOR_DIRECTIONS);
             return;
         }

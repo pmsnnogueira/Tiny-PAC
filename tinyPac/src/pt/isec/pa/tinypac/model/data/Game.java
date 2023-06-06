@@ -460,4 +460,8 @@ public class Game implements Serializable {
         int index = new Random().nextInt(aux.size());
         return aux.get(index).getPosition();
     }
+
+    public void clearWarps() {
+        warps.clear();
+    }
 }

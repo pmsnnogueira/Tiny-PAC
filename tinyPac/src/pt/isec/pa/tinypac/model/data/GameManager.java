@@ -82,12 +82,15 @@ public class GameManager{
             fileName.delete(0, fileName.length());      //Remover a barra
             fileName.append("Level").append((counter < 10) ? "0" + counter : + counter).append(".txt");
             counter--;
+
             if(listOfFiles.contains(fileName.toString()))
                 break;
+
 
             if(i == listOfFiles.size() - 1)     //Nao encontrou nenhum ficheiro com o nome pretendido
                 return false;
         }
+
         fileName.insert(0 , LEVELS_PATH);
 
         //Verificar para todos os ficheiros com o directory.listFiles
@@ -144,6 +147,8 @@ public class GameManager{
         Maze maze = new Maze(game.getMazeRows() , game.getMazeColumns());
 
         ArrayList<Integer[]> ghostCave = new ArrayList<>();
+        game.clearWarps();
+
 
         Integer pacmanCounter = 0;
         Integer portalCounter = 0;
@@ -195,8 +200,10 @@ public class GameManager{
             }
         }
 
-        if(pacmanCounter != 1 || portalCounter == 0 || game.getSizeWarps() > 2 || game.getSizeWarps() == 1)
+        if(pacmanCounter != 1 || portalCounter == 0 || (game.getSizeWarps() % 2 != 0)) {
+            System.out.println("Erro");
             return null;
+        }
 
         game.setGhosts(ghostInitialPositioning(maze,ghostCave));
 
