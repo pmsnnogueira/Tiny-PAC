@@ -6,11 +6,10 @@ import pt.isec.pa.tinypac.gameengine.IGameEngineEvolve;
 import pt.isec.pa.tinypac.model.fsm.Context;
 import pt.isec.pa.tinypac.model.fsm.State;
 import pt.isec.pa.tinypac.utils.Direction;
-import pt.isec.pa.tinypac.utils.ProgramManager;
+import pt.isec.pa.tinypac.utils.UIManager;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
-import java.io.File;
 
 public class ModelManager implements IGameEngineEvolve {
 
@@ -23,7 +22,7 @@ public class ModelManager implements IGameEngineEvolve {
     private GameEngine gameEngine;
     private Context context;
 
-    private ProgramManager programManager;
+    private UIManager UIManager;
     private PropertyChangeSupport pcs;
 
     public ModelManager(){
@@ -32,7 +31,7 @@ public class ModelManager implements IGameEngineEvolve {
         this.context = null;
         //this.gameEngine.registerClient(this);
 
-        this.programManager = ProgramManager.MAIN_MENU;
+        this.UIManager = UIManager.MAIN_MENU;
         this.pcs = new PropertyChangeSupport(this);
     }
 
@@ -89,12 +88,12 @@ public class ModelManager implements IGameEngineEvolve {
     }
 
 
-    public ProgramManager getProgramState(){
-        return programManager;
+    public UIManager getProgramState(){
+        return UIManager;
     }
 
     public void changeToTop5(){
-        this.programManager = ProgramManager.TOP5;
+        this.UIManager = UIManager.TOP5;
         pcs.firePropertyChange(PROP_MENU,null,null);
     }
 
@@ -110,17 +109,17 @@ public class ModelManager implements IGameEngineEvolve {
     public void changeToGame(){
 
         gameEngine.start(GAME_ENGINE_TIME);
-        this.programManager = ProgramManager.GAME;
+        this.UIManager = UIManager.GAME;
         pcs.firePropertyChange(PROP_GAME,null,null);
     }
 
     public void changeToMainMenu(){
-        if(programManager == ProgramManager.GAME){
+        if(UIManager == UIManager.GAME){
             gameEngine.stop();
             gameEngine = null;
             context = null;
         }
-        this.programManager = ProgramManager.MAIN_MENU;
+        this.UIManager = UIManager.MAIN_MENU;
         pcs.firePropertyChange(PROP_GAME,null,null);
         pcs.firePropertyChange(PROP_MENU,null,null);
     }

@@ -308,7 +308,6 @@ public class Game implements Serializable {
                     pacmanEatGhost(ghost);
                     //resetLevel();
                 }else{
-
                     return -1;          //Pacman MORREU
                 }
             }
@@ -323,6 +322,8 @@ public class Game implements Serializable {
 
     private void incLevel() {
         level++;
+
+        System.out.println("Level: " + level);
     }
 
     private void pacmanEatGhost(Ghost ghost){

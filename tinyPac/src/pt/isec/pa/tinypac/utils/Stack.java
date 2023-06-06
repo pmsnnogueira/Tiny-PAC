@@ -24,7 +24,7 @@ public class Stack<T> implements Serializable {
         return (lista.get(lista.size() - 1));
     }
 
-    //Obter o ultimo objeto da pilha e apagar
+    //Obter o ultimo objeto da pilha e apaga
     public T pop(){
         T valor = null;
 
@@ -34,7 +34,6 @@ public class Stack<T> implements Serializable {
         }
 
         return (valor);
-
     }
 
     //Colocar um objeto na ultima posicao da pilha

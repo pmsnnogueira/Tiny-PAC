@@ -30,7 +30,7 @@ public class WaitForDirectionState extends StateAdapter {
 
     @Override
     public void evolve(long currentTime) {
-        data.evolve(currentTime);
+        return;
     }
 
     @Override

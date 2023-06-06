@@ -4,23 +4,15 @@ import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
-import javafx.scene.input.KeyCode;
 import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 import pt.isec.pa.tinypac.model.ModelManager;
-import pt.isec.pa.tinypac.model.fsm.State;
-import pt.isec.pa.tinypac.ui.gui.resources.CSSManager;
 import pt.isec.pa.tinypac.ui.gui.resources.FontManager;
-import pt.isec.pa.tinypac.ui.gui.resources.ImageManager;
-import pt.isec.pa.tinypac.ui.gui.views.RootPane;
-import pt.isec.pa.tinypac.utils.ProgramManager;
+import pt.isec.pa.tinypac.utils.UIManager;
 
 public class MainMenuPane extends BorderPane {
     private ToggleButton btnPlayGame, btnTop5 ,btnExitGame;
@@ -151,7 +143,7 @@ public class MainMenuPane extends BorderPane {
     }
 
     private void update() {
-        this.setVisible(manager.getProgramState() == ProgramManager.MAIN_MENU);
+        this.setVisible(manager.getProgramState() == UIManager.MAIN_MENU);
     }
 
 }

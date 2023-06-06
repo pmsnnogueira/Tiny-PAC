@@ -7,11 +7,10 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
 import pt.isec.pa.tinypac.model.ModelManager;
 import pt.isec.pa.tinypac.model.fsm.State;
 import pt.isec.pa.tinypac.ui.gui.resources.ImageManager;
-import pt.isec.pa.tinypac.utils.ProgramManager;
+import pt.isec.pa.tinypac.utils.UIManager;
 
 public class GameOverUI extends BorderPane {
     private ModelManager manager;
@@ -109,7 +108,7 @@ public class GameOverUI extends BorderPane {
     }
 
     private void update(){
-        if(manager.getProgramState() != ProgramManager.GAME || manager.getState() != State.GameOver){
+        if(manager.getProgramState() != UIManager.GAME || manager.getState() != State.GameOver){
             this.setVisible(false);
             return;
         }

@@ -9,7 +9,7 @@ import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import pt.isec.pa.tinypac.model.ModelManager;
-import pt.isec.pa.tinypac.utils.ProgramManager;
+import pt.isec.pa.tinypac.utils.UIManager;
 
 public class Top5Pane extends BorderPane {
 
@@ -118,6 +118,6 @@ public class Top5Pane extends BorderPane {
     }
 
     private void update() {
-        this.setVisible(manager.getProgramState() == ProgramManager.TOP5);
+        this.setVisible(manager.getProgramState() == UIManager.TOP5);
     }
 }

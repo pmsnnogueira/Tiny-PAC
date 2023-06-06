@@ -36,16 +36,18 @@ public class GameState extends StateAdapter {
                 changeState(State.WAIT_FOR_DIRECTIONS);
                 return;
             }if(resPac == -1){
-
                 changeState(State.GameOver);
+                return;
             }
         }else if(result == 1){
             //System.out.println("Changing to GhostVulnerableState");
             data.ghostsVulnerable();
             changeState(State.GHOST_VULNERABLE);
+            return;
         }else if(result == 2){
             //EndLevel
             changeState(State.WAIT_FOR_DIRECTIONS);
+            return;
         }
     }
 

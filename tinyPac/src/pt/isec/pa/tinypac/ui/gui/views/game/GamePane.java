@@ -11,9 +11,7 @@ import javafx.scene.paint.Color;
 import pt.isec.pa.tinypac.model.ModelManager;
 import pt.isec.pa.tinypac.model.fsm.State;
 import pt.isec.pa.tinypac.utils.Direction;
-import pt.isec.pa.tinypac.utils.ProgramManager;
-
-import java.awt.*;
+import pt.isec.pa.tinypac.utils.UIManager;
 
 public class GamePane extends BorderPane {
 
@@ -64,7 +62,7 @@ public class GamePane extends BorderPane {
     }
 
     private void update(){
-        if(manager.getProgramState() != ProgramManager.GAME || manager.getState() == State.PAUSE || manager.getState() == State.GameOver){
+        if(manager.getProgramState() != UIManager.GAME || manager.getState() == State.PAUSE || manager.getState() == State.GameOver){
             this.setVisible(false);
             return;
         }
