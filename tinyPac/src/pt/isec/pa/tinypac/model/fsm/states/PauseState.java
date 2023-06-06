@@ -2,7 +2,6 @@ package pt.isec.pa.tinypac.model.fsm.states;
 
 import pt.isec.pa.tinypac.model.data.GameManager;
 import pt.isec.pa.tinypac.model.fsm.Context;
-import pt.isec.pa.tinypac.model.fsm.IState;
 import pt.isec.pa.tinypac.model.fsm.State;
 import pt.isec.pa.tinypac.model.fsm.StateAdapter;
 import pt.isec.pa.tinypac.utils.Direction;
@@ -28,15 +27,5 @@ public class PauseState extends StateAdapter {
         }
 
         return true;
-    }
-
-    @Override
-    public void evolve(long currentTime) {
-        return;
-    }
-
-    @Override
-    public boolean changeDirection(Direction direction) {
-        return false;
     }
 }

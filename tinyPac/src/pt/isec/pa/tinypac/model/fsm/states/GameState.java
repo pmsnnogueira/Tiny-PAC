@@ -23,8 +23,9 @@ public class GameState extends StateAdapter {
     }
 
     @Override
-    public void evolve(long currentTime) {
-        data.evolve(currentTime);
+    public boolean evolve(long currentTime) {
+        boolean needUpdate;
+        needUpdate = data.evolve(currentTime);
 
         int result = data.controlGame();
         if(result == -1){
@@ -34,22 +35,20 @@ public class GameState extends StateAdapter {
             if(resPac == 1){
                 //Pacman has lives and can continue game
                 changeState(State.WAIT_FOR_DIRECTIONS);
-                return;
             }if(resPac == -1){
                 changeState(State.GameOver);
-                return;
             }
         }else if(result == 1){
             //System.out.println("Changing to GhostVulnerableState");
             data.ghostsVulnerable();
             changeState(State.GHOST_VULNERABLE);
-            return;
         }else if(result == 2){
             //EndLevel
             System.out.println("End Level");
             changeState(State.WAIT_FOR_DIRECTIONS);
-            return;
         }
+
+        return needUpdate;
     }
 
     @Override

@@ -271,9 +271,11 @@ public class GameManager{
         return game.showGameInfo();
     }
 
-    public void evolve(long currentTime) {
+    public boolean evolve(long currentTime) {
         if(game != null)
-            game.evolve();
+            return game.evolve();
+
+        return false;
     }
 
     public Integer controlGame(){

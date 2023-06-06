@@ -15,7 +15,7 @@ public class ModelManager {
     public static final String PROP_DATA = "_data_";
     public static final String PROP_GAME = "_gameMenu_";
 
-    private static final Integer GAME_ENGINE_TIME = 500;
+    private static final Integer GAME_ENGINE_TIME = 100;
 
     private GameEngine gameEngine;
     private Context context;
@@ -40,7 +40,7 @@ public class ModelManager {
 
     public boolean changeDirection(Direction direction){
         if(context.changeDirection(direction)) {
-            //System.out.println("New Direction: " + direction.toString());
+            System.out.println("New Direction: " + direction.toString());
             pcs.firePropertyChange(PROP_GAME, null,null);
             return true;
         }
@@ -72,8 +72,10 @@ public class ModelManager {
     }
 
     public void evolve(long currentTime) {
-        context.evolve(currentTime);
-        pcs.firePropertyChange(PROP_GAME,null,null);
+        if(context.evolve(currentTime)) {
+            pcs.firePropertyChange(PROP_GAME, null, null);
+            System.out.println("Fire");
+        }
     }
 
     public void addPropertyChangeListener(PropertyChangeListener listener){
@@ -104,7 +106,6 @@ public class ModelManager {
     }
 
     public void changeToGame(){
-
         gameEngine.start(GAME_ENGINE_TIME);
         this.UIManager = UIManager.GAME;
         pcs.firePropertyChange(PROP_GAME,null,null);

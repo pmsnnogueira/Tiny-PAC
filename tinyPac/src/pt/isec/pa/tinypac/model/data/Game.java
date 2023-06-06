@@ -246,36 +246,30 @@ public class Game implements Serializable {
     }
 
     public boolean evolve() {
-
-        tickAtBeginningOfFunction = 1;
-        maxTick = 50;
-        int counterPacman = 0;
+        boolean res = false;
 
         if(ghosts == null || pacman == null)
             return false;
 
-        /*while (tickAtBeginningOfFunction <= maxTick){
-
-            try {
-                Thread.sleep(20);
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
-            }
+        if (tickAtBeginningOfFunction <= maxTick){
             if(currentTick % pacman.getTicksToMove() == 0){
                 evolvePacman();
                 eatFood();
-                counterPacman++;
+                res = true;
+                tickAtBeginningOfFunction = 1;
+                currentTick = 1;
             }
-            evolveGhosts();
+            //evolveGhosts();
+
             tickAtBeginningOfFunction++;
             currentTick++;
-        }*/
-        evolvePacman();
+        }
+        /*evolvePacman();
         eatFood();
 
-        evolveGhosts();
+        evolveGhosts();*/
 
-        return true;
+        return res;
     }
 
     public void evolveGhosts(){

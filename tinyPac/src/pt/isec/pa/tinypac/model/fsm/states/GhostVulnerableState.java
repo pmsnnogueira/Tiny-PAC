@@ -22,11 +22,12 @@ public class GhostVulnerableState extends StateAdapter {
         return data.changeDirection(direction);
     }
     @Override
-    public void evolve(long currentTime) {
+    public boolean evolve(long currentTime) {
 
         //data.evolve(currentTime);
 
         //int result = data.controlGame();
+        return false;
     }
 
     @Override

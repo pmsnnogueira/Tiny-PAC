@@ -53,8 +53,8 @@ public class Context {
         return data.getMazeColumns();
     }
 
-    public void evolve(long currentTime) {
-        state.evolve(currentTime);
+    public boolean evolve(long currentTime) {
+        return state.evolve(currentTime);
     }
 
     public boolean pause(long currentTime){
