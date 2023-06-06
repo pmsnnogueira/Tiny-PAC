@@ -40,7 +40,6 @@ public class ModelManager {
 
     public boolean changeDirection(Direction direction){
         if(context.changeDirection(direction)) {
-            System.out.println("New Direction: " + direction.toString());
             pcs.firePropertyChange(PROP_GAME, null,null);
             return true;
         }
@@ -74,7 +73,6 @@ public class ModelManager {
     public void evolve(long currentTime) {
         if(context.evolve(currentTime)) {
             pcs.firePropertyChange(PROP_GAME, null, null);
-            System.out.println("Fire");
         }
     }
 
@@ -101,7 +99,7 @@ public class ModelManager {
             this.context = new Context();
         if(gameEngine == null) {
             this.gameEngine = new GameEngine();
-            this.gameEngine.registerClient((gameEngine,currentTime) -> evolve(currentTime));
+            this.gameEngine.registerClient((gameEngine,currentTime) -> {evolve(currentTime);});
         }
     }
 

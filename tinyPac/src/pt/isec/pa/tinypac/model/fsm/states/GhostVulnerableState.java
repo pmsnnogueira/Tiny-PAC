@@ -24,10 +24,10 @@ public class GhostVulnerableState extends StateAdapter {
     @Override
     public boolean evolve(long currentTime) {
 
-        //data.evolve(currentTime);
+        boolean needUpdate = data.evolve(currentTime);
+        data.controlGame();
 
-        //int result = data.controlGame();
-        return false;
+        return needUpdate;
     }
 
     @Override

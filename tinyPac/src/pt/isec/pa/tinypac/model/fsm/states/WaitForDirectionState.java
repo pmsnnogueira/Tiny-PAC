@@ -10,7 +10,6 @@ public class WaitForDirectionState extends StateAdapter {
 
     public WaitForDirectionState(Context context, GameManager data){
         super(context, data);
-        System.out.println("OLa");
         if(!data.loadMapLevel()){
             System.out.println("\nCould not load levels\nClosing Game");
             System.exit(-1);
@@ -31,7 +30,7 @@ public class WaitForDirectionState extends StateAdapter {
 
     @Override
     public boolean evolve(long currentTime) {
-        return false;
+        return true;
     }
 
     @Override

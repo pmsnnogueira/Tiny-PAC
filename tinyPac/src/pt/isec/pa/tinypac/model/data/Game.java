@@ -32,7 +32,7 @@ public class Game implements Serializable {
     private int tickAtBeginningOfFunction = 1;
     private int maxTick = 50;
     public Game(){
-        this.level = 1;
+        this.level = 2;
         this.lives = 3;
         this.score = 0;
         this.maze = null;
@@ -246,7 +246,8 @@ public class Game implements Serializable {
     }
 
     public boolean evolve() {
-        boolean res = false;
+        boolean pacmanRes = false, ghostRes = false;
+        boolean update = false;
 
         if(ghosts == null || pacman == null)
             return false;
@@ -255,11 +256,26 @@ public class Game implements Serializable {
             if(currentTick % pacman.getTicksToMove() == 0){
                 evolvePacman();
                 eatFood();
-                res = true;
-                tickAtBeginningOfFunction = 1;
-                currentTick = 1;
+                pacmanRes = true;
+                update = true;
             }
-            //evolveGhosts();
+
+            for(Ghost ghost : ghosts){
+                if(currentTick % ghost.getTicksToMove() == 0) {
+                    System.out.println("Ghost Movement");
+                    if (!ghost.getLocked() && !ghost.getVulnerable()) {
+                        ghost.evolve();
+                    } else if (ghost.getVulnerable()) {
+                        ghost.returnToBase();
+                    }
+                    ghostRes = true;
+                }
+            }
+
+            //ghostRes = evolveGhosts();
+            if(ghostRes || pacmanRes)
+                update = true;
+
 
             tickAtBeginningOfFunction++;
             currentTick++;
@@ -269,19 +285,29 @@ public class Game implements Serializable {
 
         evolveGhosts();*/
 
-        return res;
+        if(pacmanRes && ghostRes){
+            tickAtBeginningOfFunction = 1;
+            currentTick = 1;
+        }
+
+        return update;
     }
 
-    public void evolveGhosts(){
+    public boolean evolveGhosts(){
+        boolean update = false;
+
         for(Ghost ghost : ghosts){
-            //if(currentTick % ghost.getTicksToMove() == 0) {
+            if(currentTick % ghost.getTicksToMove() == 0) {
                 if (!ghost.getLocked() && !ghost.getVulnerable()) {
                     ghost.evolve();
                 } else if (ghost.getVulnerable()) {
                     ghost.returnToBase();
                 }
-            //}
+                update = true;
+            }
         }
+
+        return update;
     }
 
     public void evolvePacman(){
