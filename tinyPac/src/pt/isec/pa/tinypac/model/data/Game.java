@@ -308,19 +308,8 @@ public class Game implements Serializable {
         for(Ghost ghost: ghosts){
             if(ghost.getPosX() == pacman.getPosX() && ghost.getPosY() == pacman.getPosY()){
                 //Ghost in same place as pacman
-                if(pacman.getPower()){
-                    pacmanEatGhost(ghost);
-                    //resetLevel();
-                }else{
-                    return -1;          //Pacman MORREU
-                }
+                    return -1;
             }
-            /*if(pacman.getPower() && ghost.isInInicialPosition()) {
-                ghost.unlockGhost();
-                if(everyGhostsNotVulnerable()){
-                    return 3;
-                }
-            }*/
         }
 
         if(pacman.getPower()) {
@@ -340,12 +329,7 @@ public class Game implements Serializable {
         for(Ghost ghost: ghosts){
             if(ghost.getPosX() == pacman.getPosX() && ghost.getPosY() == pacman.getPosY()){
                 //Ghost in same place as pacman
-                if(pacman.getPower()){
-                    pacmanEatGhost(ghost);
-                    //resetLevel();
-                }else{
-                    return -1;          //Pacman MORREU
-                }
+                return -1;          //Pacman MORREU
             }
         }
         if(pacman.getPower()) {
@@ -364,11 +348,9 @@ public class Game implements Serializable {
         for(Ghost ghost: ghosts){
             if(ghost.getPosX() == pacman.getPosX() && ghost.getPosY() == pacman.getPosY()){
                 //Ghost in same place as pacman
-                if(pacman.getPower()){
+                if(pacman.getPower()) {
+                    System.out.println("Mati");
                     pacmanEatGhost(ghost);
-                }else{
-                    return -1;          //Pacman MORREU
-                    // MUDAR DE ESTADO
                 }
             }
             if(pacman.getPower() && ghost.isInInicialPosition()) {

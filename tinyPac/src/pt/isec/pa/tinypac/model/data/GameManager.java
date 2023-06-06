@@ -371,4 +371,8 @@ public class GameManager{
     public boolean getPower() {
         return game.getPower();
     }
+
+    public void pacmanPower(boolean b) {
+        game.pacmanPower(b);
+    }
 }

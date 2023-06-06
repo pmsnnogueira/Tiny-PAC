@@ -58,12 +58,9 @@ public class Blinky extends Ghost{
             if(!isMovementsEmpty()){
                 Position lastPositon = popLastPosition();
                 setPos(lastPositon.getPosX(), lastPositon.getPosY());
-
-                System.out.println("InitPosition X: "  + getInitialPositionX()  + "y: " +getInitialPositionY());
-                System.out.println("CurrentPosition X: "  + getPosX()  + "y: " + getPosY());
                 return;
             }
-            //unlockGhost();
+            unlockGhost();
         }
 
         return;

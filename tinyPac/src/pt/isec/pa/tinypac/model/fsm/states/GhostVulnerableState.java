@@ -39,7 +39,6 @@ public class GhostVulnerableState extends StateAdapter {
             changeState(State.GameOver);
 
         if(unlockGhosts(currentTime)){
-            System.out.println("Ghosts Back to normal");
         }
 
         return needUpdate;
@@ -59,7 +58,7 @@ public class GhostVulnerableState extends StateAdapter {
 
         if(currentTime >= maxTime) {
             data.ghostsVulnerable(false);
-            //data.pacmanPower(false);
+            data.pacmanPower(false);
             changeState(State.GAME);
             return true;
         }

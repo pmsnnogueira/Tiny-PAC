@@ -24,7 +24,7 @@ public class Pacman extends GameObjects implements Serializable {
         this.pacmanPosition = new PacmanPosition(posX, posY, game.getMazeRows(), game.getMazeColumns());
         this.initialPositon = new PacmanPosition(pacmanPosition);
         this.power = false;
-        this.ticksToMove = 5;
+        this.ticksToMove = 2;
     }
 
     /*public Pacman(Pacman pacman){
