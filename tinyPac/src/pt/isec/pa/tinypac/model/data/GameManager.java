@@ -1,5 +1,6 @@
 package pt.isec.pa.tinypac.model.data;
 
+import javafx.geometry.Pos;
 import pt.isec.pa.tinypac.model.data.ghosts.Blinky;
 import pt.isec.pa.tinypac.model.data.ghosts.Clyde;
 import pt.isec.pa.tinypac.model.data.ghosts.Inky;
@@ -7,6 +8,7 @@ import pt.isec.pa.tinypac.model.data.ghosts.Pinky;
 import pt.isec.pa.tinypac.model.data.obstacles.*;
 import pt.isec.pa.tinypac.utils.Direction;
 import pt.isec.pa.tinypac.utils.Obstacles;
+import pt.isec.pa.tinypac.utils.Position;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -146,52 +148,52 @@ public class GameManager{
 
         Maze maze = new Maze(game.getMazeRows() , game.getMazeColumns());
 
-        ArrayList<Integer[]> ghostCave = new ArrayList<>();
+        ArrayList<Position> ghostCave = new ArrayList<>();
         game.clearWarps();
 
 
         Integer pacmanCounter = 0;
         Integer portalCounter = 0;
 
-        for(int i = 0 ; i < game.getMazeRows() ; i++) {       //Y
-            sb.deleteCharAt(sb.indexOf("\n",i * game.getMazeColumns()));
-            for(int a = 0; a < game.getMazeColumns(); a++) {      //X
-                char c = sb.charAt((i * game.getMazeColumns()) + a);
+        for(int posY = 0 ; posY < game.getMazeRows() ; posY++) {       //Y
+            sb.deleteCharAt(sb.indexOf("\n",posY * game.getMazeColumns()));
+            for(int posX = 0; posX < game.getMazeColumns(); posX++) {      //X
+                char c = sb.charAt((posY * game.getMazeColumns()) + posX);
                 switch (c) {
                     case 'x' ->   //Parede
-                        maze.set(i, a, new Wall());
+                        maze.set(posY, posX, new Wall());
                     case 'W' ->  { //Zona Warp
-                        Warp warp = new Warp(a,i);
-                        maze.set(i, a, warp);
+                        Warp warp = new Warp(posX,posY);
+                        maze.set(posY, posX, warp);
                         game.addWarps(warp);
                     }
                     case 'o' ->  {  //Comida
-                        maze.set(i, a, new Ball());
+                        maze.set(posY, posX, new Ball());
                         //maze.set(i, a, null);
                         game.incFoodRemaining();
                     }
                     case 'F' -> {  //fruta
-                        maze.set(i, a, new Fruit());
+                        maze.set(posY, posX, new Fruit());
                         game.incFoodRemaining();
                     }
                     case 'M' -> {   //LocalPacmanInicial
-                        maze.set(i, a, new PacmanInitialPosition());
-                        game.setPacman(new Pacman(game,a, i));
+                        maze.set(posY, posX, new PacmanInitialPosition());
+                        game.setPacman(new Pacman(game,posX, posY));
                         pacmanCounter++;
                     }
                     case 'O' -> {   //Bola com Poderes
-                        maze.set(i, a, new Power());
+                        maze.set(posY, posX, new Power());
                         game.incFoodRemaining();
                     }
                     case 'Y' -> {   //Portal
-                        Portal portal = new Portal(a,i); //x,y
-                        maze.set(i, a, portal);
+                        Portal portal = new Portal(posX,posY); //x,y
+                        maze.set(posY, posX, portal);
                         game.setPortal(portal);
                         portalCounter++;
                     }
                     case 'y' -> {   //Caverna dos Fantasmas
-                        maze.set(i, a, new GhostCave());
-                        ghostCave.add(new Integer[]{a, i});//x , y
+                        maze.set(posY, posX, new GhostCave());
+                        ghostCave.add(new Position(posX,posY));//x , y
                     }
                     default -> {
                         return null; //Character Invalid
@@ -200,18 +202,16 @@ public class GameManager{
             }
         }
 
-        if(pacmanCounter != 1 || portalCounter == 0 || (game.getSizeWarps() % 2 != 0)) {
-            System.out.println("Erro");
+        if(pacmanCounter != 1 || portalCounter == 0 || (game.getSizeWarps() % 2 != 0))
             return null;
-        }
+
 
         game.setGhosts(ghostInitialPositioning(maze,ghostCave));
-
-        //System.out.println(ghostCave.toString());
+        
         return maze;
     }
 
-    public ArrayList<Ghost> ghostInitialPositioning(Maze maze,ArrayList<Integer[]> ghostCave){
+    public ArrayList<Ghost> ghostInitialPositioning(Maze maze,ArrayList<Position> ghostCave){
 
         if(maze == null || ghostCave == null || ghostCave.isEmpty())
             return null;
@@ -219,24 +219,8 @@ public class GameManager{
         ArrayList<Ghost> ghosts = new ArrayList<>();
 
         int numPositions = 0;
-        Integer[] randomPosition;
+        Position randomPosition;
         Ghost ghost = null;
-
-        //Posicionar o Blinky por tras da porta, pois ele so anda para a frente
-        /*for(int i = 0; i < ghostCave.size() ; i++){
-            randomPosition = ghostCave.get(i);
-            IMazeElement element = maze.get(randomPosition[1] - 1, randomPosition[0]);
-            if(element == null)
-                continue;
-
-            if(element.getSymbol() == Obstacles.PORTAL.getSymbol() || i == ghostCave.size()) {
-                ghost = new Blinky(game,randomPosition[0], randomPosition[1]);
-                ghosts.add(ghost);
-                ghostCave.remove(randomPosition);
-                break;
-            }
-        }*/
-
 
         for(int i = 0; i < 4;i++){
 
@@ -245,24 +229,24 @@ public class GameManager{
                 numPositions = ghostCave.size();
                 int randomIndex = (int) (Math.random() * numPositions);
                 randomPosition = ghostCave.get(randomIndex);
-                element = maze.get(randomPosition[1], randomPosition[0]);
+                element = maze.get(randomPosition.getPosY(), randomPosition.getPosX());           //y, x
             } while (element == null || element.getSymbol() != Obstacles.GHOST_CAVE.getSymbol());
 
             switch (i){
                 case 0: {
-                    ghost = new Clyde(game, randomPosition[0], randomPosition[1]);
+                    ghost = new Clyde(game,  randomPosition.getPosX(), randomPosition.getPosY());
                     break;
                 }
                 case 1: {
-                    ghost = new Inky(game, randomPosition[0], randomPosition[1]);
+                    ghost = new Inky(game,  randomPosition.getPosX(), randomPosition.getPosY());
                     break;
                 }
                 case 2: {
-                    ghost = new Pinky(game, randomPosition[0], randomPosition[1]);
+                    ghost = new Pinky(game,  randomPosition.getPosX(), randomPosition.getPosY());
                     break;
                 }
                 case 3: {
-                    ghost = new Blinky(game, randomPosition[0], randomPosition[1]);
+                    ghost = new Blinky(game, randomPosition.getPosX(), randomPosition.getPosY());
                     break;
                 }
             }
