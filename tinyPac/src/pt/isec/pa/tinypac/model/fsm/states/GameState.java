@@ -27,7 +27,7 @@ public class GameState extends StateAdapter {
         boolean needUpdate;
         needUpdate = data.evolve(currentTime);
 
-        int result = data.controlGame();
+        int result = data.controlGameState();
         if(result == -1){
             //Restart the level or GameOver
             //System.out.println("Pacman died");
@@ -39,8 +39,8 @@ public class GameState extends StateAdapter {
                 changeState(State.GameOver);
             }
         }else if(result == 1){
-            //System.out.println("Changing to GhostVulnerableState");
-            data.ghostsVulnerable();
+            System.out.println("Changing to GhostVulnerableState");
+            data.ghostsVulnerable(true);
             changeState(State.GHOST_VULNERABLE);
         }else if(result == 2){
             //EndLevel

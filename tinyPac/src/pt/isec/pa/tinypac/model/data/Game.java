@@ -260,30 +260,13 @@ public class Game implements Serializable {
                 update = true;
             }
 
-            for(Ghost ghost : ghosts){
-                if(currentTick % ghost.getTicksToMove() == 0) {
-                    System.out.println("Ghost Movement");
-                    if (!ghost.getLocked() && !ghost.getVulnerable()) {
-                        ghost.evolve();
-                    } else if (ghost.getVulnerable()) {
-                        ghost.returnToBase();
-                    }
-                    ghostRes = true;
-                }
-            }
+            ghostRes = evolveGhosts();
 
-            //ghostRes = evolveGhosts();
             if(ghostRes || pacmanRes)
                 update = true;
-
-
             tickAtBeginningOfFunction++;
             currentTick++;
         }
-        /*evolvePacman();
-        eatFood();
-
-        evolveGhosts();*/
 
         if(pacmanRes && ghostRes){
             tickAtBeginningOfFunction = 1;
@@ -300,6 +283,7 @@ public class Game implements Serializable {
             if(currentTick % ghost.getTicksToMove() == 0) {
                 if (!ghost.getLocked() && !ghost.getVulnerable()) {
                     ghost.evolve();
+
                 } else if (ghost.getVulnerable()) {
                     ghost.returnToBase();
                 }
@@ -331,6 +315,12 @@ public class Game implements Serializable {
                     return -1;          //Pacman MORREU
                 }
             }
+            /*if(pacman.getPower() && ghost.isInInicialPosition()) {
+                ghost.unlockGhost();
+                if(everyGhostsNotVulnerable()){
+                    return 3;
+                }
+            }*/
         }
 
         if(pacman.getPower()) {
@@ -340,14 +330,75 @@ public class Game implements Serializable {
         return 0;
     }
 
+    public Integer controlGameState(){
+
+        if(getFoodRemaining() == 0){    //Level Completed
+            incLevel();
+            return 2;
+        }
+
+        for(Ghost ghost: ghosts){
+            if(ghost.getPosX() == pacman.getPosX() && ghost.getPosY() == pacman.getPosY()){
+                //Ghost in same place as pacman
+                if(pacman.getPower()){
+                    pacmanEatGhost(ghost);
+                    //resetLevel();
+                }else{
+                    return -1;          //Pacman MORREU
+                }
+            }
+        }
+        if(pacman.getPower()) {
+            return 1;       //Pacman With powers
+        }
+
+        return 0;
+    }
+
+    public Integer controlGameVulnerableState(){
+        if(getFoodRemaining() == 0){    //Level Completed
+            incLevel();
+            return 2;
+        }
+
+        for(Ghost ghost: ghosts){
+            if(ghost.getPosX() == pacman.getPosX() && ghost.getPosY() == pacman.getPosY()){
+                //Ghost in same place as pacman
+                if(pacman.getPower()){
+                    pacmanEatGhost(ghost);
+                }else{
+                    return -1;          //Pacman MORREU
+                    // MUDAR DE ESTADO
+                }
+            }
+            if(pacman.getPower() && ghost.isInInicialPosition()) {
+                //System.out.println("Ola");
+                ghost.unlockGhost();
+                if(everyGhostsNotVulnerable()){
+                    pacman.setPower(false);
+                    return 1;       //MUDAR DE ESTADO PARA O GAME
+                }
+            }
+        }
+
+        return 0;
+    }
+
+    private boolean everyGhostsNotVulnerable() {
+        for(Ghost ghost : ghosts){
+            if(ghost.getVulnerable())
+                return false;
+        }
+        return true;
+    }
+
     private void incLevel() {
         level++;
-
-        System.out.println("Level: " + level);
     }
 
     private void pacmanEatGhost(Ghost ghost){
 
+        ghost.reset();
 
     }
 
@@ -374,8 +425,10 @@ public class Game implements Serializable {
         {
             incrementPoints(element);
 
-            if(element.getSymbol() == Obstacles.POWER.getSymbol())
+            if(element.getSymbol() == Obstacles.POWER.getSymbol()) {
                 pacman.setPower(true);
+                //System.out.println("Power: " + pacman.getPower());
+            }
 
             maze.set(pacmanPosition.getPosY(), pacmanPosition.getPosX(), null);
             decFoodRemaining();
@@ -408,13 +461,13 @@ public class Game implements Serializable {
         return true;
     }
 
-    public void ghostsVulnerable(){
+    public void ghostsVulnerable(boolean state){
         for(Ghost ghost: ghosts)
-            ghostVulnerable(ghost);
+            ghostVulnerable(ghost, state);
     }
 
-    public void ghostVulnerable(Ghost ghost){
-        ghost.setVulnerable(true);
+    public void ghostVulnerable(Ghost ghost, boolean state){
+        ghost.setVulnerable(state);
     }
 
     public int pacmanManager() {
@@ -483,5 +536,13 @@ public class Game implements Serializable {
 
     public void clearWarps() {
         warps.clear();
+    }
+
+    public void pacmanPower(boolean state) {
+        pacman.setPower(state);
+    }
+
+    public boolean getPower() {
+        return pacman.getPower();
     }
 }

@@ -29,6 +29,8 @@ public class Blinky extends Ghost{
     public Blinky(Game game,int posX, int posY){
         super(game,posX, posY);
         this.direction = UP;
+
+
     }
 
     private void printValidPositions(ArrayList<Integer> validDirections){
@@ -53,9 +55,12 @@ public class Blinky extends Ghost{
     public void returnToBase(){
 
         if(getVulnerable()){
-            if(!isLastPositionEmpty()){
+            if(!isMovementsEmpty()){
                 Position lastPositon = popLastPosition();
                 setPos(lastPositon.getPosX(), lastPositon.getPosY());
+
+                System.out.println("InitPosition X: "  + getInitialPositionX()  + "y: " +getInitialPositionY());
+                System.out.println("CurrentPosition X: "  + getPosX()  + "y: " + getPosY());
                 return;
             }
             //unlockGhost();
@@ -80,11 +85,8 @@ public class Blinky extends Ghost{
                 direction = validDirections.get(0);
             }
         }
+        move(maze, direction, 1);
 
-
-
-
-            move(maze, direction, 1);
 
 
         return true;

@@ -35,7 +35,12 @@ public abstract class Ghost extends GameObjects implements Serializable {
     public void unlockGhost(){
         this.locked = false;
         this.vulnerable = false;
+        this.movements.clear();
         //this.currentPosition = initialPosition;
+    }
+
+    public void setTicksToMove(Integer ticksToMove) {
+        this.ticksToMove = ticksToMove;
     }
 
     public Boolean getVulnerable() {
@@ -61,7 +66,7 @@ public abstract class Ghost extends GameObjects implements Serializable {
         return this.movements.pop();
     }
 
-    public boolean isLastPositionEmpty(){
+    public boolean isMovementsEmpty(){
         return this.movements.empty();
     }
 
@@ -92,11 +97,16 @@ public abstract class Ghost extends GameObjects implements Serializable {
     public void reset() {
         this.vulnerable = false;
         this.locked = true;
-        this.movements.clear();
-        this.currentPosition = new Position(initialPosition);
+        returnToBase();
+        setTicksToMove(2);
+        //this.currentPosition = new Position(initialPosition);
     }
 
     public int getTicksToMove() {
         return ticksToMove;
+    }
+
+    public boolean isInInicialPosition() {
+        return currentPosition.equals(initialPosition);
     }
 }

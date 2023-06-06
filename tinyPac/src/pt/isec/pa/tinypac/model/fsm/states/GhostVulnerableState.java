@@ -8,8 +8,14 @@ import pt.isec.pa.tinypac.utils.Direction;
 
 public class GhostVulnerableState extends StateAdapter {
 
+    private static final long LOCKTIME = 10;         //Seconds
+    private long initialTime;
+    private long maxTime;
+
     public GhostVulnerableState(Context context, GameManager data){
         super(context, data);
+        this.initialTime = 0;
+        this.maxTime = 0;
     }
 
     @Override
@@ -23,11 +29,41 @@ public class GhostVulnerableState extends StateAdapter {
     }
     @Override
     public boolean evolve(long currentTime) {
-
         boolean needUpdate = data.evolve(currentTime);
-        data.controlGame();
+        int res;
+
+        res = data.controlGameVulnerableState();
+        if(res == 1) {
+            changeState(State.GAME);
+        }if(res == -1)
+            changeState(State.GameOver);
+
+        if(unlockGhosts(currentTime)){
+            System.out.println("Ghosts Back to normal");
+        }
 
         return needUpdate;
+    }
+
+
+    private long convertSecondsToNano(long seconds){
+        return seconds * 1000000000;
+    }
+
+    private boolean unlockGhosts(long currentTime){
+        if(initialTime == 0){
+            initialTime = currentTime;
+            maxTime = initialTime + convertSecondsToNano(LOCKTIME);
+            return false;
+        }
+
+        if(currentTime >= maxTime) {
+            data.ghostsVulnerable(false);
+            //data.pacmanPower(false);
+            changeState(State.GAME);
+            return true;
+        }
+        return false;
     }
 
     @Override

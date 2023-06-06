@@ -24,11 +24,7 @@ public class ModelManager {
     private PropertyChangeSupport pcs;
 
     public ModelManager(){
-        //this.gameEngine = new GameEngine();
-        //this.context = new Context();
         this.context = null;
-        //this.gameEngine.registerClient(this);
-
         this.UIManager = UIManager.MAIN_MENU;
         this.pcs = new PropertyChangeSupport(this);
     }

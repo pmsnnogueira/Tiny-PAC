@@ -1,7 +1,5 @@
 package pt.isec.pa.tinypac.utils;
 
-import javafx.geometry.Pos;
-
 import java.io.Serial;
 import java.io.Serializable;
 

@@ -5,15 +5,11 @@ import pt.isec.pa.tinypac.model.data.Ghost;
 import pt.isec.pa.tinypac.model.data.IMazeElement;
 import pt.isec.pa.tinypac.model.data.Maze;
 import pt.isec.pa.tinypac.model.data.obstacles.Portal;
-import pt.isec.pa.tinypac.utils.Direction;
 import pt.isec.pa.tinypac.utils.Obstacles;
 import pt.isec.pa.tinypac.utils.Position;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Random;
-
-import static java.lang.Math.*;
 
 public class Inky extends Ghost {
 
@@ -131,7 +127,7 @@ public class Inky extends Ghost {
     public void returnToBase(){
 
         if(getVulnerable()){
-            if(!isLastPositionEmpty()){
+            if(!isMovementsEmpty()){
                 Position lastPositon = popLastPosition();
                 setPos(lastPositon.getPosX(), lastPositon.getPosY());
                 return;

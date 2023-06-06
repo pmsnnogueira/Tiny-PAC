@@ -194,6 +194,7 @@ public class GameManager{
                     case 'y' -> {   //Caverna dos Fantasmas
                         maze.set(posY, posX, new GhostCave());
                         ghostCave.add(new Position(posX,posY));//x , y
+
                     }
                     default -> {
                         return null; //Character Invalid
@@ -205,9 +206,7 @@ public class GameManager{
         if(pacmanCounter != 1 || portalCounter == 0 || (game.getSizeWarps() % 2 != 0))
             return null;
 
-
         game.setGhosts(ghostInitialPositioning(maze,ghostCave));
-
         return maze;
     }
 
@@ -282,8 +281,8 @@ public class GameManager{
         return game.controlGame();
     }
 
-    public void ghostsVulnerable(){
-        game.ghostsVulnerable();
+    public void ghostsVulnerable(boolean state){
+        game.ghostsVulnerable(state);
     }
 
     public int pacmanManager() {
@@ -358,5 +357,18 @@ public class GameManager{
         }catch (Exception e){
             e.printStackTrace();
         }
+    }
+
+
+    public int controlGameVulnerableState() {
+        return game.controlGameVulnerableState();
+    }
+
+    public int controlGameState() {
+        return game.controlGameState();
+    }
+
+    public boolean getPower() {
+        return game.getPower();
     }
 }
