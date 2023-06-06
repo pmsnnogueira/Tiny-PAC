@@ -207,7 +207,7 @@ public class GameManager{
 
 
         game.setGhosts(ghostInitialPositioning(maze,ghostCave));
-        
+
         return maze;
     }
 

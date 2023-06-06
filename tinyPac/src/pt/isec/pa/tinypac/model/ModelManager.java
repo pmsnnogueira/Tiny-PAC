@@ -1,8 +1,6 @@
 package pt.isec.pa.tinypac.model;
 
 import pt.isec.pa.tinypac.gameengine.GameEngine;
-import pt.isec.pa.tinypac.gameengine.IGameEngine;
-import pt.isec.pa.tinypac.gameengine.IGameEngineEvolve;
 import pt.isec.pa.tinypac.model.fsm.Context;
 import pt.isec.pa.tinypac.model.fsm.State;
 import pt.isec.pa.tinypac.utils.Direction;
@@ -11,7 +9,7 @@ import pt.isec.pa.tinypac.utils.UIManager;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 
-public class ModelManager implements IGameEngineEvolve {
+public class ModelManager {
 
     public static final String PROP_MENU = "_menu_";
     public static final String PROP_DATA = "_data_";
@@ -73,8 +71,7 @@ public class ModelManager implements IGameEngineEvolve {
         return context.showGameInfo();
     }
 
-    @Override
-    public void evolve(IGameEngine gameEngine, long currentTime) {
+    public void evolve(long currentTime) {
         context.evolve(currentTime);
         pcs.firePropertyChange(PROP_GAME,null,null);
     }
@@ -102,7 +99,7 @@ public class ModelManager implements IGameEngineEvolve {
             this.context = new Context();
         if(gameEngine == null) {
             this.gameEngine = new GameEngine();
-            this.gameEngine.registerClient(this);
+            this.gameEngine.registerClient((gameEngine,currentTime) -> evolve(currentTime));
         }
     }
 
