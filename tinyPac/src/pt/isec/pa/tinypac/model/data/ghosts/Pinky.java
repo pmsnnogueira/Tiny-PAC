@@ -8,10 +8,14 @@ import pt.isec.pa.tinypac.model.data.obstacles.Portal;
 import pt.isec.pa.tinypac.utils.Obstacles;
 import pt.isec.pa.tinypac.utils.Position;
 
+import java.io.Serial;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Random;
 
-public class Pinky extends Ghost {
+public class Pinky extends Ghost implements Serializable {
+    @Serial
+    private static final long serialVersionUID = 1L;
 
     private static final int UP = 1;
     private static final int RIGHT = 2;

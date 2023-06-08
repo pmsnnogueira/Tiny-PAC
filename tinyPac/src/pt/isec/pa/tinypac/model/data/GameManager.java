@@ -375,4 +375,8 @@ public class GameManager{
     public void pacmanPower(boolean b) {
         game.pacmanPower(b);
     }
+
+    public boolean isVulnerableGhostPosition(int posX, int posY) {
+        return game.isVulnerableGhostPosition(posX, posY);
+    }
 }

@@ -155,4 +155,8 @@ public class ModelManager {
     public void loadSavedGame() {
         context.loadSavedGame();
     }
+
+    public boolean isVulnerableGhostPosition(int posX, int posY) {
+        return context.isVulnerableGhostPosition(posX, posY);
+    }
 }

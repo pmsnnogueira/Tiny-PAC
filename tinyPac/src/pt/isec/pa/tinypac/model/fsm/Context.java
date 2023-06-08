@@ -96,4 +96,8 @@ public class Context {
     public void loadSavedGame() {
         data.loadSavedGame();
     }
+
+    public boolean isVulnerableGhostPosition(int posX, int posY) {
+        return data.isVulnerableGhostPosition(posX, posY);
+    }
 }

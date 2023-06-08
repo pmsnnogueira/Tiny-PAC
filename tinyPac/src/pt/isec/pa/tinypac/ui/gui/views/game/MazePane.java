@@ -78,11 +78,11 @@ public class MazePane extends VBox {
     }
     private ImageView getImageInPosition(Integer row, Integer column){
         char element = manager.receiveElement(row,column);
-        return getImage(element);
+        return getImage(element, column, row);
     }
 
 
-    private ImageView getImage(char element){
+    private ImageView getImage(char element, int posX, int posY){
 
         String imageName = "";
 
@@ -115,18 +115,14 @@ public class MazePane extends VBox {
         if(manager.charIsGhosts(element))
             switch (manager.getState()) {
                 case WAIT_FOR_DIRECTIONS, LOCKED_GHOSTS, GAME -> {
-                    if (element == Obstacles.BLINKY.getSymbol()) {
-                        imageName = "redGhost.gif";
-                    } else if (element == Obstacles.PINKY.getSymbol()) {
-                        imageName = "pinkGhost.gif";
-                    } else if (element == Obstacles.CLYDE.getSymbol()) {
-                        imageName = "yellowGhost.gif";
-                    } else if (element == Obstacles.INKY.getSymbol()) {
-                        imageName = "blueGhost.gif";
-                    }
+                    imageName = chooseImageForGhosts(element);
                 }
                 case GHOST_VULNERABLE -> {
-                    imageName = "vulnerableGhost.gif";
+                    if(!manager.isVulnerableGhostPosition(posX, posY)) {
+                        imageName = chooseImageForGhosts(element);
+                    }else{
+                        imageName = "vulnerableGhost.gif";
+                    }
                 }
             }
 
@@ -134,7 +130,22 @@ public class MazePane extends VBox {
         return new ImageView(ImageManager.getImage(imageName));
     }
 
+    private String chooseImageForGhosts(char element){
 
+        String imageName = "";
+
+        if (element == Obstacles.BLINKY.getSymbol()) {
+            imageName = "redGhost.gif";
+        } else if (element == Obstacles.PINKY.getSymbol()) {
+            imageName = "pinkGhost.gif";
+        } else if (element == Obstacles.CLYDE.getSymbol()) {
+            imageName = "yellowGhost.gif";
+        } else if (element == Obstacles.INKY.getSymbol()) {
+            imageName = "blueGhost.gif";
+        }
+
+        return imageName;
+    }
 
     private void update(){
 
