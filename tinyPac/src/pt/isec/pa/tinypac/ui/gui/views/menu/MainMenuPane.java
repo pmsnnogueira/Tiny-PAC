@@ -12,6 +12,7 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import pt.isec.pa.tinypac.model.ModelManager;
 import pt.isec.pa.tinypac.ui.gui.resources.FontManager;
+import pt.isec.pa.tinypac.ui.gui.resources.SoundManager;
 import pt.isec.pa.tinypac.utils.UIManager;
 
 public class MainMenuPane extends BorderPane {
@@ -98,12 +99,14 @@ public class MainMenuPane extends BorderPane {
             btnNo.setOnAction(e -> {
                 manager.changeToGame();
                 dlg.close();
+                SoundManager.play("pacman_ringtone.mp3");
             });
 
             btnYes.setOnAction(e -> {
                 manager.loadSavedGame();
                 manager.changeToGame();
                 dlg.close();
+                SoundManager.play("pacman_ringtone.mp3");
             });
 
             VBox vBox = new VBox();

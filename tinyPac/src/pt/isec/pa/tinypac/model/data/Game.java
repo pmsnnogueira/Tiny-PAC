@@ -2,6 +2,7 @@ package pt.isec.pa.tinypac.model.data;
 
 import pt.isec.pa.tinypac.model.data.ghosts.Blinky;
 import pt.isec.pa.tinypac.model.data.obstacles.*;
+import pt.isec.pa.tinypac.ui.gui.resources.SoundManager;
 import pt.isec.pa.tinypac.utils.Direction;
 import pt.isec.pa.tinypac.utils.Obstacles;
 import pt.isec.pa.tinypac.utils.PacmanPosition;
@@ -416,9 +417,16 @@ public class Game implements Serializable {
 
             if(element.getSymbol() == Obstacles.POWER.getSymbol()) {
                 pacman.setPower(true);
-                //System.out.println("Power: " + pacman.getPower());
             }
 
+            if(element.getSymbol() == Obstacles.BALL.getSymbol()) {
+                SoundManager.play("pacman_chomp.mp3");
+            }
+
+            if(element.getSymbol() == Obstacles.FRUIT.getSymbol()) {
+                SoundManager.play("pacman_eatFruit.mp3");
+            }
+            
             maze.set(pacmanPosition.getPosY(), pacmanPosition.getPosX(), null);
             decFoodRemaining();
         }
