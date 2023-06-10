@@ -30,7 +30,7 @@ public class GameRootPane extends BorderPane {
     }
 
     private void registerHandlers() {
-        manager.addPropertyChangeListener(ModelManager.PROP_GAME, evt -> Platform.runLater(() -> update()));
+        manager.addPropertyChangeListener(ModelManager.PROP_MENU, evt -> Platform.runLater(() -> update()));
 
         setOnKeyPressed(keyEvent -> {
             gamePane.handleKeyPress(keyEvent); // Delegate key event handling to the GamePane
@@ -42,6 +42,7 @@ public class GameRootPane extends BorderPane {
             this.setVisible(false);
             return;
         }
+
 
         StackPane stackPane = new StackPane(
                 gamePane = new GamePane(manager),

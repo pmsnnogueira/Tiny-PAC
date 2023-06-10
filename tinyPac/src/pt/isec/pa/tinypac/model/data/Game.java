@@ -34,7 +34,7 @@ public class Game implements Serializable {
     private int maxTick = 50;
     public Game(){
         this.level = 2;
-        this.lives = 3;
+        this.lives = 1;
         this.score = 0;
         this.maze = null;
         this.ghosts = new ArrayList<>();

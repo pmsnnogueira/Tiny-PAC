@@ -75,6 +75,8 @@ public class MazePane extends VBox {
 
         this.setAlignment(Pos.CENTER);
         this.getChildren().addAll(flowPane);
+
+
     }
     private ImageView getImageInPosition(Integer row, Integer column){
         char element = manager.receiveElement(row,column);
@@ -128,8 +130,6 @@ public class MazePane extends VBox {
                     }
                 }
             }
-
-
         return new ImageView(ImageManager.getImage(imageName));
     }
 

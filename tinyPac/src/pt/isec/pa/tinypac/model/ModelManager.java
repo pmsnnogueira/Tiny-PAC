@@ -102,7 +102,7 @@ public class ModelManager {
     public void changeToGame(){
         gameEngine.start(GAME_ENGINE_TIME);
         this.UIManager = UIManager.GAME;
-        pcs.firePropertyChange(PROP_GAME,null,null);
+        pcs.firePropertyChange(PROP_MENU,null,null);
     }
 
     public void changeToMainMenu(){
