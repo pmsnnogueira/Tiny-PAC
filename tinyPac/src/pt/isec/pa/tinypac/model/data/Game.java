@@ -348,9 +348,11 @@ public class Game implements Serializable {
         for(Ghost ghost: ghosts){
             if(ghost.getPosX() == pacman.getPosX() && ghost.getPosY() == pacman.getPosY()){
                 //Ghost in same place as pacman
-                if(pacman.getPower()) {
+                if(pacman.getPower() && ghost.getVulnerable()) {
                     System.out.println("Mati");
                     pacmanEatGhost(ghost);
+                }else{
+                    //Pacman Morreu
                 }
             }
             if(pacman.getPower() && ghost.isInInicialPosition()) {
@@ -380,14 +382,13 @@ public class Game implements Serializable {
 
     private void pacmanEatGhost(Ghost ghost){
 
-        ghost.reset();
+        ghost.returnToBase();
 
     }
 
     private void ghostEatPacman(){
-        pacman.reset();
         decLives();
-        resetGhosts();
+        resetLevel();
     }
 
     private void decLives() {

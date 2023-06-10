@@ -95,8 +95,8 @@ public abstract class Ghost extends GameObjects implements Serializable {
     }
 
     public void reset() {
-        returnToBase();
-        //this.currentPosition = new Position(initialPosition);
+        //returnToBase();
+        this.currentPosition = new Position(initialPosition);
     }
 
     public int getTicksToMove() {
