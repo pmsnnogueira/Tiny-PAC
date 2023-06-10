@@ -159,4 +159,8 @@ public class ModelManager {
     public boolean isVulnerableGhostPosition(int posX, int posY) {
         return context.isVulnerableGhostPosition(posX, posY);
     }
+
+    public boolean isGhostDead(int posX, int posY) {
+        return context.isGhostDead(posX, posY);
+    }
 }

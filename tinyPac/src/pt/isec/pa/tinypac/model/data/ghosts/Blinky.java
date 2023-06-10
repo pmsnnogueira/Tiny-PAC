@@ -23,13 +23,6 @@ public class Blinky extends Ghost implements Serializable {
     private static final int DOWN = 4;
     private int direction;
 
-    private static final double UPDATE_INTERVAL = 0.016; // Fixed time step in seconds
-    private static final int SPEED = 2; // Speed in pixels per second
-    private double accumulatedTime = 0.0;
-    private long lastUpdateTime = System.nanoTime();
-    private double moveInterval = 0.5; // Adjust this value to control the movement speed
-
-
     public Blinky(Game game,int posX, int posY){
         super(game,posX, posY);
         this.direction = UP;
@@ -64,7 +57,9 @@ public class Blinky extends Ghost implements Serializable {
                 setPos(lastPositon.getPosX(), lastPositon.getPosY());
                 return;
             }
-            unlockGhost();
+            //unlockGhost();
+            reset();
+            setTicksToMove(DEFAULT_TICKS_TO_MOVE_GHOST);
         }
 
         return;
@@ -91,13 +86,6 @@ public class Blinky extends Ghost implements Serializable {
 
 
         return true;
-    }
-
-    private double getDeltaTime() {
-        long currentTime = System.nanoTime();
-        double deltaTime = (currentTime - lastUpdateTime) / 1e9; // Convert nanoseconds to seconds
-        lastUpdateTime = currentTime;
-        return deltaTime;
     }
 
     private Integer oppositeDirection(Integer direction){

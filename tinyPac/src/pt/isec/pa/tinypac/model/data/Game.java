@@ -1,5 +1,6 @@
 package pt.isec.pa.tinypac.model.data;
 
+import pt.isec.pa.tinypac.model.data.ghosts.Blinky;
 import pt.isec.pa.tinypac.model.data.obstacles.*;
 import pt.isec.pa.tinypac.utils.Direction;
 import pt.isec.pa.tinypac.utils.Obstacles;
@@ -349,15 +350,16 @@ public class Game implements Serializable {
             if(ghost.getPosX() == pacman.getPosX() && ghost.getPosY() == pacman.getPosY()){
                 //Ghost in same place as pacman
                 if(pacman.getPower() && ghost.getVulnerable()) {
-                    System.out.println("Mati");
                     pacmanEatGhost(ghost);
-                }else{
+                }else {
                     //Pacman Morreu
+                    System.out.println("Olas");
+                    return -1;
                 }
             }
             if(pacman.getPower() && ghost.isInInicialPosition()) {
                 //System.out.println("Ola");
-                ghost.unlockGhost();
+                ghost.changeToUnVulnerable();
                 if(everyGhostsNotVulnerable()){
                     pacman.setPower(false);
                     return 1;       //MUDAR DE ESTADO PARA O GAME
@@ -382,7 +384,8 @@ public class Game implements Serializable {
 
     private void pacmanEatGhost(Ghost ghost){
 
-        ghost.returnToBase();
+        ghost.setDead(true);
+        ghost.setTicksToMove(2);
 
     }
 
@@ -446,11 +449,7 @@ public class Game implements Serializable {
 
     public void ghostsVulnerable(boolean state){
         for(Ghost ghost: ghosts)
-            ghostVulnerable(ghost, state);
-    }
-
-    public void ghostVulnerable(Ghost ghost, boolean state){
-        ghost.setVulnerable(state);
+            ghost.setVulnerable(state);
     }
 
     public int pacmanManager() {
@@ -535,6 +534,17 @@ public class Game implements Serializable {
 
         for(Ghost aux: ghosts){
             if(aux.getPosX() == posX && aux.getPosY() == posY && aux.getVulnerable())
+                return true;
+        }
+        return false;
+    }
+
+    public boolean isGhostDead(int posX, int posY) {
+        if(maze == null)
+            return false;
+
+        for(Ghost aux: ghosts){
+            if(aux.getPosX() == posX && aux.getPosY() == posY && aux.getDead())
                 return true;
         }
         return false;

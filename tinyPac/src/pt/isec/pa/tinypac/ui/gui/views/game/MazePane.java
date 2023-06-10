@@ -119,7 +119,10 @@ public class MazePane extends VBox {
                 }
                 case GHOST_VULNERABLE -> {
                     if(!manager.isVulnerableGhostPosition(posX, posY)) {
-                        imageName = chooseImageForGhosts(element);
+                        if(manager.isGhostDead(posX, posY))
+                            imageName = "pacmanDeath.png";
+                        else
+                            imageName = chooseImageForGhosts(element);
                     }else{
                         imageName = "vulnerableGhost.gif";
                     }

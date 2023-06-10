@@ -137,6 +137,9 @@ public class Pinky extends Ghost implements Serializable {
                 return;
             }
             //unlockGhost();
+            reset();
+            setTicksToMove(DEFAULT_TICKS_TO_MOVE_GHOST);
+            System.out.println("Ja acabou");
         }
 
         return;

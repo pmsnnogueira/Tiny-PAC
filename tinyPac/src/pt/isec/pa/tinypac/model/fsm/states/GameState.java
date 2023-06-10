@@ -39,7 +39,6 @@ public class GameState extends StateAdapter {
                 changeState(State.GameOver);
             }
         }else if(result == 1){
-            System.out.println("Changing to GhostVulnerableState");
             data.ghostsVulnerable(true);
             changeState(State.GHOST_VULNERABLE);
         }else if(result == 2){

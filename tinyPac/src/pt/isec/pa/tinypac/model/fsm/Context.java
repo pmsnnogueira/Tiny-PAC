@@ -100,4 +100,8 @@ public class Context {
     public boolean isVulnerableGhostPosition(int posX, int posY) {
         return data.isVulnerableGhostPosition(posX, posY);
     }
+
+    public boolean isGhostDead(int posX, int posY) {
+        return data.isGhostDead(posX,posY);
+    }
 }

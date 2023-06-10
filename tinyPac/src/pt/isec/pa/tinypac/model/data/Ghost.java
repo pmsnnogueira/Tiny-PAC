@@ -14,8 +14,12 @@ public abstract class Ghost extends GameObjects implements Serializable {
     private final Position initialPosition;
     private Stack<Position> movements;
     private Boolean vulnerable;
+
+    private Boolean dead;
     private static final char SYMBOL = 'G';
     public static final int GHOST_POINTS = 200;
+
+    public Integer DEFAULT_TICKS_TO_MOVE_GHOST = 6;
     private Integer ticksToMove;
 
     public Ghost(Game game, int posX , int posY){
@@ -25,7 +29,8 @@ public abstract class Ghost extends GameObjects implements Serializable {
         this.currentPosition = new Position(posX,posY);
         this.movements = new Stack<>();
         this.vulnerable = false;
-        this.ticksToMove = 6;
+        this.ticksToMove = DEFAULT_TICKS_TO_MOVE_GHOST;
+        this.dead = false;
     }
 
     public void setPos(int posX , int posY){
@@ -37,6 +42,15 @@ public abstract class Ghost extends GameObjects implements Serializable {
         this.vulnerable = false;
         this.movements.clear();
         this.currentPosition = new Position(initialPosition);
+        this.dead = false;
+    }
+
+    public Boolean getDead() {
+        return dead;
+    }
+
+    public void setDead(Boolean dead) {
+        this.dead = dead;
     }
 
     public void setTicksToMove(Integer ticksToMove) {
@@ -97,6 +111,11 @@ public abstract class Ghost extends GameObjects implements Serializable {
     public void reset() {
         //returnToBase();
         this.currentPosition = new Position(initialPosition);
+        this.movements.clear();
+        this.dead = false;
+        this.vulnerable = false;
+        setTicksToMove(DEFAULT_TICKS_TO_MOVE_GHOST);
+        this.locked = true;
     }
 
     public int getTicksToMove() {
@@ -105,5 +124,10 @@ public abstract class Ghost extends GameObjects implements Serializable {
 
     public boolean isInInicialPosition() {
         return currentPosition.equals(initialPosition);
+    }
+
+    public void changeToUnVulnerable() {
+        setTicksToMove(DEFAULT_TICKS_TO_MOVE_GHOST);
+        unlockGhost();
     }
 }

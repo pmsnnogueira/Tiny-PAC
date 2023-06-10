@@ -379,4 +379,8 @@ public class GameManager{
     public boolean isVulnerableGhostPosition(int posX, int posY) {
         return game.isVulnerableGhostPosition(posX, posY);
     }
+
+    public boolean isGhostDead(int posX, int posY) {
+        return game.isGhostDead(posX, posY);
+    }
 }

@@ -35,8 +35,14 @@ public class GhostVulnerableState extends StateAdapter {
         res = data.controlGameVulnerableState();
         if(res == 1) {
             changeState(State.GAME);
-        }if(res == -1)
-            changeState(State.GameOver);
+        }if(res == -1) {
+            System.out.println("Retorno -1");
+            /*int resPac = data.pacmanManager();
+            if(resPac == -1)
+                changeState(State.GameOver);
+            else if(resPac == 1)
+                changeState(State.WAIT_FOR_DIRECTIONS);*/
+        }
 
         if(unlockGhosts(currentTime)){
         }
