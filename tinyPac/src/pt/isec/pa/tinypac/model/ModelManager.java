@@ -103,6 +103,7 @@ public class ModelManager {
         gameEngine.start(GAME_ENGINE_TIME);
         this.UIManager = UIManager.GAME;
         pcs.firePropertyChange(PROP_MENU,null,null);
+        pcs.firePropertyChange(PROP_GAME,null,null);
     }
 
     public void changeToMainMenu(){

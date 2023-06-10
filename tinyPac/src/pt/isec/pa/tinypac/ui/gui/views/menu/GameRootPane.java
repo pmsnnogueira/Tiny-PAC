@@ -27,6 +27,8 @@ public class GameRootPane extends BorderPane {
 
     private void createViews() {
         this.setBackground(new Background(new BackgroundFill(Color.BLACK, CornerRadii.EMPTY, Insets.EMPTY)));
+        this.setFocusTraversable(true); // Enable focus on the GameRootPane
+        this.requestFocus(); // Request focus for the GameRootPane
     }
 
     private void registerHandlers() {
@@ -42,6 +44,7 @@ public class GameRootPane extends BorderPane {
             this.setVisible(false);
             return;
         }
+        System.out.println("Update");
 
 
         StackPane stackPane = new StackPane(

@@ -5,6 +5,7 @@ import javafx.geometry.Insets;
 import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
@@ -20,6 +21,7 @@ public class MazePane extends VBox {
     private static final double CELL_HEIGHT = 12.5;
     private TilePane tilePane;
     private ImageView[] images;
+    private Label lbGameInfo;
 
     public MazePane(ModelManager manager) {
 
@@ -41,14 +43,22 @@ public class MazePane extends VBox {
 
     }
 
+    private void updateMazeView(){
+
+        for(int i = 0 ;i < images.length; i++) {
+
+            Image image = getImageViewInPosition((i / manager.getMazeColumns()),(i % manager.getMazeColumns()));
+            images[i].setImage(image);
+        }
+    }
+
     private void initializeImagesGrid(){
 
-
-        Label label = new Label(manager.showGameInfo());
-        label.getStyleClass().add("gameInfoLabel");
-        label.setPadding(new Insets(0,0,5,0));
-        label.setAlignment(Pos.CENTER);
-        this.getChildren().add(label);
+        lbGameInfo = new Label();
+        lbGameInfo.getStyleClass().add("gameInfoLabel");
+        lbGameInfo.setPadding(new Insets(0,0,5,0));
+        lbGameInfo.setAlignment(Pos.CENTER);
+        this.getChildren().add(lbGameInfo);
 
         tilePane = new TilePane(Orientation.HORIZONTAL);
         tilePane.setPrefColumns(manager.getMazeColumns());
@@ -65,7 +75,7 @@ public class MazePane extends VBox {
         images = new ImageView[manager.getMazeRows() * manager.getMazeColumns()];
         for(int i = 0 ;i < images.length; i++) {
 
-           ImageView imageView = getImageInPosition((i / manager.getMazeColumns()),(i % manager.getMazeColumns()));
+           ImageView imageView = new ImageView(getImageViewInPosition((i / manager.getMazeColumns()),(i % manager.getMazeColumns())));
            imageView.setFitWidth(CELL_WIDTH);
            imageView.setFitHeight(CELL_HEIGHT);
            images[i] = imageView;
@@ -75,16 +85,18 @@ public class MazePane extends VBox {
 
         this.setAlignment(Pos.CENTER);
         this.getChildren().addAll(flowPane);
-
-
     }
-    private ImageView getImageInPosition(Integer row, Integer column){
+
+
+
+    private Image getImageViewInPosition(Integer row, Integer column){
         char element = manager.receiveElement(row,column);
         return getImage(element, column, row);
     }
 
 
-    private ImageView getImage(char element, int posX, int posY){
+
+    private Image getImage(char element, int posX, int posY){
 
         String imageName = "";
 
@@ -130,7 +142,7 @@ public class MazePane extends VBox {
                     }
                 }
             }
-        return new ImageView(ImageManager.getImage(imageName));
+        return ImageManager.getImage(imageName);
     }
 
     private String chooseImageForGhosts(char element){
@@ -156,6 +168,9 @@ public class MazePane extends VBox {
             this.setVisible(false);
             return;
         }
+
+        lbGameInfo.setText(manager.showGameInfo());
+        updateMazeView();
 
         this.setVisible(true);
     }
