@@ -527,10 +527,6 @@ public class Game implements Serializable {
         pacman.setPower(state);
     }
 
-    public boolean getPower() {
-        return pacman.getPower();
-    }
-
     public boolean isVulnerableGhostPosition(int posX, int posY) {
         if(maze == null)
             return false;

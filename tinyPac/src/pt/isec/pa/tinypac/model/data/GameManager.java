@@ -349,17 +349,12 @@ public class GameManager{
         }
     }
 
-
     public int controlGameVulnerableState() {
         return game.controlGameVulnerableState();
     }
 
     public int controlGameState() {
         return game.controlGameState();
-    }
-
-    public boolean getPower() {
-        return game.getPower();
     }
 
     public void setPacmanPower(boolean b) {

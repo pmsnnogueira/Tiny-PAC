@@ -109,7 +109,7 @@ public class MazePane extends VBox {
         } else if(element == Obstacles.WARP.getSymbol()){
             imageName = "portal.png";
         }else if(element == Obstacles.PORTAL.getSymbol()){
-            //imageView.setImage(fruitImage);
+            imageName = "ghostPortal.png";
         }
 
         if(manager.charIsGhosts(element))
