@@ -255,12 +255,6 @@ public class GameManager{
 
         return ghosts;
     }
-
-    public Maze getMaze(){
-        return game.getMaze();
-    }
-
-
     public char[][] showMaze(){
        return game.showMaze();
     }
@@ -275,10 +269,6 @@ public class GameManager{
             return game.evolve();
 
         return false;
-    }
-
-    public Integer controlGame(){
-        return game.controlGame();
     }
 
     public void ghostsVulnerable(boolean state){
@@ -372,8 +362,8 @@ public class GameManager{
         return game.getPower();
     }
 
-    public void pacmanPower(boolean b) {
-        game.pacmanPower(b);
+    public void setPacmanPower(boolean b) {
+        game.setPacmanPower(b);
     }
 
     public boolean isVulnerableGhostPosition(int posX, int posY) {

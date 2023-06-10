@@ -349,12 +349,15 @@ public class Game implements Serializable {
         for(Ghost ghost: ghosts){
             if(ghost.getPosX() == pacman.getPosX() && ghost.getPosY() == pacman.getPosY()){
                 //Ghost in same place as pacman
-                if(pacman.getPower() && ghost.getVulnerable()) {
+                if(pacman.getPower() && ghost.getVulnerable() && !ghost.getDead()) {
+                    System.out.println("Comi Ghost");
                     pacmanEatGhost(ghost);
                 }else {
                     //Pacman Morreu
-                    System.out.println("Olas");
-                    return -1;
+                    if(!ghost.getVulnerable()) {
+                        System.out.println("Pacman Morreu");
+                        return -1;
+                    }
                 }
             }
             if(pacman.getPower() && ghost.isInInicialPosition()) {
@@ -385,7 +388,7 @@ public class Game implements Serializable {
     private void pacmanEatGhost(Ghost ghost){
 
         ghost.setDead(true);
-        ghost.setTicksToMove(2);
+        ghost.setTicksToMove(3);
 
     }
 
@@ -520,7 +523,7 @@ public class Game implements Serializable {
         warps.clear();
     }
 
-    public void pacmanPower(boolean state) {
+    public void setPacmanPower(boolean state) {
         pacman.setPower(state);
     }
 
