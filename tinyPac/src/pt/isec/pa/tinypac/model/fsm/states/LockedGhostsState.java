@@ -48,7 +48,6 @@ public class LockedGhostsState extends StateAdapter {
         }
 
         if(currentTime >= maxTime) {
-            System.out.println("Unlocking Ghosts");
             data.unlockGosts(false);
             return true;
         }

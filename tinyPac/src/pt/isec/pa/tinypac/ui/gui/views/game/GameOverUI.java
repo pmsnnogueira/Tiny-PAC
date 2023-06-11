@@ -18,6 +18,8 @@ public class GameOverUI extends BorderPane {
     private ToggleButton btnBackToMainMenu;
     private ToggleButton btnExit;
 
+    private Label lbPoints;
+
     private static final Integer MENU_MIN_WIDTH = 150;
 
     private static final Integer BTN_MIN_WIDTH = 170;
@@ -53,7 +55,8 @@ public class GameOverUI extends BorderPane {
 
         //Menu
         VBox vBox = new VBox();
-        Label lbPoints = new Label("Score: " + manager.getScore());
+        lbPoints = new Label("Score");
+
         lbPoints.getStyleClass().add("mainLabel");
         lbPoints.setAlignment(Pos.CENTER);
 
@@ -95,7 +98,7 @@ public class GameOverUI extends BorderPane {
     }
 
     private void registerHandlers() {
-        manager.addPropertyChangeListener(ModelManager.PROP_GAME, evt -> update());
+        manager.addPropertyChangeListener(ModelManager.PROP_GAME, evt -> Platform.runLater(()->update()));
         //manager.addPropertyChangeListener(ModelManager.PROP_DATA, evt -> updateState());
 
         btnBackToMainMenu.setOnAction(actionEvent -> {
@@ -112,6 +115,8 @@ public class GameOverUI extends BorderPane {
             this.setVisible(false);
             return;
         }
+
+        lbPoints.setText("Score " + manager.getScore());
         this.setVisible(true);
     }
 }

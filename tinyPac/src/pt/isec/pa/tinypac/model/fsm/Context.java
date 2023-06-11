@@ -4,8 +4,6 @@ import pt.isec.pa.tinypac.model.data.GameManager;
 import pt.isec.pa.tinypac.model.fsm.states.WaitForDirectionState;
 import pt.isec.pa.tinypac.utils.Direction;
 
-import java.io.File;
-
 public class Context {
     private GameManager data;
     private IState state;

@@ -44,9 +44,6 @@ public class GameRootPane extends BorderPane {
             this.setVisible(false);
             return;
         }
-        System.out.println("Update");
-
-
         StackPane stackPane = new StackPane(
                 gamePane = new GamePane(manager),
                 pauseUI = new PauseUI(manager),

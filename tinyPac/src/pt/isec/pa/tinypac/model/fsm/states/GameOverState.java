@@ -9,7 +9,10 @@ public class GameOverState extends StateAdapter {
 
     public GameOverState(Context context, GameManager data){
         super(context, data);
+        System.out.println("Ola" + context.getScore());
     }
+
+
 
     @Override
     public State getState() {

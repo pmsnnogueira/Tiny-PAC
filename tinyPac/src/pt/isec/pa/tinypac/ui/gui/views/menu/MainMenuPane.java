@@ -110,7 +110,7 @@ public class MainMenuPane extends BorderPane {
             });
 
             VBox vBox = new VBox();
-            HBox hbButtons = new HBox(btnNo,btnYes);
+            HBox hbButtons = new HBox(btnYes,btnNo);
             hbButtons.setSpacing(2.5);
             hbButtons.setAlignment(Pos.CENTER);
             vBox.getChildren().addAll(label,hbButtons);
@@ -124,6 +124,39 @@ public class MainMenuPane extends BorderPane {
             dlg.showAndWait();
             dlg.setAlwaysOnTop(true);
         }
+    }
+
+    private void exitPopUp(){
+        //Create PopUpMenu
+        Stage dlg = new Stage();
+        Label label = new Label("Do you want to exit the Game?");
+        btnYes = new ToggleButton("Yes");
+        btnNo = new ToggleButton("No");
+
+        btnNo.setOnAction(e -> {
+            dlg.close();
+        });
+
+        btnYes.setOnAction(e -> {
+            dlg.close();
+            Platform.exit();
+        });
+
+        VBox vBox = new VBox();
+        HBox hbButtons = new HBox(btnYes,btnNo);
+        hbButtons.setSpacing(2.5);
+        hbButtons.setAlignment(Pos.CENTER);
+        vBox.getChildren().addAll(label,hbButtons);
+
+        vBox.setAlignment(Pos.CENTER);
+        Scene scene = new Scene(vBox,300,70);
+        dlg.setScene(scene);
+        dlg.setTitle("Exit Game");
+        dlg.initModality(Modality.APPLICATION_MODAL);
+        dlg.initOwner(this.getScene().getWindow());
+        dlg.showAndWait();
+        dlg.setAlwaysOnTop(true);
+
     }
 
     private void registerHandlers() {
@@ -140,7 +173,7 @@ public class MainMenuPane extends BorderPane {
         });
 
         btnExitGame.setOnAction(actionEvent -> {
-            Platform.exit();
+            exitPopUp();
         });
 
     }
