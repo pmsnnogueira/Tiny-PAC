@@ -426,7 +426,7 @@ public class Game implements Serializable {
             if(element.getSymbol() == Obstacles.FRUIT.getSymbol()) {
                 SoundManager.play("pacman_eatFruit.mp3");
             }
-            
+
             maze.set(pacmanPosition.getPosY(), pacmanPosition.getPosX(), null);
             decFoodRemaining();
         }
