@@ -21,8 +21,11 @@ public class GameManager{
     private final static String SAVE_PATH = "files/saves/";
     private final static String SAVE_NAME = "tiny_Pac01.json";
 
+    private Top5 top5;
+
     public GameManager(){
         this.game = new Game();
+        this.top5 = new Top5();
     }
 
 
@@ -367,5 +370,9 @@ public class GameManager{
 
     public boolean isGhostDead(int posX, int posY) {
         return game.isGhostDead(posX, posY);
+    }
+
+    public void addToTop5(String userName) {
+        top5.addToTop5(userName,getScore());
     }
 }
