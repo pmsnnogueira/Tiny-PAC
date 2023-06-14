@@ -5,17 +5,17 @@ import pt.isec.pa.tinypac.model.data.Ghost;
 import pt.isec.pa.tinypac.model.data.IMazeElement;
 import pt.isec.pa.tinypac.model.data.Maze;
 import pt.isec.pa.tinypac.model.data.obstacles.Portal;
-import pt.isec.pa.tinypac.utils.Direction;
 import pt.isec.pa.tinypac.utils.Obstacles;
 import pt.isec.pa.tinypac.utils.Position;
 
-import java.lang.reflect.Array;
+import java.io.Serial;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Random;
 
-import static java.lang.Math.*;
-
-public class Pinky extends Ghost {
+public class Pinky extends Ghost implements Serializable {
+    @Serial
+    private static final long serialVersionUID = 1L;
 
     private static final int UP = 1;
     private static final int RIGHT = 2;
@@ -131,12 +131,14 @@ public class Pinky extends Ghost {
     public void returnToBase(){
 
         if(getVulnerable()){
-            if(!isLastPositionEmpty()){
+            if(!isMovementsEmpty()){
                 Position lastPositon = popLastPosition();
                 setPos(lastPositon.getPosX(), lastPositon.getPosY());
                 return;
             }
             //unlockGhost();
+            reset();
+            setTicksToMove(DEFAULT_TICKS_TO_MOVE_GHOST);
         }
 
         return;
@@ -329,11 +331,11 @@ public class Pinky extends Ghost {
         if(currentElement.getSymbol() == Obstacles.GHOST_CAVE.getSymbol()){
             if(portal.getPosX() < getPosX())
                 possibleDirections.add(LEFT);
-            else if(portal.getPosX() > getPosX())
+            if(portal.getPosX() > getPosX())
                 possibleDirections.add(RIGHT);
-            else if(portal.getPosY() < getPosY())
+            if(portal.getPosY() < getPosY())
                 possibleDirections.add(UP);
-            else if(portal.getPosY() > getPosY())
+            if(portal.getPosY() > getPosY())
                 possibleDirections.add(DOWN);
 
             return possibleDirections;

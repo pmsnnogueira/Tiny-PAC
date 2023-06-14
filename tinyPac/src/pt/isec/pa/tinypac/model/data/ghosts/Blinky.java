@@ -8,10 +8,14 @@ import pt.isec.pa.tinypac.model.data.obstacles.Portal;
 import pt.isec.pa.tinypac.utils.Obstacles;
 import pt.isec.pa.tinypac.utils.Position;
 
+import java.io.Serial;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Random;
 
-public class Blinky extends Ghost{
+public class Blinky extends Ghost implements Serializable {
+    @Serial
+    private static final long serialVersionUID = 1L;
 
     private static final int UP = 1;
     private static final int RIGHT = 2;
@@ -19,16 +23,11 @@ public class Blinky extends Ghost{
     private static final int DOWN = 4;
     private int direction;
 
-    private static final double UPDATE_INTERVAL = 0.016; // Fixed time step in seconds
-    private static final int SPEED = 2; // Speed in pixels per second
-    private double accumulatedTime = 0.0;
-    private long lastUpdateTime = System.nanoTime();
-    private double moveInterval = 0.5; // Adjust this value to control the movement speed
-
-
     public Blinky(Game game,int posX, int posY){
         super(game,posX, posY);
         this.direction = UP;
+
+
     }
 
     private void printValidPositions(ArrayList<Integer> validDirections){
@@ -53,12 +52,14 @@ public class Blinky extends Ghost{
     public void returnToBase(){
 
         if(getVulnerable()){
-            if(!isLastPositionEmpty()){
+            if(!isMovementsEmpty()){
                 Position lastPositon = popLastPosition();
                 setPos(lastPositon.getPosX(), lastPositon.getPosY());
                 return;
             }
             //unlockGhost();
+            reset();
+            setTicksToMove(DEFAULT_TICKS_TO_MOVE_GHOST);
         }
 
         return;
@@ -80,21 +81,11 @@ public class Blinky extends Ghost{
                 direction = validDirections.get(0);
             }
         }
+        move(maze, direction, 1);
 
-
-
-
-            move(maze, direction, 1);
 
 
         return true;
-    }
-
-    private double getDeltaTime() {
-        long currentTime = System.nanoTime();
-        double deltaTime = (currentTime - lastUpdateTime) / 1e9; // Convert nanoseconds to seconds
-        lastUpdateTime = currentTime;
-        return deltaTime;
     }
 
     private Integer oppositeDirection(Integer direction){
@@ -213,11 +204,11 @@ public class Blinky extends Ghost{
         if(currentElement.getSymbol() == Obstacles.GHOST_CAVE.getSymbol()){
             if(portal.getPosX() < getPosX())
                 possibleDirections.add(LEFT);
-            else if(portal.getPosX() > getPosX())
+            if(portal.getPosX() > getPosX())
                 possibleDirections.add(RIGHT);
-            else if(portal.getPosY() < getPosY())
+            if(portal.getPosY() < getPosY())
                 possibleDirections.add(UP);
-            else if(portal.getPosY() > getPosY())
+            if(portal.getPosY() > getPosY())
                 possibleDirections.add(DOWN);
 
             return possibleDirections;

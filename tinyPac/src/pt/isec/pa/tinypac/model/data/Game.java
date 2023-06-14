@@ -1,12 +1,22 @@
 package pt.isec.pa.tinypac.model.data;
 
+import pt.isec.pa.tinypac.model.data.ghosts.Blinky;
 import pt.isec.pa.tinypac.model.data.obstacles.*;
+import pt.isec.pa.tinypac.ui.gui.resources.SoundManager;
 import pt.isec.pa.tinypac.utils.Direction;
 import pt.isec.pa.tinypac.utils.Obstacles;
 import pt.isec.pa.tinypac.utils.PacmanPosition;
-import java.util.ArrayList;
+import pt.isec.pa.tinypac.utils.Position;
 
-public class Game {
+import java.io.Serial;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Random;
+
+public class Game implements Serializable {
+    @Serial
+    private static final long serialVersionUID = 1L;
+
     private static final char LIVES_ICON = 'A';
     private Integer level;
     private Integer lives;
@@ -17,19 +27,23 @@ public class Game {
     private Pacman pacman;
     private Portal portal;
     private ArrayList<Ghost> ghosts;
+    private ArrayList<Warp> warps;
     private Integer foodRemaining;
-
     private static int currentTick = 1;
     private int tickAtBeginningOfFunction = 1;
     private int maxTick = 50;
+
+    private Integer eatBallsCounter;
     public Game(){
-        this.level = 1;
+        this.level = 2;
         this.lives = 1;
         this.score = 0;
         this.maze = null;
         this.ghosts = new ArrayList<>();
         this.pacman = null;
         this.foodRemaining = 0;
+        this.warps = new ArrayList<>();
+        this.eatBallsCounter = 0;
     }
 
     public Game(Game game){
@@ -40,6 +54,25 @@ public class Game {
         this.ghosts = game.getGhosts();
         this.pacman = game.getPacman();
         this.foodRemaining = game.getFoodRemaining();
+    }
+
+    public void addWarps(Warp warp){
+        this.warps.add(warp);
+    }
+
+    public ArrayList<Warp> getWarps(){
+        return new ArrayList<>(warps);
+    }
+    public Integer getSizeWarps(){
+        return warps.size();
+    }
+    public Warp getSpecificWarps(Integer posX, Integer posY){
+
+        for(Warp aux : warps){
+            if(aux.getPositionX() == posX && aux.getPositionY() == posY)
+                return aux;
+        }
+        return null;
     }
 
     public Integer getScore() {
@@ -134,6 +167,7 @@ public class Game {
         for(int i = 0; i < lives ; i++){
             info += LIVES_ICON;
         }
+        info += "\n\tlevel: " + level;
 
        return info;
     }
@@ -216,48 +250,52 @@ public class Game {
     }
 
     public boolean evolve() {
-
-        tickAtBeginningOfFunction = 1;
-        maxTick = 50;
-        int counterPacman = 0;
+        boolean pacmanRes = false, ghostRes = false;
+        boolean update = false;
 
         if(ghosts == null || pacman == null)
             return false;
 
-        while (tickAtBeginningOfFunction <= maxTick){
-
-            try {
-                Thread.sleep(20);
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
-            }
+        if (tickAtBeginningOfFunction <= maxTick){
             if(currentTick % pacman.getTicksToMove() == 0){
                 evolvePacman();
                 eatFood();
-                counterPacman++;
+                pacmanRes = true;
+                update = true;
             }
-            evolveGhosts();
+
+            ghostRes = evolveGhosts();
+
+            if(ghostRes || pacmanRes)
+                update = true;
             tickAtBeginningOfFunction++;
             currentTick++;
         }
-        /*evolvePacman();
-        eatFood();*/
 
-        //evolveGhosts();
+        if(pacmanRes && ghostRes){
+            tickAtBeginningOfFunction = 1;
+            currentTick = 1;
+        }
 
-        return true;
+        return update;
     }
 
-    public void evolveGhosts(){
+    public boolean evolveGhosts(){
+        boolean update = false;
+
         for(Ghost ghost : ghosts){
             if(currentTick % ghost.getTicksToMove() == 0) {
                 if (!ghost.getLocked() && !ghost.getVulnerable()) {
                     ghost.evolve();
+
                 } else if (ghost.getVulnerable()) {
                     ghost.returnToBase();
                 }
+                update = true;
             }
         }
+
+        return update;
     }
 
     public void evolvePacman(){
@@ -274,13 +312,7 @@ public class Game {
         for(Ghost ghost: ghosts){
             if(ghost.getPosX() == pacman.getPosX() && ghost.getPosY() == pacman.getPosY()){
                 //Ghost in same place as pacman
-                if(pacman.getPower()){
-                    pacmanEatGhost(ghost);
-                    //resetLevel();
-                }else{
-
-                    return -1;          //Pacman MORREU
-                }
+                    return -1;
             }
         }
 
@@ -291,19 +323,81 @@ public class Game {
         return 0;
     }
 
+    public Integer controlGameState(){
+
+        if(getFoodRemaining() == 0){    //Level Completed
+            incLevel();
+            return 2;
+        }
+
+        for(Ghost ghost: ghosts){
+            if(ghost.getPosX() == pacman.getPosX() && ghost.getPosY() == pacman.getPosY()){
+                //Ghost in same place as pacman
+                return -1;          //Pacman MORREU
+            }
+        }
+        if(pacman.getPower()) {
+            return 1;       //Pacman With powers
+        }
+
+        return 0;
+    }
+
+    public Integer controlGameVulnerableState(){
+        if(getFoodRemaining() == 0){    //Level Completed
+            incLevel();
+            return 2;
+        }
+
+        for(Ghost ghost: ghosts){
+            if(ghost.getPosX() == pacman.getPosX() && ghost.getPosY() == pacman.getPosY()){
+                //Ghost in same place as pacman
+                if(pacman.getPower() && ghost.getVulnerable() && !ghost.getDead()) {
+                    System.out.println("Comi Ghost");
+                    pacmanEatGhost(ghost);
+                }else {
+                    //Pacman Morreu
+                    if(!ghost.getVulnerable()) {
+                        System.out.println("Pacman Morreu");
+                        return -1;
+                    }
+                }
+            }
+            if(pacman.getPower() && ghost.isInInicialPosition()) {
+                //System.out.println("Ola");
+                ghost.changeToUnVulnerable();
+                if(everyGhostsNotVulnerable()){
+                    pacman.setPower(false);
+                    return 1;       //MUDAR DE ESTADO PARA O GAME
+                }
+            }
+        }
+
+        return 0;
+    }
+
+    private boolean everyGhostsNotVulnerable() {
+        for(Ghost ghost : ghosts){
+            if(ghost.getVulnerable())
+                return false;
+        }
+        return true;
+    }
+
     private void incLevel() {
         level++;
     }
 
     private void pacmanEatGhost(Ghost ghost){
 
+        ghost.setDead(true);
+        ghost.setTicksToMove(3);
 
     }
 
     private void ghostEatPacman(){
-        pacman.reset();
         decLives();
-        resetGhosts();
+        resetLevel();
     }
 
     private void decLives() {
@@ -323,8 +417,18 @@ public class Game {
         {
             incrementPoints(element);
 
-            if(element.getSymbol() == Obstacles.POWER.getSymbol())
+            if(element.getSymbol() == Obstacles.POWER.getSymbol()) {
                 pacman.setPower(true);
+            }
+
+            if(element.getSymbol() == Obstacles.BALL.getSymbol()) {
+                eatBallsCounter++;
+                SoundManager.play("pacman_chomp.mp3");
+            }
+
+            if(element.getSymbol() == Obstacles.FRUIT.getSymbol()) {
+                SoundManager.play("pacman_eatFruit.mp3");
+            }
 
             maze.set(pacmanPosition.getPosY(), pacmanPosition.getPosX(), null);
             decFoodRemaining();
@@ -357,13 +461,9 @@ public class Game {
         return true;
     }
 
-    public void ghostsVulnerable(){
+    public void ghostsVulnerable(boolean state){
         for(Ghost ghost: ghosts)
-            ghostVulnerable(ghost);
-    }
-
-    public void ghostVulnerable(Ghost ghost){
-        ghost.setVulnerable(true);
+            ghost.setVulnerable(state);
     }
 
     public int pacmanManager() {
@@ -414,5 +514,53 @@ public class Game {
                 c == Obstacles.PINKY.getSymbol() ||
                 c == Obstacles.CLYDE.getSymbol() ||
                 c == Obstacles.INKY.getSymbol();
+    }
+
+    public Position getRandomWarpPosition(Position position) {
+
+        ArrayList<Warp> aux = new ArrayList<>(warps);
+
+        for(Warp warp : warps){
+            if(warp.getPosition().equals(position)){
+                aux.remove(warp);
+                break;
+            }
+        }
+        int index = new Random().nextInt(aux.size());
+        return aux.get(index).getPosition();
+    }
+
+    public void clearWarps() {
+        warps.clear();
+    }
+
+    public void setPacmanPower(boolean state) {
+        pacman.setPower(state);
+    }
+
+    public boolean isVulnerableGhostPosition(int posX, int posY) {
+        if(maze == null)
+            return false;
+
+        for(Ghost aux: ghosts){
+            if(aux.getPosX() == posX && aux.getPosY() == posY && aux.getVulnerable())
+                return true;
+        }
+        return false;
+    }
+
+    public boolean isGhostDead(int posX, int posY) {
+        if(maze == null)
+            return false;
+
+        for(Ghost aux: ghosts){
+            if(aux.getPosX() == posX && aux.getPosY() == posY && aux.getDead())
+                return true;
+        }
+        return false;
+    }
+
+    public void addToTop5() {
+
     }
 }

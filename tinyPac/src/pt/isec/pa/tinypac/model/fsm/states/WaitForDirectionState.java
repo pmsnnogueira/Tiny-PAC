@@ -24,13 +24,13 @@ public class WaitForDirectionState extends StateAdapter {
     @Override
     public boolean changeDirection(Direction direction) {
         data.changeDirection(direction);
-        changeState(State.GAME);
+        changeState(State.LOCKED_GHOSTS);
         return true;
     }
 
     @Override
-    public void evolve(long currentTime) {
-        data.evolve(currentTime);
+    public boolean evolve(long currentTime) {
+        return true;
     }
 
     @Override

@@ -10,6 +10,8 @@ import pt.isec.pa.tinypac.ui.gui.views.menu.Top5Pane;
 
 public class RootPane extends BorderPane {
     private ModelManager manager;
+    BorderPane mainMenuPane, gameRootPane, top5Pane;
+
 
     public RootPane(ModelManager manager) {
 
@@ -22,9 +24,9 @@ public class RootPane extends BorderPane {
     private void createViews() {
         CSSManager.applyCSS(this,"styles.css");
        StackPane stackPane = new StackPane(
-               new MainMenuPane(manager),
-               new GameRootPane(manager),
-               new Top5Pane(manager)
+               mainMenuPane = new MainMenuPane(manager),
+               gameRootPane = new GameRootPane(manager),
+               top5Pane = new Top5Pane(manager)
        );
 
         this.setBackground(

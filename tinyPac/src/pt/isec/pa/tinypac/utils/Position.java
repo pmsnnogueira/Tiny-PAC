@@ -1,6 +1,11 @@
 package pt.isec.pa.tinypac.utils;
 
-public class Position {
+import java.io.Serial;
+import java.io.Serializable;
+
+public class Position implements Serializable {
+    @Serial
+    private static final long serialVersionUID = 1L;
     private int posX;
     private int posY;
 
@@ -33,5 +38,29 @@ public class Position {
 
     public void setPosX(int posX) {
         this.posX = posX;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+
+        if (obj == this)
+            return true;
+
+        if (obj == null)
+            return false;
+
+        /*if (this.getClass() == obj.getClass()) {
+            return (((Position) obj).getPosX() == this.getPosX() && ((Position) obj).getPosY() == this.getPosY());
+        }*/
+
+        if(!(obj instanceof Position aux))
+            return false;
+
+        return (aux.getPosX() == this.getPosX() && aux.getPosY() == this.getPosY());
+    }
+
+    @Override
+    public int hashCode() {
+        return getPosY() + getPosX();
     }
 }

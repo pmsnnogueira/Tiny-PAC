@@ -51,8 +51,8 @@ public class Context {
         return data.getMazeColumns();
     }
 
-    public void evolve(long currentTime) {
-        state.evolve(currentTime);
+    public boolean evolve(long currentTime) {
+        return state.evolve(currentTime);
     }
 
     public boolean pause(long currentTime){
@@ -82,6 +82,24 @@ public class Context {
         return data.getScore();
     }
 
+
+    public boolean checkIfSavedGamesExist() {
+        return data.checkIfSavedGamesExist();
+    }
+
     public void saveGame() {
+        data.saveGame();
+    }
+
+    public void loadSavedGame() {
+        data.loadSavedGame();
+    }
+
+    public boolean isVulnerableGhostPosition(int posX, int posY) {
+        return data.isVulnerableGhostPosition(posX, posY);
+    }
+
+    public boolean isGhostDead(int posX, int posY) {
+        return data.isGhostDead(posX,posY);
     }
 }

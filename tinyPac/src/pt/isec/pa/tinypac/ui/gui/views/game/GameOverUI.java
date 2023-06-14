@@ -7,17 +7,18 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
 import pt.isec.pa.tinypac.model.ModelManager;
 import pt.isec.pa.tinypac.model.fsm.State;
 import pt.isec.pa.tinypac.ui.gui.resources.ImageManager;
-import pt.isec.pa.tinypac.utils.ProgramManager;
+import pt.isec.pa.tinypac.utils.UIManager;
 
 public class GameOverUI extends BorderPane {
     private ModelManager manager;
 
     private ToggleButton btnBackToMainMenu;
     private ToggleButton btnExit;
+
+    private Label lbPoints;
 
     private static final Integer MENU_MIN_WIDTH = 150;
 
@@ -54,7 +55,8 @@ public class GameOverUI extends BorderPane {
 
         //Menu
         VBox vBox = new VBox();
-        Label lbPoints = new Label("Score: " + manager.getScore());
+        lbPoints = new Label("Score");
+
         lbPoints.getStyleClass().add("mainLabel");
         lbPoints.setAlignment(Pos.CENTER);
 
@@ -96,7 +98,7 @@ public class GameOverUI extends BorderPane {
     }
 
     private void registerHandlers() {
-        manager.addPropertyChangeListener(ModelManager.PROP_GAME, evt -> update());
+        manager.addPropertyChangeListener(ModelManager.PROP_GAME, evt -> Platform.runLater(()->update()));
         //manager.addPropertyChangeListener(ModelManager.PROP_DATA, evt -> updateState());
 
         btnBackToMainMenu.setOnAction(actionEvent -> {
@@ -109,10 +111,12 @@ public class GameOverUI extends BorderPane {
     }
 
     private void update(){
-        if(manager.getProgramState() != ProgramManager.GAME || manager.getState() != State.GameOver){
+        if(manager.getProgramState() != UIManager.GAME || manager.getState() != State.GameOver){
             this.setVisible(false);
             return;
         }
+
+        lbPoints.setText("Score " + manager.getScore());
         this.setVisible(true);
     }
 }

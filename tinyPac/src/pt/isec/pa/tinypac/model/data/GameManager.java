@@ -1,5 +1,6 @@
 package pt.isec.pa.tinypac.model.data;
 
+import javafx.geometry.Pos;
 import pt.isec.pa.tinypac.model.data.ghosts.Blinky;
 import pt.isec.pa.tinypac.model.data.ghosts.Clyde;
 import pt.isec.pa.tinypac.model.data.ghosts.Inky;
@@ -7,11 +8,9 @@ import pt.isec.pa.tinypac.model.data.ghosts.Pinky;
 import pt.isec.pa.tinypac.model.data.obstacles.*;
 import pt.isec.pa.tinypac.utils.Direction;
 import pt.isec.pa.tinypac.utils.Obstacles;
+import pt.isec.pa.tinypac.utils.Position;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -19,8 +18,14 @@ public class GameManager{
     private Game game;
     private final static String LEVELS_PATH = "files/levels/";
 
+    private final static String SAVE_PATH = "files/saves/";
+    private final static String SAVE_NAME = "tiny_Pac01.json";
+
+    private Top5 top5;
+
     public GameManager(){
         this.game = new Game();
+        this.top5 = new Top5();
     }
 
 
@@ -73,6 +78,7 @@ public class GameManager{
         ArrayList<String> listOfFiles = filesinFolder(folder);
         StringBuilder fileName = new StringBuilder();
         int counter = game.getLevel();
+        System.out.println("Level:" + game.getLevel());
 
         if(listOfFiles == null)
             return false;
@@ -81,12 +87,15 @@ public class GameManager{
             fileName.delete(0, fileName.length());      //Remover a barra
             fileName.append("Level").append((counter < 10) ? "0" + counter : + counter).append(".txt");
             counter--;
+
             if(listOfFiles.contains(fileName.toString()))
                 break;
+
 
             if(i == listOfFiles.size() - 1)     //Nao encontrou nenhum ficheiro com o nome pretendido
                 return false;
         }
+
         fileName.insert(0 , LEVELS_PATH);
 
         //Verificar para todos os ficheiros com o directory.listFiles
@@ -142,43 +151,53 @@ public class GameManager{
 
         Maze maze = new Maze(game.getMazeRows() , game.getMazeColumns());
 
-        ArrayList<Integer[]> ghostCave = new ArrayList<>();
+        ArrayList<Position> ghostCave = new ArrayList<>();
+        game.clearWarps();
+
 
         Integer pacmanCounter = 0;
         Integer portalCounter = 0;
 
-        for(int i = 0 ; i < game.getMazeRows() ; i++) {       //Y
-            sb.deleteCharAt(sb.indexOf("\n",i * game.getMazeColumns()));
-            for(int a = 0; a < game.getMazeColumns(); a++) {      //X
-                char c = sb.charAt((i * game.getMazeColumns()) + a);
+        for(int posY = 0 ; posY < game.getMazeRows() ; posY++) {       //Y
+            sb.deleteCharAt(sb.indexOf("\n",posY * game.getMazeColumns()));
+            for(int posX = 0; posX < game.getMazeColumns(); posX++) {      //X
+                char c = sb.charAt((posY * game.getMazeColumns()) + posX);
                 switch (c) {
                     case 'x' ->   //Parede
-                            maze.set(i, a, new Wall());
-                    case 'W' ->   //Zona Warp
-                            maze.set(i, a, new Warp());
-                    case 'o' ->  {  //Comida
-                            maze.set(i, a, new Ball());
-                            //maze.set(i, a, null);
-                            game.incFoodRemaining();
+                        maze.set(posY, posX, new Wall());
+                    case 'W' ->  { //Zona Warp
+                        Warp warp = new Warp(posX,posY);
+                        maze.set(posY, posX, warp);
+                        game.addWarps(warp);
                     }
-                    case 'F' ->   //fruta
-                            maze.set(i, a, new Fruit());
+                    case 'o' ->  {  //Comida
+                        maze.set(posY, posX, new Ball());
+                        //maze.set(i, a, null);
+                        game.incFoodRemaining();
+                    }
+                    case 'F' -> {  //fruta
+                        maze.set(posY, posX, new Fruit());
+                        game.incFoodRemaining();
+                    }
                     case 'M' -> {   //LocalPacmanInicial
-                        maze.set(i, a, new PacmanInitialPosition());
-                        game.setPacman(new Pacman(game,a, i));
+                        maze.set(posY, posX, new PacmanInitialPosition());
+                        game.setPacman(new Pacman(game,posX, posY));
                         pacmanCounter++;
                     }
-                    case 'O' ->   //Bola com Poderes
-                            maze.set(i, a, new Power());
+                    case 'O' -> {   //Bola com Poderes
+                        maze.set(posY, posX, new Power());
+                        game.incFoodRemaining();
+                    }
                     case 'Y' -> {   //Portal
-                        Portal portal = new Portal(a,i); //x,y
-                        maze.set(i, a, portal);
+                        Portal portal = new Portal(posX,posY); //x,y
+                        maze.set(posY, posX, portal);
                         game.setPortal(portal);
                         portalCounter++;
                     }
                     case 'y' -> {   //Caverna dos Fantasmas
-                        maze.set(i, a, new GhostCave());
-                        ghostCave.add(new Integer[]{a, i});//x , y
+                        maze.set(posY, posX, new GhostCave());
+                        ghostCave.add(new Position(posX,posY));//x , y
+
                     }
                     default -> {
                         return null; //Character Invalid
@@ -187,16 +206,14 @@ public class GameManager{
             }
         }
 
-        if(pacmanCounter != 1 || portalCounter == 0)
+        if(pacmanCounter != 1 || portalCounter == 0 || (game.getSizeWarps() % 2 != 0))
             return null;
 
         game.setGhosts(ghostInitialPositioning(maze,ghostCave));
-
-        //System.out.println(ghostCave.toString());
         return maze;
     }
 
-    public ArrayList<Ghost> ghostInitialPositioning(Maze maze,ArrayList<Integer[]> ghostCave){
+    public ArrayList<Ghost> ghostInitialPositioning(Maze maze,ArrayList<Position> ghostCave){
 
         if(maze == null || ghostCave == null || ghostCave.isEmpty())
             return null;
@@ -204,46 +221,34 @@ public class GameManager{
         ArrayList<Ghost> ghosts = new ArrayList<>();
 
         int numPositions = 0;
-        Integer[] randomPosition;
+        Position randomPosition;
         Ghost ghost = null;
 
-        //Posicionar o Blinky por tras da porta, pois ele so anda para a frente
-        for(int i = 0; i < ghostCave.size() ; i++){
-            randomPosition = ghostCave.get(i);
-            IMazeElement element = maze.get(randomPosition[1] - 1, randomPosition[0]);
-            if(element == null)
-                continue;
-
-            if(element.getSymbol() == Obstacles.PORTAL.getSymbol() || i == ghostCave.size()) {
-                ghost = new Blinky(game,randomPosition[0], randomPosition[1]);
-                ghosts.add(ghost);
-                ghostCave.remove(randomPosition);
-                break;
-            }
-        }
-
-
-        for(int i = 0; i < 3;i++){
+        for(int i = 0; i < 4;i++){
 
             IMazeElement element = null;
             do {
                 numPositions = ghostCave.size();
                 int randomIndex = (int) (Math.random() * numPositions);
                 randomPosition = ghostCave.get(randomIndex);
-                element = maze.get(randomPosition[0], randomPosition[1]);
-            } while (element == null || element.getSymbol() != 'y');
+                element = maze.get(randomPosition.getPosY(), randomPosition.getPosX());           //y, x
+            } while (element == null || element.getSymbol() != Obstacles.GHOST_CAVE.getSymbol());
 
             switch (i){
                 case 0: {
-                    ghost = new Clyde(game, randomPosition[0], randomPosition[1]);
+                    ghost = new Clyde(game,  randomPosition.getPosX(), randomPosition.getPosY());
                     break;
                 }
                 case 1: {
-                    ghost = new Inky(game, randomPosition[0], randomPosition[1]);
+                    ghost = new Inky(game,  randomPosition.getPosX(), randomPosition.getPosY());
                     break;
                 }
                 case 2: {
-                    ghost = new Pinky(game, randomPosition[0], randomPosition[1]);
+                    ghost = new Pinky(game,  randomPosition.getPosX(), randomPosition.getPosY());
+                    break;
+                }
+                case 3: {
+                    ghost = new Blinky(game, randomPosition.getPosX(), randomPosition.getPosY());
                     break;
                 }
             }
@@ -253,12 +258,6 @@ public class GameManager{
 
         return ghosts;
     }
-
-    public Maze getMaze(){
-        return game.getMaze();
-    }
-
-
     public char[][] showMaze(){
        return game.showMaze();
     }
@@ -268,17 +267,15 @@ public class GameManager{
         return game.showGameInfo();
     }
 
-    public void evolve(long currentTime) {
+    public boolean evolve(long currentTime) {
         if(game != null)
-            game.evolve();
+            return game.evolve();
+
+        return false;
     }
 
-    public Integer controlGame(){
-        return game.controlGame();
-    }
-
-    public void ghostsVulnerable(){
-        game.ghostsVulnerable();
+    public void ghostsVulnerable(boolean state){
+        game.ghostsVulnerable(state);
     }
 
     public int pacmanManager() {
@@ -306,5 +303,76 @@ public class GameManager{
 
     public int getScore() {
         return game.getScore();
+    }
+
+    public boolean checkIfSavedGamesExist() {
+
+        File f = new File(SAVE_PATH + SAVE_NAME);
+        if(f.exists())
+            return true;
+
+        return false;
+    }
+
+    public void saveGame(){
+
+        File file = new File(SAVE_PATH + SAVE_NAME);
+        if(file != null)
+            saveGame(file);
+
+    }
+
+    private void saveGame(File file){
+
+        try (ObjectOutputStream oos = new ObjectOutputStream(
+                new FileOutputStream(file))
+        ){
+            oos.writeObject(game);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    public void loadSavedGame(){
+
+        File file = new File(SAVE_PATH + SAVE_NAME);
+        if(file != null)
+            loadSavedGame(file);
+
+    }
+
+    private void loadSavedGame(File file) {
+
+        try (ObjectInputStream oos = new ObjectInputStream(
+                new FileInputStream(file))
+        ){
+            game = (Game) oos.readObject();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    public int controlGameVulnerableState() {
+        return game.controlGameVulnerableState();
+    }
+
+    public int controlGameState() {
+        return game.controlGameState();
+    }
+
+    public void setPacmanPower(boolean b) {
+        game.setPacmanPower(b);
+    }
+
+    public boolean isVulnerableGhostPosition(int posX, int posY) {
+        return game.isVulnerableGhostPosition(posX, posY);
+    }
+
+    public boolean isGhostDead(int posX, int posY) {
+        return game.isGhostDead(posX, posY);
+    }
+
+    public void addToTop5(String userName) {
+        top5.addToTop5(userName,getScore());
     }
 }

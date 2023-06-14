@@ -5,7 +5,13 @@ import pt.isec.pa.tinypac.utils.Obstacles;
 import pt.isec.pa.tinypac.utils.PacmanPosition;
 import pt.isec.pa.tinypac.utils.Position;
 
-public class Pacman extends GameObjects{
+import java.io.Serial;
+import java.io.Serializable;
+
+public class Pacman extends GameObjects implements Serializable {
+    @Serial
+    private static final long serialVersionUID = 1L;
+
     private PacmanPosition pacmanPosition;
 
     private PacmanPosition initialPositon;
@@ -18,7 +24,7 @@ public class Pacman extends GameObjects{
         this.pacmanPosition = new PacmanPosition(posX, posY, game.getMazeRows(), game.getMazeColumns());
         this.initialPositon = new PacmanPosition(pacmanPosition);
         this.power = false;
-        this.ticksToMove = 75;
+        this.ticksToMove = 2;
     }
 
     /*public Pacman(Pacman pacman){
@@ -40,21 +46,28 @@ public class Pacman extends GameObjects{
     public boolean evolve() {
 
         //Movimentacao do pacman
-
         Maze maze = game.getMaze();
         if(maze == null)
             return false;
 
         int[] nextDirections = pacmanPosition.getNextPosition();//Next x and y
         IMazeElement element = maze.get(nextDirections[1], nextDirections[0]);
+
         if(element == null) {
             pacmanPosition.setPos(nextDirections[0], nextDirections[1]);
             return true;
         }
 
-        if(element.getSymbol() == Obstacles.WALL.getSymbol()){
-            return false;
+        if(element.getSymbol() == Obstacles.WARP.getSymbol()){      //Teleport
+            Position pos = game.getRandomWarpPosition(new Position(nextDirections[0],nextDirections[1]));
+            pacmanPosition.setPos(pos.getPosX(), pos.getPosY());
+            return true;
         }
+
+        if(element.getSymbol() == Obstacles.WALL.getSymbol() || element.getSymbol() == Obstacles.PORTAL.getSymbol())
+            return false;
+
+
         pacmanPosition.setPos(nextDirections[0] , nextDirections[1]);
 
         return true;

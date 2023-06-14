@@ -29,11 +29,11 @@ public class LockedGhostsState extends StateAdapter {
         return data.changeDirection(direction);
     }
 
-    public void evolve(long currentTime) {
+    public boolean evolve(long currentTime) {
         if(unlockGhosts(currentTime))
             changeState(State.GAME);
 
-        data.evolve(currentTime);
+        return data.evolve(currentTime);
     }
 
     private long convertSecondsToNano(long seconds){
@@ -48,7 +48,6 @@ public class LockedGhostsState extends StateAdapter {
         }
 
         if(currentTime >= maxTime) {
-            System.out.println("Unlocking Ghosts");
             data.unlockGosts(false);
             return true;
         }

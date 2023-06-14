@@ -12,9 +12,6 @@ public enum Obstacles {
     PACMAN('*'), BLINKY('B'), PINKY('P'), CLYDE('C'), INKY('I'),
     POWER('O',Power.POWER_POINTS),PORTAL('Y'),GHOST_CAVE('y');
 
-
-
-
     private final char symbol;
     private final int points;
     Obstacles(char c){

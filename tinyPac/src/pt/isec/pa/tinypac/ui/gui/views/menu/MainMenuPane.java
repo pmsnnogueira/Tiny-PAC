@@ -3,19 +3,17 @@ package pt.isec.pa.tinypac.ui.gui.views.menu;
 import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
-import javafx.scene.input.KeyCode;
 import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 import pt.isec.pa.tinypac.model.ModelManager;
-import pt.isec.pa.tinypac.model.fsm.State;
-import pt.isec.pa.tinypac.ui.gui.resources.CSSManager;
 import pt.isec.pa.tinypac.ui.gui.resources.FontManager;
-import pt.isec.pa.tinypac.ui.gui.resources.ImageManager;
-import pt.isec.pa.tinypac.ui.gui.views.RootPane;
-import pt.isec.pa.tinypac.utils.ProgramManager;
+import pt.isec.pa.tinypac.ui.gui.resources.SoundManager;
+import pt.isec.pa.tinypac.utils.UIManager;
 
 public class MainMenuPane extends BorderPane {
     private ToggleButton btnPlayGame, btnTop5 ,btnExitGame;
@@ -30,6 +28,8 @@ public class MainMenuPane extends BorderPane {
 
     private static final Integer BTN_SPACING = 15;
     private ModelManager manager;
+
+    ToggleButton btnNo, btnYes;
 
     public MainMenuPane(ModelManager manager) {
 
@@ -84,6 +84,79 @@ public class MainMenuPane extends BorderPane {
         menu.setSpacing(BTN_SPACING);
         menu.setAlignment(Pos.CENTER);
         this.setCenter(menu);
+
+
+    }
+
+    private void createPopUpLoadGame(){
+        if(manager.checkIfSavedGamesExist()){
+            //Create PopUpMenu
+            Stage dlg = new Stage();
+            Label label = new Label("Do you want to load the saved Game?");
+            btnNo = new ToggleButton("No");
+            btnYes = new ToggleButton("Yes");
+
+            btnNo.setOnAction(e -> {
+                manager.changeToGame();
+                dlg.close();
+                SoundManager.play("pacman_ringtone.mp3");
+            });
+
+            btnYes.setOnAction(e -> {
+                manager.loadSavedGame();
+                manager.changeToGame();
+                dlg.close();
+                SoundManager.play("pacman_ringtone.mp3");
+            });
+
+            VBox vBox = new VBox();
+            HBox hbButtons = new HBox(btnYes,btnNo);
+            hbButtons.setSpacing(2.5);
+            hbButtons.setAlignment(Pos.CENTER);
+            vBox.getChildren().addAll(label,hbButtons);
+
+            vBox.setAlignment(Pos.CENTER);
+            Scene scene = new Scene(vBox,300,70);
+            dlg.setScene(scene);
+            dlg.setTitle("Load Game");
+            dlg.initModality(Modality.APPLICATION_MODAL);
+            dlg.initOwner(this.getScene().getWindow());
+            dlg.showAndWait();
+            dlg.setAlwaysOnTop(true);
+        }
+    }
+
+    private void exitPopUp(){
+        //Create PopUpMenu
+        Stage dlg = new Stage();
+        Label label = new Label("Do you want to exit the Game?");
+        btnYes = new ToggleButton("Yes");
+        btnNo = new ToggleButton("No");
+
+        btnNo.setOnAction(e -> {
+            dlg.close();
+        });
+
+        btnYes.setOnAction(e -> {
+            dlg.close();
+            Platform.exit();
+        });
+
+        VBox vBox = new VBox();
+        HBox hbButtons = new HBox(btnYes,btnNo);
+        hbButtons.setSpacing(2.5);
+        hbButtons.setAlignment(Pos.CENTER);
+        vBox.getChildren().addAll(label,hbButtons);
+
+        vBox.setAlignment(Pos.CENTER);
+        Scene scene = new Scene(vBox,300,70);
+        dlg.setScene(scene);
+        dlg.setTitle("Exit Game");
+        dlg.initModality(Modality.APPLICATION_MODAL);
+        dlg.initOwner(this.getScene().getWindow());
+        dlg.showAndWait();
+        dlg.setAlwaysOnTop(true);
+
     }
 
     private void registerHandlers() {
@@ -91,7 +164,8 @@ public class MainMenuPane extends BorderPane {
         manager.addPropertyChangeListener(ModelManager.PROP_MENU, evt -> update());
 
         btnPlayGame.setOnAction(actionEvent -> {
-            manager.changeToGame();
+            manager.initGame();
+            createPopUpLoadGame();
         });
 
         btnTop5.setOnAction(actionEvent -> {
@@ -99,13 +173,13 @@ public class MainMenuPane extends BorderPane {
         });
 
         btnExitGame.setOnAction(actionEvent -> {
-            Platform.exit();
+            exitPopUp();
         });
 
     }
 
     private void update() {
-        this.setVisible(manager.getProgramState() == ProgramManager.MAIN_MENU);
+        this.setVisible(manager.getProgramState() == UIManager.MAIN_MENU);
     }
 
 }

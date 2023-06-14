@@ -1,9 +1,13 @@
 package pt.isec.pa.tinypac.utils;
 
+import java.io.Serial;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Stack<T>{
+public class Stack<T> implements Serializable {
+    @Serial
+    private static final long serialVersionUID = 1L;
 
     private List<T> lista;
 
@@ -20,7 +24,7 @@ public class Stack<T>{
         return (lista.get(lista.size() - 1));
     }
 
-    //Obter o ultimo objeto da pilha e apagar
+    //Obter o ultimo objeto da pilha e apaga
     public T pop(){
         T valor = null;
 
@@ -30,7 +34,6 @@ public class Stack<T>{
         }
 
         return (valor);
-
     }
 
     //Colocar um objeto na ultima posicao da pilha

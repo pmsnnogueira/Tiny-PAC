@@ -1,10 +1,14 @@
 package pt.isec.pa.tinypac.utils;
 
-public class PacmanPosition extends Position {
+import java.io.Serial;
+import java.io.Serializable;
 
+public class PacmanPosition extends Position implements Serializable {
+
+    @Serial
+    private static final long serialVersionUID = 1L;
     private final int mazeHeigth;
     private final int mazeWidth;
-
     private Direction direction;
 
     public PacmanPosition(int posX , int posY, int mazeHeigth, int mazeWidth){
@@ -33,22 +37,18 @@ public class PacmanPosition extends Position {
 
         if(direction != null){
             if(direction == Direction.UP){
-                //System.out.println("UP");
                 if(getPosY() - 1 < mazeHeigth) {
                     pos[1] = getPosY() - 1;
                 }
             }else if(direction == Direction.DOWN){
-                //System.out.println("DOWN");
                 if(getPosY() + 1 < mazeHeigth) {
                     pos[1] = getPosY() + 1;
                 }
             } else if(direction == Direction.LEFT){
-                //System.out.println("LEFT");
                 if(getPosX() - 1 < mazeWidth) {
                     pos[0] = getPosX() - 1;
                 }
             }else if(direction == Direction.RIGHT){
-                //System.out.println("RIGHT");
                 if(getPosX() + 1 < mazeWidth) {
                     pos[0] = getPosX() + 1;
                 }
@@ -62,8 +62,6 @@ public class PacmanPosition extends Position {
         this.setPosX(posX);
         this.setPosY(posY);
     }
-
-
 
     public void setDirection(Direction direction) {
         this.direction = direction;

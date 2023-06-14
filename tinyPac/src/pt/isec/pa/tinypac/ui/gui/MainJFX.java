@@ -18,11 +18,11 @@ public class MainJFX extends Application {
     private void configureStage(Stage stage) {
         newStage(stage, "Tiny-PAC");
 
-        Stage stage2 = new Stage();
+        /*Stage stage2 = new Stage();
         newStage(stage2, "Tiny-PAC2");
 
         stage.setOnCloseRequest(windowEvent -> stage2.close());
-        stage2.setOnCloseRequest(windowEvent -> stage.close());
+        stage2.setOnCloseRequest(windowEvent -> stage.close());*/
 
     }
 

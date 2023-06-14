@@ -6,14 +6,11 @@ import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.*;
 import pt.isec.pa.tinypac.model.ModelManager;
 import pt.isec.pa.tinypac.model.fsm.State;
 import pt.isec.pa.tinypac.ui.gui.resources.ImageManager;
-import pt.isec.pa.tinypac.utils.Direction;
-import pt.isec.pa.tinypac.utils.ProgramManager;
+import pt.isec.pa.tinypac.utils.UIManager;
 
 public class PauseUI extends BorderPane {
     private ModelManager manager;
@@ -117,6 +114,7 @@ public class PauseUI extends BorderPane {
 
         btnSaveExit.setOnAction(actionEvent -> {
             manager.changeToSaveAndExit();
+            Platform.exit();
         });
 
         btnExit.setOnAction(actionEvent -> {
@@ -126,7 +124,7 @@ public class PauseUI extends BorderPane {
     }
 
     private void update(){
-        if(manager.getProgramState() != ProgramManager.GAME || manager.getState() != State.PAUSE){
+        if(manager.getProgramState() != UIManager.GAME || manager.getState() != State.PAUSE){
             this.setVisible(false);
             return;
         }

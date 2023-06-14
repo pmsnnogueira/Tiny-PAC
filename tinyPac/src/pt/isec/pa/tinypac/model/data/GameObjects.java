@@ -1,6 +1,8 @@
 package pt.isec.pa.tinypac.model.data;
 
-public abstract class GameObjects implements IMazeElement{
+import java.io.Serializable;
+
+public abstract class GameObjects implements IMazeElement , Serializable {
     protected Game game;
 
     protected GameObjects(Game game){

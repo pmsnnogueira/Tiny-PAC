@@ -24,8 +24,8 @@ public abstract class StateAdapter implements IState {
     }
 
     @Override
-    public void evolve(long currentTime) {
-        return;
+    public boolean evolve(long currentTime) {
+        return false;
     }
 
     @Override

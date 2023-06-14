@@ -6,22 +6,27 @@ import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import pt.isec.pa.tinypac.model.ModelManager;
-import pt.isec.pa.tinypac.utils.ProgramManager;
+import pt.isec.pa.tinypac.ui.gui.resources.ImageManager;
+import pt.isec.pa.tinypac.utils.UIManager;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class Top5Pane extends BorderPane {
 
-    private ToggleButton btnMenu ,btnExitGame;
+    private ToggleButton btnMenu;
     private static final Integer BTN_MIN_WIDTH = 100;
     private static final Integer BTN_PREF_WIDTH = 120;
     private static final Integer BTN_MAX_WIDTH = 150;
 
 
-    private static final Integer BTN_MIN_HEIGHT = 50;
-    private static final Integer BTN_PREF_HEIGHT = 75;
-    private static final Integer BTN_MAX_HEIGHT = 80;
+    private static final Integer BTN_MIN_HEIGHT = 45;
+    private static final Integer BTN_PREF_HEIGHT = 50;
+    private static final Integer BTN_MAX_HEIGHT = 75;
 
     private static final Integer BTN_SPACING = 15;
 
@@ -41,7 +46,9 @@ public class Top5Pane extends BorderPane {
         TilePane tilePane = new TilePane();
         for (int i = 0; i <strings.length; i++) {
             Label label = new Label(strings[i]);
+            label.setStyle("-fx-text-fill: #FFFFFF;");
             tilePane.getChildren().add(label);
+
         }
         tilePane.setPrefWidth(width);
         tilePane.setPrefTileWidth((width - 20)/strings.length);
@@ -51,23 +58,28 @@ public class Top5Pane extends BorderPane {
     private void createViews() {
 
 
+        VBox vBoxLbMain = new VBox();
         Label lbMain = new Label("Tiny-PAC");
         lbMain.getStyleClass().add("mainLabel");
-        lbMain.setPadding(new Insets(0,0,25,0));
+        Label lbTop5 = new Label("Top5");
+        lbTop5.getStyleClass().add("mainSubLabel");
+        vBoxLbMain.setAlignment(Pos.CENTER);
+        vBoxLbMain.getChildren().addAll(lbMain,lbTop5);
+        vBoxLbMain.setPadding(new Insets(0,0,25,0));
 
         TilePane titlePane = getLine(
                 450,
                 "Username",
                 "Score"
         );
-        titlePane.setStyle("-fx-background-color: #c0c0c0;");
+        titlePane.setStyle("-fx-background-color: #444444;");
         top5List = new VBox();
+        top5List.setBackground(new Background(new BackgroundFill(Color.BLACK,CornerRadii.EMPTY,Insets.EMPTY)));
         VBox listWithTitle = new VBox(titlePane,top5List);
         listWithTitle.setBorder(new Border(new BorderStroke(Color.DARKGRAY,BorderStrokeStyle.SOLID,
                 CornerRadii.EMPTY,new BorderWidths(2))));
 
 
-        ToggleGroup tgMenuButtons = new ToggleGroup();
         btnMenu = new ToggleButton("Back To Menu");
         btnMenu.setMinHeight(BTN_MIN_HEIGHT);
         btnMenu.setPrefHeight(BTN_PREF_HEIGHT);
@@ -78,30 +90,37 @@ public class Top5Pane extends BorderPane {
         btnMenu.getStyleClass().add("mainButton");
         btnMenu.setSelected(false);
 
-        btnExitGame = new ToggleButton("Exit");
-        btnExitGame.setMinHeight(BTN_MIN_HEIGHT);
-        btnExitGame.setPrefHeight(BTN_PREF_HEIGHT);
-        btnExitGame.setMaxHeight(BTN_MAX_HEIGHT);
-        btnExitGame.setMinWidth(BTN_MIN_WIDTH);
-        btnExitGame.setPrefWidth(BTN_PREF_WIDTH);
-        btnExitGame.setMaxWidth(BTN_MAX_WIDTH);
-        btnExitGame.getStyleClass().add("mainButton");
-        btnExitGame.setSelected(false);
 
-        tgMenuButtons.getToggles().addAll(btnMenu,btnExitGame);
-
-        HBox menu = new HBox(btnMenu,btnExitGame);
+        HBox menu = new HBox(btnMenu);
         menu.setSpacing(BTN_SPACING);
         menu.setAlignment(Pos.CENTER);
         menu.setPadding(new Insets(20,0,0,0));
 
 
-        VBox vBoxList = new VBox(lbMain, listWithTitle , menu);
+        VBox vBoxList = new VBox(vBoxLbMain, listWithTitle , menu);
         vBoxList.setFillWidth(false);
         vBoxList.setSpacing(10);
         vBoxList.setAlignment(Pos.CENTER);
 
         this.setCenter(vBoxList);
+
+        //Student
+        HBox hBox = new HBox();
+        Label lbIsec = new Label("DEIS-ISEC-IPC");
+        lbIsec.getStyleClass().add("Top5BottomLb");
+        lbIsec.setAlignment(Pos.BOTTOM_LEFT);
+        ImageView imageView = new ImageView(ImageManager.getImage("isec_logo.png"));
+        Label lbStudent = new Label("Pedro Nogueira\na2020136533\nLEI - PA - 22/23\nAcademic assignment");
+        lbStudent.getStyleClass().add("Top5BottomLb");
+        lbStudent.setAlignment(Pos.BOTTOM_RIGHT);
+        imageView.setFitWidth(200);
+        imageView.setFitHeight(125);
+
+        hBox.getChildren().addAll(lbIsec,imageView,lbStudent);
+        hBox.setAlignment(Pos.CENTER);
+        hBox.setSpacing(80);
+        hBox.setPadding(new Insets(0,0,8,0));
+        this.setBottom(hBox);
     }
 
     private void registerHandlers() {
@@ -112,12 +131,30 @@ public class Top5Pane extends BorderPane {
             manager.changeToMainMenu();
         });
 
-        btnExitGame.setOnAction(actionEvent -> {
-            Platform.exit();
-        });
+
     }
 
     private void update() {
-        this.setVisible(manager.getProgramState() == ProgramManager.TOP5);
+        this.setVisible(manager.getProgramState() == UIManager.TOP5);
+
+
+        List<String> top5 = new ArrayList<>();
+        top5.add("Pedro Nogueira");
+        top5.add("Pedro Nogueira");
+        top5.add("Pedro Nogueira");
+        top5.add("Pedro Nogueira");
+        top5.add("Pedro Nogueira");
+        top5List.getChildren().clear();
+
+        for (int i = 0; i < top5.size(); i++) {
+            TilePane tilePane = getLine(
+                    450,
+                    ""+top5.get(i),
+                    ""+ 500
+            );
+            tilePane.setStyle("-fx-background-color: #000000;");
+
+            top5List.getChildren().add(tilePane);
+        }
     }
 }

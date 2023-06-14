@@ -1,37 +1,31 @@
 package pt.isec.pa.tinypac.model;
 
 import pt.isec.pa.tinypac.gameengine.GameEngine;
-import pt.isec.pa.tinypac.gameengine.IGameEngine;
-import pt.isec.pa.tinypac.gameengine.IGameEngineEvolve;
 import pt.isec.pa.tinypac.model.fsm.Context;
 import pt.isec.pa.tinypac.model.fsm.State;
 import pt.isec.pa.tinypac.utils.Direction;
-import pt.isec.pa.tinypac.utils.ProgramManager;
+import pt.isec.pa.tinypac.utils.UIManager;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 
-public class ModelManager implements IGameEngineEvolve {
+public class ModelManager {
 
     public static final String PROP_MENU = "_menu_";
     public static final String PROP_DATA = "_data_";
     public static final String PROP_GAME = "_gameMenu_";
 
-    private static final Integer GAME_ENGINE_TIME = 500;
+    private static final Integer GAME_ENGINE_TIME = 100;
 
     private GameEngine gameEngine;
     private Context context;
 
-    private ProgramManager programManager;
+    private UIManager UIManager;
     private PropertyChangeSupport pcs;
 
     public ModelManager(){
-        //this.gameEngine = new GameEngine();
-        //this.context = new Context();
         this.context = null;
-        //this.gameEngine.registerClient(this);
-
-        this.programManager = ProgramManager.MAIN_MENU;
+        this.UIManager = UIManager.MAIN_MENU;
         this.pcs = new PropertyChangeSupport(this);
     }
 
@@ -42,7 +36,6 @@ public class ModelManager implements IGameEngineEvolve {
 
     public boolean changeDirection(Direction direction){
         if(context.changeDirection(direction)) {
-            //System.out.println("New Direction: " + direction.toString());
             pcs.firePropertyChange(PROP_GAME, null,null);
             return true;
         }
@@ -50,9 +43,11 @@ public class ModelManager implements IGameEngineEvolve {
     }
 
     public boolean pause(){
+        gameEngine.pause();
         return context.pause(gameEngine.getInterval());
     }
     public boolean resume(){
+        gameEngine.resume();
         return context.resume();
     }
 
@@ -71,10 +66,10 @@ public class ModelManager implements IGameEngineEvolve {
         return context.showGameInfo();
     }
 
-    @Override
-    public void evolve(IGameEngine gameEngine, long currentTime) {
-        context.evolve(currentTime);
-        pcs.firePropertyChange(PROP_GAME,null,null);
+    public void evolve(long currentTime) {
+        if(context.evolve(currentTime)) {
+            pcs.firePropertyChange(PROP_GAME, null, null);
+        }
     }
 
     public void addPropertyChangeListener(PropertyChangeListener listener){
@@ -86,34 +81,38 @@ public class ModelManager implements IGameEngineEvolve {
     }
 
 
-    public ProgramManager getProgramState(){
-        return programManager;
+    public UIManager getProgramState(){
+        return UIManager;
     }
 
     public void changeToTop5(){
-        this.programManager = ProgramManager.TOP5;
+        this.UIManager = UIManager.TOP5;
         pcs.firePropertyChange(PROP_MENU,null,null);
     }
 
+    public void initGame(){
+        if(context == null)
+            this.context = new Context();
+        if(gameEngine == null) {
+            this.gameEngine = new GameEngine();
+            this.gameEngine.registerClient((gameEngine,currentTime) -> {evolve(currentTime);});
+        }
+    }
+
     public void changeToGame(){
-
-        this.context = new Context();
-        this.gameEngine = new GameEngine();
-        this.gameEngine.registerClient(this);
-
         gameEngine.start(GAME_ENGINE_TIME);
-        //gameEngine.waitForTheEnd();
-        this.programManager = ProgramManager.GAME;
+        this.UIManager = UIManager.GAME;
+        pcs.firePropertyChange(PROP_MENU,null,null);
         pcs.firePropertyChange(PROP_GAME,null,null);
     }
 
     public void changeToMainMenu(){
-        if(programManager == ProgramManager.GAME){
+        if(UIManager == UIManager.GAME){
             gameEngine.stop();
             gameEngine = null;
             context = null;
         }
-        this.programManager = ProgramManager.MAIN_MENU;
+        this.UIManager = UIManager.MAIN_MENU;
         pcs.firePropertyChange(PROP_GAME,null,null);
         pcs.firePropertyChange(PROP_MENU,null,null);
     }
@@ -148,5 +147,21 @@ public class ModelManager implements IGameEngineEvolve {
 
         context.saveGame();
         pcs.firePropertyChange(PROP_GAME,null,null);
+    }
+
+    public boolean checkIfSavedGamesExist() {
+        return context.checkIfSavedGamesExist();
+    }
+
+    public void loadSavedGame() {
+        context.loadSavedGame();
+    }
+
+    public boolean isVulnerableGhostPosition(int posX, int posY) {
+        return context.isVulnerableGhostPosition(posX, posY);
+    }
+
+    public boolean isGhostDead(int posX, int posY) {
+        return context.isGhostDead(posX, posY);
     }
 }
