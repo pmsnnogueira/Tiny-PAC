@@ -16,8 +16,8 @@ public abstract class Ghost extends GameObjects implements Serializable {
     private Boolean vulnerable;
 
     private Boolean dead;
-    private static final char SYMBOL = 'G';
-    public static final int GHOST_POINTS = 200;
+    private static final Integer DEFAULT_GHOST_POINTS = 50;
+    private Integer ghostPoints;
 
     public Integer DEFAULT_TICKS_TO_MOVE_GHOST = 6;
     private Integer ticksToMove;
@@ -31,6 +31,7 @@ public abstract class Ghost extends GameObjects implements Serializable {
         this.vulnerable = false;
         this.ticksToMove = DEFAULT_TICKS_TO_MOVE_GHOST;
         this.dead = false;
+        this.ghostPoints = 50;
     }
 
     public void setPos(int posX , int posY){
@@ -108,6 +109,18 @@ public abstract class Ghost extends GameObjects implements Serializable {
         return 0;
     }
 
+    public void incGhostPoints(){
+        this.ghostPoints += 50;
+    }
+
+    public void setGhostPoints(Integer ghostPoints) {
+        this.ghostPoints = ghostPoints;
+    }
+
+    public Integer getGhostPoints() {
+        return ghostPoints;
+    }
+
     public void reset() {
 
         this.currentPosition = new Position(initialPosition);
@@ -116,6 +129,7 @@ public abstract class Ghost extends GameObjects implements Serializable {
         this.vulnerable = false;
         this.locked = true;
         setTicksToMove(DEFAULT_TICKS_TO_MOVE_GHOST);
+        setGhostPoints(DEFAULT_GHOST_POINTS);
     }
 
     public int getTicksToMove() {

@@ -11,7 +11,7 @@ public class Ball implements IMazeElement, Serializable {
     private static final long serialVersionUID = 1L;
     private final char symbol;
 
-    public static final int BALL_POINTS = 10;
+    public static final int BALL_POINTS = 1;
 
     public Ball(){
         this.symbol = Obstacles.BALL.getSymbol();

@@ -10,10 +10,7 @@ public class Power implements IMazeElement , Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
     private final char symbol;
-
-    public static final int POWER_POINTS = 50;
-    public static final long POWER_TIME = 5000;
-
+    public static final int POWER_POINTS = 10;
 
     public Power(){
         this.symbol = Obstacles.POWER.getSymbol();

@@ -29,10 +29,11 @@ public class Game implements Serializable {
     private ArrayList<Ghost> ghosts;
     private ArrayList<Warp> warps;
     private Integer foodRemaining;
-
     private static int currentTick = 1;
     private int tickAtBeginningOfFunction = 1;
     private int maxTick = 50;
+
+    private Integer eatBallsCounter;
     public Game(){
         this.level = 2;
         this.lives = 1;
@@ -42,6 +43,7 @@ public class Game implements Serializable {
         this.pacman = null;
         this.foodRemaining = 0;
         this.warps = new ArrayList<>();
+        this.eatBallsCounter = 0;
     }
 
     public Game(Game game){
@@ -420,6 +422,7 @@ public class Game implements Serializable {
             }
 
             if(element.getSymbol() == Obstacles.BALL.getSymbol()) {
+                eatBallsCounter++;
                 SoundManager.play("pacman_chomp.mp3");
             }
 
