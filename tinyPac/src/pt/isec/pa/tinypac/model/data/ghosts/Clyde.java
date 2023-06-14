@@ -5,6 +5,7 @@ import pt.isec.pa.tinypac.model.data.Ghost;
 import pt.isec.pa.tinypac.model.data.IMazeElement;
 import pt.isec.pa.tinypac.model.data.Maze;
 import pt.isec.pa.tinypac.model.data.obstacles.Portal;
+import pt.isec.pa.tinypac.utils.Direction;
 import pt.isec.pa.tinypac.utils.Obstacles;
 import pt.isec.pa.tinypac.utils.Position;
 
@@ -23,11 +24,13 @@ public class Clyde extends Ghost implements Serializable {
     private static final int DOWN = 4;
     private int direction;
 
+    Direction toPacmanDirection;
+
     public Clyde(Game game,int posX, int posY){
         super(game,posX, posY);
         this.direction = UP;
 
-
+        toPacmanDirection = Direction.NONE;
     }
 
     private void printValidPositions(ArrayList<Integer> validDirections){
@@ -69,6 +72,14 @@ public class Clyde extends Ghost implements Serializable {
     public boolean evolve() {
         Maze maze = game.getMaze();
 
+        ArrayList<Integer> aux= new ArrayList<>();
+        aux.add(LEFT);
+        aux.add(UP);
+        aux.add(DOWN);
+        aux.add(RIGHT);
+
+        whereIsPacman(maze, aux);
+
         if(cruzamento(maze, direction)){
 
             //É possivel mudar de direcao
@@ -101,8 +112,100 @@ public class Clyde extends Ghost implements Serializable {
         return -1;
     }
 
+    private Direction whereIsPacman(Maze maze, ArrayList<Integer> validDirections){
+
+        Position pacmanPostion = game.getPacmanPosition();
+
+        if(validDirections.contains(RIGHT)){
+            if(pacmanPostion.getPosY() == getPosY() && pacmanPostion.getPosX() > getPosX()){
+                System.out.println("Vou ver na direita");
+                for(int i = getPosX(); i <= pacmanPostion.getPosX(); i++){
+                    IMazeElement element = maze.get(getPosY(), i);
+                    System.out.println("right Pacman X " + pacmanPostion.getPosX() + " GhostX " + getPosX());
+                    if(element != null &&
+                            element.getSymbol() == Obstacles.WALL.getSymbol()){
+                        toPacmanDirection = Direction.NONE;
+                        System.out.println("Vou Sair i = " + i);
+                        break;
+                    }
+
+                    if(i == pacmanPostion.getPosX()) {
+                        System.out.println("Pacman Esta para a direita");
+                        return toPacmanDirection = Direction.RIGHT;
+                    }
+                }
+            }
+        }
+        if(validDirections.contains(LEFT)){
+            if(pacmanPostion.getPosY() == getPosY() && pacmanPostion.getPosX() < getPosX()){
+                System.out.println("Vou ver na esquerda");
+                for(int i = getPosX(); i >= pacmanPostion.getPosX(); i--){
+                    IMazeElement element = maze.get(getPosY(), i);
+                    System.out.println("left Pacman X " + pacmanPostion.getPosX() + " GhostX " + getPosX());
+                    if(element != null &&
+                            element.getSymbol() == Obstacles.WALL.getSymbol()){
+                        toPacmanDirection = Direction.NONE;
+                        System.out.println("Vou Sair i = " + i);
+                        break;
+                    }
+                    if(i == pacmanPostion.getPosX()) {
+                        System.out.println("Pacman Esta para a Esquerda");
+                        return toPacmanDirection = Direction.LEFT;
+                    }
+                }
+            }
+        }
+        if(validDirections.contains(UP)){
+            if(pacmanPostion.getPosY() < getPosY() && pacmanPostion.getPosX() == getPosX()){
+                System.out.println("Up Pacman Y " + pacmanPostion.getPosY() + " GhostY " + getPosY());
+                for(int i = getPosY(); i >= pacmanPostion.getPosY(); i--){
+                    IMazeElement element = maze.get(getPosY(), i);
+                    if(element != null &&
+                            element.getSymbol() == Obstacles.WALL.getSymbol()){
+                        toPacmanDirection = Direction.NONE;
+                        System.out.println("Vou Sair i = " + i);
+                        break;
+                    }
+
+                    if(i == pacmanPostion.getPosY()) {
+                        System.out.println("Pacman Esta para a Cima");
+                        return toPacmanDirection = Direction.UP;
+                    }
+                }
+            }
+        }
+
+        if(validDirections.contains(DOWN)){
+            if(pacmanPostion.getPosY() >  getPosY() && pacmanPostion.getPosX() == getPosX()){
+                for(int i = getPosY(); i <= pacmanPostion.getPosY(); i++){
+                    IMazeElement element = maze.get(getPosY(), i);
+
+                    System.out.println("Baixo Pacman Y " + pacmanPostion.getPosY() + " GhostY " + getPosY());
+                    if(element != null &&
+                            element.getSymbol() == Obstacles.WALL.getSymbol()){
+                        toPacmanDirection = Direction.NONE;
+                        System.out.println("Vou Sair i = " + i);
+                        break;
+                    }
+
+                    if(i == pacmanPostion.getPosY()) {
+                        System.out.println("Pacman Esta para a DOWN");
+                        return toPacmanDirection = Direction.DOWN;
+                    }
+                }
+            }
+        }
+
+        return Direction.NONE;
+    }
+
     private int chooseDirection(ArrayList<Integer> validDirections, Integer direction){
         ArrayList<Integer> aux = new ArrayList<>(validDirections);
+
+
+
+
+
 
         aux.remove(oppositeDirection(direction));
         if(aux.size() == 0)
