@@ -67,7 +67,7 @@ public class Blinky extends Ghost implements Serializable {
 
     @Override
     public boolean evolve() {
-        Maze maze = game.getMaze();
+       /* Maze maze = game.getMaze();
 
         if(cruzamento(maze, direction)){
 
@@ -82,7 +82,7 @@ public class Blinky extends Ghost implements Serializable {
             }
         }
         move(maze, direction, 1);
-
+*/
 
 
         return true;
