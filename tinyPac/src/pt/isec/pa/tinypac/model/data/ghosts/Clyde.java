@@ -176,7 +176,7 @@ public class Clyde extends Ghost implements Serializable {
         }
 
         if(validDirections.contains(DOWN)){
-            if(pacmanPostion.getPosY() > getPosY() && pacmanPostion.getPosX() == getPosX()){
+            if(pacmanPostion.getPosY() >  getPosY() && pacmanPostion.getPosX() == getPosX()){
                 for(int i = getPosY(); i <= pacmanPostion.getPosY(); i++){
                     IMazeElement element = maze.get(getPosY(), i);
 
