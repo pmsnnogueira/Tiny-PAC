@@ -164,4 +164,8 @@ public class ModelManager {
     public boolean isGhostDead(int posX, int posY) {
         return context.isGhostDead(posX, posY);
     }
+
+    public void removeSavedGame() {
+        context.removeSavedGame();
+    }
 }

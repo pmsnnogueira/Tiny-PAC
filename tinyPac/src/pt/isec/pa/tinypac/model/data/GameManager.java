@@ -11,6 +11,7 @@ import pt.isec.pa.tinypac.utils.Obstacles;
 import pt.isec.pa.tinypac.utils.Position;
 
 import java.io.*;
+import java.text.FieldPosition;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -374,5 +375,13 @@ public class GameManager{
 
     public void addToTop5(String userName) {
         top5.addToTop5(userName,getScore());
+    }
+
+    public void removeSavedGame() {
+
+        File file = new File(SAVE_PATH + SAVE_NAME);
+        if(file.exists()){
+            file.delete();
+        }
     }
 }

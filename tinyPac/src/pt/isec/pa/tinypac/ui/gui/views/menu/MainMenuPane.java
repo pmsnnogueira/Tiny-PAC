@@ -98,6 +98,7 @@ public class MainMenuPane extends BorderPane {
 
             btnNo.setOnAction(e -> {
                 manager.changeToGame();
+                manager.removeSavedGame();
                 dlg.close();
                 SoundManager.play("pacman_ringtone.mp3");
             });
@@ -123,6 +124,9 @@ public class MainMenuPane extends BorderPane {
             dlg.initOwner(this.getScene().getWindow());
             dlg.showAndWait();
             dlg.setAlwaysOnTop(true);
+        }else{
+            manager.changeToGame();
+            SoundManager.play("pacman_ringtone.mp3");
         }
     }
 

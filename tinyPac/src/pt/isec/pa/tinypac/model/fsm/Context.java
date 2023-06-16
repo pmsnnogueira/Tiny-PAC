@@ -102,4 +102,8 @@ public class Context {
     public boolean isGhostDead(int posX, int posY) {
         return data.isGhostDead(posX,posY);
     }
+
+    public void removeSavedGame() {
+        data.removeSavedGame();
+    }
 }
