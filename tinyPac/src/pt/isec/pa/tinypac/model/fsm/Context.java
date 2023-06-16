@@ -8,11 +8,8 @@ public class Context {
     private GameManager data;
     private IState state;
     private State previousState;
-    private long timeBeforePause;
-
     public Context(){
         this.data = new GameManager();
-        this.timeBeforePause = 0;
         this.state = new WaitForDirectionState(this,data);
         this.previousState = getState();
     }
@@ -56,7 +53,6 @@ public class Context {
     }
 
     public boolean pause(long currentTime){
-        this.timeBeforePause = currentTime;
         if(getState() != State.PAUSE)
             this.previousState = getState();
         return state.pause();
