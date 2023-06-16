@@ -99,7 +99,7 @@ public class Inky extends Ghost implements Serializable {
     @Override
     public boolean evolve() {
 
-        Maze maze = game.getMaze();
+       /* Maze maze = game.getMaze();
 
         if(verifyMinimumDistance(cornerDirection)){
             //Mudar a direcao do canto
@@ -121,7 +121,7 @@ public class Inky extends Ghost implements Serializable {
             }
         }
 
-        move(maze, direction);
+        move(maze, direction);*/
 
         return true;
     }

@@ -563,4 +563,8 @@ public class Game implements Serializable {
     public void addToTop5() {
 
     }
+
+    public Position getPacmanPosition() {
+        return pacman.getCurrentPosition();
+    }
 }
