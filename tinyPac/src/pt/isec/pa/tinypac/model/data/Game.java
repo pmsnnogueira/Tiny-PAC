@@ -163,10 +163,7 @@ public class Game implements Serializable {
 
     public String showGameInfo(){
 
-        String info = "Score: " + score + "\tLives: ";
-        for(int i = 0; i < lives ; i++){
-            info += LIVES_ICON;
-        }
+        String info = "Score: " + score + "\tLives: " + lives;
         info += "\n\tlevel: " + level;
 
        return info;
