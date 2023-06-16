@@ -42,6 +42,9 @@ public class Top5 implements Serializable{
 
         readTop5FromFile();
 
+        if(top5.isEmpty() || top5.size() < 5)
+            return true;
+
         for(int i = 0; i < top5.size(); i++){
             if(top5.get(i).getScore() < value)
                 return true;
