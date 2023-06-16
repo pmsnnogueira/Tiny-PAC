@@ -168,4 +168,8 @@ public class ModelManager {
     public void removeSavedGame() {
         context.removeSavedGame();
     }
+
+    public boolean isInTop5() {
+        return context.isInTop5();
+    }
 }

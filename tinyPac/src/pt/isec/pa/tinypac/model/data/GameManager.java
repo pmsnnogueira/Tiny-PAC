@@ -384,4 +384,8 @@ public class GameManager{
             file.delete();
         }
     }
+
+    public boolean isInTop5() {
+        return top5.verifyIfIsInTop5(game.getScore());
+    }
 }

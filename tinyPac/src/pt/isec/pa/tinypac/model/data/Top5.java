@@ -53,6 +53,8 @@ public class Top5 implements Serializable{
     public void addToTop5(String userName, Integer score){
         top5.add(new Top5Data(userName, score));
         orderTop5();
+        if(top5.size() > 5)
+            top5.remove(top5.size() - 1);
         writeTop5IntoFile();
     }
 

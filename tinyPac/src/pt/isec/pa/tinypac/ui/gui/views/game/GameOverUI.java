@@ -117,6 +117,10 @@ public class GameOverUI extends BorderPane {
         }
 
         lbPoints.setText("Score " + manager.getScore());
+
+        if(manager.isInTop5()){
+
+        }
         this.setVisible(true);
     }
 }

@@ -11,6 +11,7 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import pt.isec.pa.tinypac.model.ModelManager;
 import pt.isec.pa.tinypac.ui.gui.resources.ImageManager;
+import pt.isec.pa.tinypac.ui.gui.views.others.InfoView;
 import pt.isec.pa.tinypac.utils.UIManager;
 
 import java.util.ArrayList;
@@ -104,22 +105,11 @@ public class Top5Pane extends BorderPane {
 
         this.setCenter(vBoxList);
 
-        //Student
-        HBox hBox = new HBox();
-        Label lbIsec = new Label("DEIS-ISEC-IPC");
-        lbIsec.getStyleClass().add("Top5BottomLb");
-        lbIsec.setAlignment(Pos.BOTTOM_LEFT);
-        ImageView imageView = new ImageView(ImageManager.getImage("isec_logo.png"));
-        Label lbStudent = new Label("Pedro Nogueira\na2020136533\nLEI - PA - 22/23\nAcademic assignment");
-        lbStudent.getStyleClass().add("Top5BottomLb");
-        lbStudent.setAlignment(Pos.BOTTOM_RIGHT);
-        imageView.setFitWidth(200);
-        imageView.setFitHeight(125);
-
-        hBox.getChildren().addAll(lbIsec,imageView,lbStudent);
+        InfoView info = new InfoView();
+        HBox hBox = new HBox(info);
         hBox.setAlignment(Pos.CENTER);
-        hBox.setSpacing(80);
-        hBox.setPadding(new Insets(0,0,8,0));
+
+
         this.setBottom(hBox);
     }
 

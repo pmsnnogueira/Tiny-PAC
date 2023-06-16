@@ -102,4 +102,8 @@ public class Context {
     public void removeSavedGame() {
         data.removeSavedGame();
     }
+
+    public boolean isInTop5() {
+        return data.isInTop5();
+    }
 }

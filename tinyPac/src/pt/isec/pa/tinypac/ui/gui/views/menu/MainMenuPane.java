@@ -13,6 +13,7 @@ import javafx.stage.Stage;
 import pt.isec.pa.tinypac.model.ModelManager;
 import pt.isec.pa.tinypac.ui.gui.resources.FontManager;
 import pt.isec.pa.tinypac.ui.gui.resources.SoundManager;
+import pt.isec.pa.tinypac.ui.gui.views.others.InfoView;
 import pt.isec.pa.tinypac.utils.UIManager;
 
 public class MainMenuPane extends BorderPane {
@@ -83,7 +84,14 @@ public class MainMenuPane extends BorderPane {
         VBox menu = new VBox(lbMain,btnPlayGame, btnTop5,btnExitGame);
         menu.setSpacing(BTN_SPACING);
         menu.setAlignment(Pos.CENTER);
+
+        InfoView info = new InfoView();
+        HBox hBox = new HBox(info);
+        hBox.setAlignment(Pos.CENTER);
+        this.setBottom(hBox);
+
         this.setCenter(menu);
+
 
 
     }
