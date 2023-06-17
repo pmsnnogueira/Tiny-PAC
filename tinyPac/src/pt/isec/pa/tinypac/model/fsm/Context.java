@@ -1,17 +1,20 @@
 package pt.isec.pa.tinypac.model.fsm;
 
+import pt.isec.pa.tinypac.model.data.Game;
 import pt.isec.pa.tinypac.model.data.GameManager;
-import pt.isec.pa.tinypac.model.data.Top5;
-import pt.isec.pa.tinypac.model.data.Top5Data;
 import pt.isec.pa.tinypac.model.fsm.states.WaitForDirectionState;
 import pt.isec.pa.tinypac.utils.Direction;
 
-import java.util.List;
+import java.io.*;
+
 
 public class Context {
     private GameManager data;
     private IState state;
     private State previousState;
+
+    private final static String SAVE_PATH = "files/saves/";
+    private final static String SAVE_NAME = "tiny_Pac01.json";
     public Context(){
         this.data = new GameManager();
         this.state = new WaitForDirectionState(this,data);
@@ -87,13 +90,6 @@ public class Context {
         return data.checkIfSavedGamesExist();
     }
 
-    public void saveGame() {
-        data.saveGame();
-    }
-
-    public void loadSavedGame() {
-        data.loadSavedGame();
-    }
 
     public boolean isVulnerableGhostPosition(int posX, int posY) {
         return data.isVulnerableGhostPosition(posX, posY);
@@ -113,6 +109,42 @@ public class Context {
 
     public void addIntoTop5(String userName) {
         data.addIntoTop5(userName);
+    }
+
+    public void saveGame(){
+
+        try (ObjectOutputStream oos = new ObjectOutputStream(
+                new FileOutputStream(SAVE_PATH + SAVE_NAME))
+        ){
+            oos.writeObject(data.getGame());
+            oos.writeObject(previousState);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    private void createGameManager(Game game, State state){
+        this.data = new GameManager(game);
+        this.state = state.createState(this,data);
+        this.previousState = getState();
+    }
+
+    public void loadSavedGame() {
+
+        Game gameAux = null;
+        try (ObjectInputStream oos = new ObjectInputStream(
+                new FileInputStream(SAVE_PATH + SAVE_NAME))
+        ){
+
+            gameAux = (Game) oos.readObject();
+            previousState = (State) oos.readObject();
+
+            createGameManager(gameAux,previousState);
+
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
 }

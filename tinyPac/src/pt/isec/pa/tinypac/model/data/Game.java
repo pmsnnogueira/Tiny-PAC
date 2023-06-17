@@ -51,9 +51,18 @@ public class Game implements Serializable {
         this.lives = game.getLives();
         this.score = game.getScore();
         this.maze = game.getMaze();
+        this.mazeRows = game.getMazeRows();
+        this.mazeColumns = game.getMazeColumns();
+        this.portal = game.getPortal();
         this.ghosts = game.getGhosts();
         this.pacman = game.getPacman();
         this.foodRemaining = game.getFoodRemaining();
+        this.warps = game.getWarps();
+        this.eatBallsCounter = game.getEatBallsCounter();
+    }
+
+    public Integer getEatBallsCounter() {
+        return eatBallsCounter;
     }
 
     public void addWarps(Warp warp){

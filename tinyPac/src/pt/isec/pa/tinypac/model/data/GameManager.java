@@ -1,6 +1,5 @@
 package pt.isec.pa.tinypac.model.data;
 
-import javafx.geometry.Pos;
 import pt.isec.pa.tinypac.model.data.ghosts.Blinky;
 import pt.isec.pa.tinypac.model.data.ghosts.Clyde;
 import pt.isec.pa.tinypac.model.data.ghosts.Inky;
@@ -11,9 +10,7 @@ import pt.isec.pa.tinypac.utils.Obstacles;
 import pt.isec.pa.tinypac.utils.Position;
 
 import java.io.*;
-import java.text.FieldPosition;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Scanner;
 
 public class GameManager{
@@ -23,11 +20,12 @@ public class GameManager{
     private final static String SAVE_PATH = "files/saves/";
     private final static String SAVE_NAME = "tiny_Pac01.json";
 
-    private Top5 top5;
-
     public GameManager(){
         this.game = new Game();
-        this.top5 = new Top5();
+    }
+
+    public GameManager(Game game){
+        this.game = game;
     }
 
 
@@ -383,11 +381,11 @@ public class GameManager{
     }
 
     public boolean isInTop5() {
-        return top5.verifyIfIsInTop5(game.getScore());
+        return new Top5().verifyIfIsInTop5(game.getScore());
     }
 
     public void addIntoTop5(String userName) {
-        top5.addIntoTop5(userName,getScore());
+        new Top5().addIntoTop5(userName,getScore());
     }
 
 }
