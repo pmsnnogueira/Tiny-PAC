@@ -10,9 +10,6 @@ public class GameOverState extends StateAdapter {
 
     public GameOverState(Context context, GameManager data){
         super(context, data);
-
-
-        data.addToTop5("Pedro Nogueira");
     }
 
     @Override

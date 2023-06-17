@@ -172,4 +172,8 @@ public class ModelManager {
     public boolean isInTop5() {
         return context.isInTop5();
     }
+
+    public void addIntoTop5(String userName) {
+        context.addIntoTop5(userName);
+    }
 }

@@ -3,13 +3,15 @@ package pt.isec.pa.tinypac.ui.gui.views.game;
 import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.control.Label;
-import javafx.scene.control.ToggleButton;
-import javafx.scene.control.ToggleGroup;
+import javafx.scene.Scene;
+import javafx.scene.control.*;
 import javafx.scene.layout.*;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 import pt.isec.pa.tinypac.model.ModelManager;
 import pt.isec.pa.tinypac.model.fsm.State;
 import pt.isec.pa.tinypac.ui.gui.resources.ImageManager;
+import pt.isec.pa.tinypac.ui.gui.resources.SoundManager;
 import pt.isec.pa.tinypac.utils.UIManager;
 
 public class GameOverUI extends BorderPane {
@@ -117,10 +119,49 @@ public class GameOverUI extends BorderPane {
         }
 
         lbPoints.setText("Score " + manager.getScore());
+        this.setVisible(true);
 
         if(manager.isInTop5()){
-            System.out.println("Estou No Top5");
+
+
+            //Create PopUpMenu
+            Stage dlg = new Stage();
+            Label label = new Label("You are in Top 5\n");
+            Label labelUsername = new Label("Insert your name: ");
+            labelUsername.setPadding(new Insets(0,0,10,0));
+            TextField textField = new TextField();
+
+
+            ToggleButton ok = new ToggleButton("Ok");
+            ok.setPadding(new Insets(10,0,10,0));
+            ok.setAlignment(Pos.CENTER);
+            HBox hBox = new HBox(labelUsername, textField);
+
+            ok.setOnAction(actionEvent -> {
+                if(textField.getText().equals("")){
+
+                }else{
+                    manager.addIntoTop5(textField.getText());
+                    dlg.close();
+                }
+            });
+
+            VBox vBox = new VBox();
+            HBox hbButtons = new HBox(label, hBox);
+            hbButtons.setSpacing(2.5);
+            hbButtons.setAlignment(Pos.CENTER);
+            vBox.getChildren().addAll(label,hbButtons,ok);
+
+            vBox.setAlignment(Pos.CENTER);
+            Scene scene = new Scene(vBox,300,70);
+            dlg.setScene(scene);
+            dlg.setTitle("Load Game");
+            dlg.initModality(Modality.APPLICATION_MODAL);
+            dlg.initOwner(this.getScene().getWindow());
+            dlg.showAndWait();
+            dlg.setAlwaysOnTop(true);
+
+
         }
-        this.setVisible(true);
     }
 }

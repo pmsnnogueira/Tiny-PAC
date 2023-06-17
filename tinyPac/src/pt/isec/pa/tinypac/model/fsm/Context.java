@@ -106,4 +106,8 @@ public class Context {
     public boolean isInTop5() {
         return data.isInTop5();
     }
+
+    public void addIntoTop5(String userName) {
+        data.addIntoTop5(userName);
+    }
 }

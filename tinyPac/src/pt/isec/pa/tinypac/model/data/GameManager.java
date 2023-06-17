@@ -373,10 +373,6 @@ public class GameManager{
         return game.isGhostDead(posX, posY);
     }
 
-    public void addToTop5(String userName) {
-        top5.addToTop5(userName,getScore());
-    }
-
     public void removeSavedGame() {
 
         File file = new File(SAVE_PATH + SAVE_NAME);
@@ -387,5 +383,9 @@ public class GameManager{
 
     public boolean isInTop5() {
         return top5.verifyIfIsInTop5(game.getScore());
+    }
+
+    public void addIntoTop5(String userName) {
+        top5.addIntoTop5(userName,getScore());
     }
 }
