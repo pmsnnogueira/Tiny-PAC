@@ -1,6 +1,8 @@
 package pt.isec.pa.tinypac.model;
 
 import pt.isec.pa.tinypac.gameengine.GameEngine;
+import pt.isec.pa.tinypac.model.data.Top5;
+import pt.isec.pa.tinypac.model.data.Top5Data;
 import pt.isec.pa.tinypac.model.fsm.Context;
 import pt.isec.pa.tinypac.model.fsm.State;
 import pt.isec.pa.tinypac.utils.Direction;
@@ -8,6 +10,7 @@ import pt.isec.pa.tinypac.utils.UIManager;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
+import java.util.List;
 
 public class ModelManager {
 
@@ -175,5 +178,9 @@ public class ModelManager {
 
     public void addIntoTop5(String userName) {
         context.addIntoTop5(userName);
+    }
+
+    public List<Top5Data> getTop5() {
+        return new Top5().getTop5();
     }
 }

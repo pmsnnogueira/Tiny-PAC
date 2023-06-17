@@ -3,7 +3,7 @@ package pt.isec.pa.tinypac.model.data;
 import java.io.*;
 import java.util.*;
 
-public class Top5 implements Serializable{
+public class Top5{
 
     private final static String folderName = "files/top5/";
     private final static String fileName = "top5.json";
@@ -15,10 +15,11 @@ public class Top5 implements Serializable{
 
     public Boolean readTop5FromFile(){
 
+
         try (ObjectInputStream ois = new ObjectInputStream(
                 new FileInputStream(new File(folderName + fileName))
         )){
-            top5 = (List<Top5Data>) ois.readObject();
+          top5 = (ArrayList<Top5Data>) ois.readObject();
         } catch (Exception e) {
             //e.printStackTrace();
             return false;
@@ -77,32 +78,16 @@ public class Top5 implements Serializable{
     }
 
     public List<Top5Data> getTop5() {
+        readTop5FromFile();
+        System.out.println(top5.size());
         return new ArrayList<>(top5);
     }
 
     public void printTop5(){
+        readTop5FromFile();
         for (Top5Data aux : top5){
             System.out.println(aux.getUserName() + " " +aux.getScore());
         }
-    }
-}
-
-class Top5Data implements Serializable{
-
-    private String userName;
-    private Integer score;
-
-    Top5Data(String userName, Integer score){
-        this.userName = userName;
-        this.score = score;
-    }
-
-    public Integer getScore() {
-        return score;
-    }
-
-    public String getUserName() {
-        return userName;
     }
 }
 

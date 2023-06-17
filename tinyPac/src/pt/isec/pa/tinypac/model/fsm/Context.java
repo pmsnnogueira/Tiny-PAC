@@ -1,8 +1,12 @@
 package pt.isec.pa.tinypac.model.fsm;
 
 import pt.isec.pa.tinypac.model.data.GameManager;
+import pt.isec.pa.tinypac.model.data.Top5;
+import pt.isec.pa.tinypac.model.data.Top5Data;
 import pt.isec.pa.tinypac.model.fsm.states.WaitForDirectionState;
 import pt.isec.pa.tinypac.utils.Direction;
+
+import java.util.List;
 
 public class Context {
     private GameManager data;
@@ -110,4 +114,5 @@ public class Context {
     public void addIntoTop5(String userName) {
         data.addIntoTop5(userName);
     }
+
 }

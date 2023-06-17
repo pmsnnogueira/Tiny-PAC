@@ -13,6 +13,7 @@ import pt.isec.pa.tinypac.utils.Position;
 import java.io.*;
 import java.text.FieldPosition;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class GameManager{
@@ -388,4 +389,5 @@ public class GameManager{
     public void addIntoTop5(String userName) {
         top5.addIntoTop5(userName,getScore());
     }
+
 }

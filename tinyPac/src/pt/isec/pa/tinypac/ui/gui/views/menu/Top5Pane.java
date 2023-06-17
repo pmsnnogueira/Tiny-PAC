@@ -10,6 +10,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import pt.isec.pa.tinypac.model.ModelManager;
+import pt.isec.pa.tinypac.model.data.Top5Data;
 import pt.isec.pa.tinypac.ui.gui.resources.ImageManager;
 import pt.isec.pa.tinypac.ui.gui.views.others.InfoView;
 import pt.isec.pa.tinypac.utils.UIManager;
@@ -128,19 +129,14 @@ public class Top5Pane extends BorderPane {
         this.setVisible(manager.getProgramState() == UIManager.TOP5);
 
 
-        List<String> top5 = new ArrayList<>();
-        top5.add("Pedro Nogueira");
-        top5.add("Pedro Nogueira");
-        top5.add("Pedro Nogueira");
-        top5.add("Pedro Nogueira");
-        top5.add("Pedro Nogueira");
+        List<Top5Data> top5 = manager.getTop5();
         top5List.getChildren().clear();
 
         for (int i = 0; i < top5.size(); i++) {
             TilePane tilePane = getLine(
                     450,
-                    ""+top5.get(i),
-                    ""+ 500
+                    ""+top5.get(i).getUserName(),
+                    ""+ ""+top5.get(i).getScore()
             );
             tilePane.setStyle("-fx-background-color: #000000;");
 
