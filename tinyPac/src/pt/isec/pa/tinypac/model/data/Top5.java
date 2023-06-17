@@ -6,7 +6,7 @@ import java.util.*;
 public class Top5 implements Serializable{
 
     private final static String folderName = "top5/";
-    private final static String fileName = "top5.txt";
+    private final static String fileName = "top5.json";
     private List<Top5Data> top5;
 
     public Top5(){
@@ -54,10 +54,14 @@ public class Top5 implements Serializable{
 
 
     public void addIntoTop5(String userName, Integer score){
+
+        readTop5FromFile();
+
         top5.add(new Top5Data(userName, score));
         orderTop5();
         if(top5.size() > 5)
             top5.remove(top5.size() - 1);
+
         writeTop5IntoFile();
     }
 

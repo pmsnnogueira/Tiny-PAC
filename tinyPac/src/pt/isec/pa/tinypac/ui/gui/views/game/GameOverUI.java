@@ -6,6 +6,8 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
+import javafx.scene.text.TextAlignment;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import pt.isec.pa.tinypac.model.ModelManager;
@@ -126,21 +128,35 @@ public class GameOverUI extends BorderPane {
 
             //Create PopUpMenu
             Stage dlg = new Stage();
-            Label label = new Label("You are in Top 5\n");
+            Label label = new Label("You are in the Top 5");
             Label labelUsername = new Label("Insert your name: ");
-            labelUsername.setPadding(new Insets(0,0,10,0));
             TextField textField = new TextField();
 
 
-            ToggleButton ok = new ToggleButton("Ok");
-            ok.setPadding(new Insets(10,0,10,0));
-            ok.setAlignment(Pos.CENTER);
+            ToggleButton ok = new ToggleButton("Save");
+
+            ok.setPrefWidth(50);
+            ok.setPrefHeight(35);
+            ok.setMaxHeight(35);
+            ok.setMaxWidth(45);
+            ok.setMinWidth(50);
+            ok.setMinHeight(35);
+
             HBox hBox = new HBox(labelUsername, textField);
 
             ok.setOnAction(actionEvent -> {
                 if(textField.getText().equals("")){
 
+                    textField.setBorder(new Border(new BorderStroke(Color.RED,BorderStrokeStyle.SOLID,
+                            CornerRadii.EMPTY,new BorderWidths(1)))
+                    );
+
                 }else{
+
+                    textField.setBorder(new Border(new BorderStroke(Color.GRAY,BorderStrokeStyle.SOLID,
+                            CornerRadii.EMPTY,new BorderWidths(1)))
+                    );
+
                     manager.addIntoTop5(textField.getText());
                     dlg.close();
                 }
@@ -151,9 +167,10 @@ public class GameOverUI extends BorderPane {
             hbButtons.setSpacing(2.5);
             hbButtons.setAlignment(Pos.CENTER);
             vBox.getChildren().addAll(label,hbButtons,ok);
+            vBox.setSpacing(10);
 
             vBox.setAlignment(Pos.CENTER);
-            Scene scene = new Scene(vBox,300,70);
+            Scene scene = new Scene(vBox,300,125);
             dlg.setScene(scene);
             dlg.setTitle("Load Game");
             dlg.initModality(Modality.APPLICATION_MODAL);
