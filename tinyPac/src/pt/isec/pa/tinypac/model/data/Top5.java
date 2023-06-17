@@ -5,7 +5,7 @@ import java.util.*;
 
 public class Top5 implements Serializable{
 
-    private final static String folderName = "top5/";
+    private final static String folderName = "files/top5/";
     private final static String fileName = "top5.json";
     private List<Top5Data> top5;
 
@@ -26,6 +26,7 @@ public class Top5 implements Serializable{
         return true;
     }
 
+
     private Boolean writeTop5IntoFile(){
 
         try (ObjectOutputStream oos = new ObjectOutputStream(
@@ -39,6 +40,7 @@ public class Top5 implements Serializable{
     }
 
     public Boolean verifyIfIsInTop5(Integer value){
+
 
         readTop5FromFile();
 
@@ -54,6 +56,7 @@ public class Top5 implements Serializable{
 
 
     public void addIntoTop5(String userName, Integer score){
+
 
         readTop5FromFile();
 
