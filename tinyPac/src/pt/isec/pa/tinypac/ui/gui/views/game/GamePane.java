@@ -48,9 +48,6 @@ public class GamePane extends BorderPane {
     }
 
     private void update(){
-        if(manager != null || manager.getState() == State.GameOver)
-            SoundManager.play("pacman_death.mp3");
-
         if(manager.getProgramState() != UIManager.GAME || manager.getState() == State.PAUSE || manager.getState() == State.GameOver){
             this.setVisible(false);
             return;
