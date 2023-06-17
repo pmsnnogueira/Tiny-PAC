@@ -1,6 +1,5 @@
 package pt.isec.pa.tinypac.model.data;
 
-import pt.isec.pa.tinypac.model.data.ghosts.Blinky;
 import pt.isec.pa.tinypac.model.data.obstacles.*;
 import pt.isec.pa.tinypac.ui.gui.resources.SoundManager;
 import pt.isec.pa.tinypac.utils.Direction;

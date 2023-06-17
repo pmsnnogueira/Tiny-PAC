@@ -18,19 +18,22 @@ public class Clyde extends Ghost implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
 
+    private static final int NONE = 0;
     private static final int UP = 1;
     private static final int RIGHT = 2;
     private static final int LEFT = 3;
     private static final int DOWN = 4;
     private int direction;
 
-    Direction toPacmanDirection;
+    private int pacmanDirection;
+
+    private Integer toPacmanDirection;
 
     public Clyde(Game game,int posX, int posY){
         super(game,posX, posY);
         this.direction = UP;
 
-        toPacmanDirection = Direction.NONE;
+        toPacmanDirection = 0;
     }
 
     private void printValidPositions(ArrayList<Integer> validDirections){
@@ -79,6 +82,9 @@ public class Clyde extends Ghost implements Serializable {
         aux.add(RIGHT);
 
         whereIsPacman(maze, aux);
+        if(toPacmanDirection != NONE){
+            move(maze,toPacmanDirection);
+        }
 
         if(cruzamento(maze, direction)){
 
@@ -92,7 +98,7 @@ public class Clyde extends Ghost implements Serializable {
                 direction = validDirections.get(0);
             }
         }
-        move(maze, direction, 1);
+        move(maze, direction);
 
 
 
@@ -112,7 +118,7 @@ public class Clyde extends Ghost implements Serializable {
         return -1;
     }
 
-    private Direction whereIsPacman(Maze maze, ArrayList<Integer> validDirections){
+    private Integer whereIsPacman(Maze maze, ArrayList<Integer> validDirections){
 
         Position pacmanPostion = game.getPacmanPosition();
 
@@ -124,14 +130,14 @@ public class Clyde extends Ghost implements Serializable {
                     System.out.println("right Pacman X " + pacmanPostion.getPosX() + " GhostX " + getPosX());
                     if(element != null &&
                             element.getSymbol() == Obstacles.WALL.getSymbol()){
-                        toPacmanDirection = Direction.NONE;
+                        toPacmanDirection = NONE;
                         System.out.println("Vou Sair i = " + i);
                         break;
                     }
 
                     if(i == pacmanPostion.getPosX()) {
                         System.out.println("Pacman Esta para a direita");
-                        return toPacmanDirection = Direction.RIGHT;
+                        return toPacmanDirection = RIGHT;
                     }
                 }
             }
@@ -144,13 +150,13 @@ public class Clyde extends Ghost implements Serializable {
                     System.out.println("left Pacman X " + pacmanPostion.getPosX() + " GhostX " + getPosX());
                     if(element != null &&
                             element.getSymbol() == Obstacles.WALL.getSymbol()){
-                        toPacmanDirection = Direction.NONE;
+                        toPacmanDirection = NONE;
                         System.out.println("Vou Sair i = " + i);
                         break;
                     }
                     if(i == pacmanPostion.getPosX()) {
                         System.out.println("Pacman Esta para a Esquerda");
-                        return toPacmanDirection = Direction.LEFT;
+                        return toPacmanDirection = LEFT;
                     }
                 }
             }
@@ -162,14 +168,14 @@ public class Clyde extends Ghost implements Serializable {
                     IMazeElement element = maze.get(getPosY(), i);
                     if(element != null &&
                             element.getSymbol() == Obstacles.WALL.getSymbol()){
-                        toPacmanDirection = Direction.NONE;
+                        toPacmanDirection = NONE;
                         System.out.println("Vou Sair i = " + i);
                         break;
                     }
 
                     if(i == pacmanPostion.getPosY()) {
                         System.out.println("Pacman Esta para a Cima");
-                        return toPacmanDirection = Direction.UP;
+                        return toPacmanDirection = UP;
                     }
                 }
             }
@@ -183,29 +189,24 @@ public class Clyde extends Ghost implements Serializable {
                     System.out.println("Baixo Pacman Y " + pacmanPostion.getPosY() + " GhostY " + getPosY());
                     if(element != null &&
                             element.getSymbol() == Obstacles.WALL.getSymbol()){
-                        toPacmanDirection = Direction.NONE;
+                        toPacmanDirection = NONE;
                         System.out.println("Vou Sair i = " + i);
                         break;
                     }
 
                     if(i == pacmanPostion.getPosY()) {
                         System.out.println("Pacman Esta para a DOWN");
-                        return toPacmanDirection = Direction.DOWN;
+                        return toPacmanDirection = DOWN;
                     }
                 }
             }
         }
 
-        return Direction.NONE;
+        return NONE;
     }
 
     private int chooseDirection(ArrayList<Integer> validDirections, Integer direction){
         ArrayList<Integer> aux = new ArrayList<>(validDirections);
-
-
-
-
-
 
         aux.remove(oppositeDirection(direction));
         if(aux.size() == 0)
@@ -219,30 +220,27 @@ public class Clyde extends Ghost implements Serializable {
         pushLastPosition(posX,posY);
     }
 
-    private boolean move(Maze maze, int direction, int distance){
-        for (int i = 0; i < distance; i++) {
-            int nextPosX = getPosX();
-            int nextPosY = getPosY();
+    private boolean move(Maze maze, int direction){
+        int nextPosX = getPosX();
+        int nextPosY = getPosY();
 
-            addLastMove(getPosX(), getPosY());
+        addLastMove(getPosX(), getPosY());
 
-            switch (direction) {
-                case UP -> nextPosY--;
-                case DOWN -> nextPosY++;
-                case LEFT -> nextPosX--;
-                case RIGHT -> nextPosX++;
-            }
-
-            IMazeElement mazeElement = maze.get(nextPosY, nextPosX);
-            if (mazeElement == null || mazeElement.getSymbol() != Obstacles.WALL.getSymbol()) {
-                setPos(nextPosX, nextPosY);
-                return true;
-            }else{
-                return false;
-            }
+        switch (direction) {
+            case UP -> nextPosY--;
+            case DOWN -> nextPosY++;
+            case LEFT -> nextPosX--;
+            case RIGHT -> nextPosX++;
         }
 
-        return true;
+        IMazeElement mazeElement = maze.get(nextPosY, nextPosX);
+        if (mazeElement == null || mazeElement.getSymbol() != Obstacles.WALL.getSymbol()) {
+            setPos(nextPosX, nextPosY);
+            return true;
+        }else{
+            return false;
+        }
+
     }
 
     private boolean cruzamento(Maze maze, int direction){
