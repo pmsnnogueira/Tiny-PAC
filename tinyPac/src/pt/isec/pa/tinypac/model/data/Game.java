@@ -359,7 +359,7 @@ public class Game implements Serializable {
             if(ghost.getPosX() == pacman.getPosX() && ghost.getPosY() == pacman.getPosY()){
                 //Ghost in same place as pacman
                 if(pacman.getPower() && ghost.getVulnerable() && !ghost.getDead()) {
-                    System.out.println("Comi Ghost");
+                    System.out.println("Comi um Ghost");
                     pacmanEatGhost(ghost);
                 }else {
                     //Pacman Morreu
@@ -566,9 +566,6 @@ public class Game implements Serializable {
         return false;
     }
 
-    public void addToTop5() {
-
-    }
 
     public Position getPacmanPosition() {
         return pacman.getCurrentPosition();

@@ -78,7 +78,6 @@ public class GameManager{
         ArrayList<String> listOfFiles = filesinFolder(folder);
         StringBuilder fileName = new StringBuilder();
         int counter = game.getLevel();
-        System.out.println("Level:" + game.getLevel());
 
         if(listOfFiles == null)
             return false;

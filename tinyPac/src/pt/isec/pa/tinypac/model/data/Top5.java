@@ -79,7 +79,6 @@ public class Top5{
 
     public List<Top5Data> getTop5() {
         readTop5FromFile();
-        System.out.println(top5.size());
         return new ArrayList<>(top5);
     }
 
