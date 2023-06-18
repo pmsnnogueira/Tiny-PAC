@@ -13,6 +13,14 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Random;
 
+/**
+ * The Inky class represents the Inky ghost in the game.
+ * It extends the Ghost class and is Serializable.
+ *
+ * @author Pedro Nogueira
+ * @version 1.0
+ * @since 06/2023
+ */
 public class Inky extends Ghost implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
@@ -35,6 +43,13 @@ public class Inky extends Ghost implements Serializable {
     private int minDistance;
 
 
+    /**
+     * Constructs a Inky object with the specified game and position.
+     *
+     * @param game  The game instance.
+     * @param posX  The X-coordinate of the initial position.
+     * @param posY  The Y-coordinate of the initial position.
+     */
     public Inky(Game game, int posX, int posY){
         super(game,posX, posY);
         this.direction = UP;
@@ -42,11 +57,19 @@ public class Inky extends Ghost implements Serializable {
         this.minDistance = (int) (game.getMazeColumns() * DISTANCE_MIN_CORNER);
     }
 
+    /**
+     * Returns the symbol representing Inky.
+     * @return The symbol representing Inky.
+     */
     @Override
     public char getSymbol() {
         return Obstacles.INKY.getSymbol();
     }
 
+    /**
+     * Prints the valid directions.
+     * @param validDirections The list of valid directions.
+     */
     private void printValidPositions(ArrayList<Integer> validDirections){
         System.out.println("Valid Directions:");
         for(Integer a: validDirections){
@@ -54,6 +77,11 @@ public class Inky extends Ghost implements Serializable {
         }
     }
 
+    /**
+     * Prints the direction based on its integer value.
+     * @param direction The direction integer value.
+     * @return The string representation of the direction.
+     */
     private String printDirection(Integer direction){
         String string = new String();
         switch (direction){
@@ -65,12 +93,26 @@ public class Inky extends Ghost implements Serializable {
         return string;
     }
 
+
+    /**
+     * Calculates the Euclidean distance between an object's position and a corner's position.
+     * @param objX The x-coordinate of the object's position.
+     * @param objY The y-coordinate of the object's position.
+     * @param cornerX The x-coordinate of the corner's position.
+     * @param cornerY The y-coordinate of the corner's position.
+     * @return The Euclidean distance between the object's position and the corner's position.
+     */
     public static double distToCorner(int objX, int objY, int cornerX, int cornerY) {
         int dx = objX - cornerX;
         int dy = objY - cornerY;
         return Math.sqrt(dx*dx + dy*dy);
     }
 
+    /**
+     * Verifies if the minimum distance to a corner is satisfied.
+     * @param cornerDirection The direction of the corner.
+     * @return True if the minimum distance to the corner is satisfied, false otherwise.
+     */
     private boolean verifyMinimumDistance(Integer cornerDirection){
         double distToCorner = 0;
         switch (cornerDirection){
@@ -96,10 +138,14 @@ public class Inky extends Ghost implements Serializable {
         return false;
     }
 
+    /**
+     * Evolves the ghost.
+     * @return Always returns `true`.
+     */
     @Override
     public boolean evolve() {
 
-       /* Maze maze = game.getMaze();
+        Maze maze = game.getMaze();
 
         if(verifyMinimumDistance(cornerDirection)){
             //Mudar a direcao do canto
@@ -121,11 +167,14 @@ public class Inky extends Ghost implements Serializable {
             }
         }
 
-        move(maze, direction);*/
+        move(maze, direction);
 
         return true;
     }
 
+    /**
+     * Returns the ghost to its base position.
+     */
     @Override
     public void returnToBase(){
 
@@ -143,6 +192,10 @@ public class Inky extends Ghost implements Serializable {
         return;
     }
 
+    /**
+     * Changes the corner direction to the next corner direction in a clockwise order.
+     * @return The next corner direction.
+     */
     private int changeCornerDirection(Integer cornerDirection){
         if(cornerDirection == DOWN_RIGHT)
             return DOWN_LEFT;
@@ -156,6 +209,11 @@ public class Inky extends Ghost implements Serializable {
         return -1;
     }
 
+    /**
+     * Returns the opposite direction of the given direction.
+     * @param direction The current direction.
+     * @return The opposite direction of the given direction.
+     */
     private Integer oppositeDirection(Integer direction){
         if(direction == UP)
             return DOWN;
@@ -169,6 +227,12 @@ public class Inky extends Ghost implements Serializable {
         return -1;
     }
 
+    /**
+     * Chooses a new direction for the ghost based on the valid directions and the current direction.
+     * @param validDirections The list of valid directions.
+     * @param direction The current direction.
+     * @return The new direction chosen for the ghost.
+     */
     private int chooseDirection(ArrayList<Integer> validDirections, Integer direction){
 
         ArrayList<Integer> aux = new ArrayList<>();
@@ -241,10 +305,21 @@ public class Inky extends Ghost implements Serializable {
         return 0;
     }
 
+    /**
+     * Adds the last move to the ghost's position history.
+     * @param posX The x-coordinate of the ghost's position.
+     * @param posY The y-coordinate of the ghost's position.
+     */
     private void addLastMove(Integer posX, Integer posY){
         pushLastPosition(posX,posY);
     }
 
+    /**
+     * Moves the ghost in the specified direction.
+     * @param maze The maze in which the ghost is moving.
+     * @param direction The direction in which the ghost is moving.
+     * @return True if the ghost successfully moves to the next position, false otherwise.
+     */
     private boolean move(Maze maze, int direction){
 
         int nextPosX = getPosX();
@@ -268,6 +343,13 @@ public class Inky extends Ghost implements Serializable {
         return false;
     }
 
+    /**
+     * Checks if the ghost is at a crossroad in the maze.
+     *
+     * @param maze      The maze instance.
+     * @param direction The current direction of the ghost.
+     * @return `true` if the ghost is at a crossroad, `false` otherwise.
+     */
     private boolean cruzamento(Maze maze, int direction){
 
         IMazeElement up = maze.get(getPosY() - 1 ,getPosX());
@@ -318,6 +400,12 @@ public class Inky extends Ghost implements Serializable {
     }
 
 
+    /**
+     * Checks if the ghost is in the ghost cave or near the portal and determines the possible directions to move.
+     *
+     * @param maze The maze instance.
+     * @return A list of possible directions to move.
+     */
     private ArrayList<Integer> verifyGhostCave(Maze maze){
 
         ArrayList<Integer> possibleDirections = new ArrayList<>();
@@ -361,7 +449,12 @@ public class Inky extends Ghost implements Serializable {
         return null;
     }
 
-
+    /**
+     * Retrieves the valid directions that the ghost can take in the maze.
+     *
+     * @param maze The maze instance.
+     * @return A list of valid directions.
+     */
     private ArrayList<Integer> getValidDirections(Maze maze) {
         ArrayList<Integer> possibleDirections = new ArrayList<>();
 
@@ -401,7 +494,5 @@ public class Inky extends Ghost implements Serializable {
         //printValidPositions(possibleDirections);
         return possibleDirections;
     }
-
-
 
 }

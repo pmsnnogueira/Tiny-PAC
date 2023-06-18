@@ -13,6 +13,14 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Random;
 
+/**
+ * The Blinky class represents the Blinky ghost in the game.
+ * It extends the Ghost class and is    Serializable.
+ *
+ * @author Pedro Nogueira
+ * @version 1.0
+ * @since 06/2023
+ */
 public class Blinky extends Ghost implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
@@ -23,13 +31,23 @@ public class Blinky extends Ghost implements Serializable {
     private static final int DOWN = 4;
     private int direction;
 
+
+    /**
+     * Constructs a Blinky object with the specified game and position.
+     *
+     * @param game  The game instance.
+     * @param posX  The X-coordinate of the initial position.
+     * @param posY  The Y-coordinate of the initial position.
+     */
     public Blinky(Game game,int posX, int posY){
         super(game,posX, posY);
         this.direction = UP;
-
-
     }
 
+    /**
+     * Prints the valid directions.
+     * @param validDirections The list of valid directions.
+     */
     private void printValidPositions(ArrayList<Integer> validDirections){
         System.out.println("Valid Directions:");
         for(Integer a: validDirections){
@@ -37,6 +55,11 @@ public class Blinky extends Ghost implements Serializable {
         }
     }
 
+    /**
+     * Prints the direction based on its integer value.
+     * @param direction The direction integer value.
+     * @return The string representation of the direction.
+     */
     private String printDirection(Integer direction){
         String string = new String();
         switch (direction){
@@ -48,6 +71,9 @@ public class Blinky extends Ghost implements Serializable {
         return string;
     }
 
+    /**
+     * Returns the ghost to its base position.
+     */
     @Override
     public void returnToBase(){
 
@@ -65,9 +91,13 @@ public class Blinky extends Ghost implements Serializable {
         return;
     }
 
+    /**
+     * Evolves the ghost.
+     * @return Always returns `true`.
+     */
     @Override
     public boolean evolve() {
-       /* Maze maze = game.getMaze();
+        Maze maze = game.getMaze();
 
         if(cruzamento(maze, direction)){
 
@@ -82,12 +112,15 @@ public class Blinky extends Ghost implements Serializable {
             }
         }
         move(maze, direction, 1);
-*/
-
 
         return true;
     }
 
+    /**
+     * Returns the opposite direction of the given direction.
+     * @param direction The direction.
+     * @return The opposite direction.
+     */
     private Integer oppositeDirection(Integer direction){
         if(direction == UP)
             return DOWN;
@@ -101,6 +134,14 @@ public class Blinky extends Ghost implements Serializable {
         return -1;
     }
 
+    /**
+     * Chooses a direction from the list of valid directions,
+     * excluding the opposite direction of the current direction.
+     *
+     * @param validDirections The list of valid directions.
+     * @param direction       The current direction.
+     * @return The chosen direction.
+     */
     private int chooseDirection(ArrayList<Integer> validDirections, Integer direction){
         ArrayList<Integer> aux = new ArrayList<>(validDirections);
 
@@ -112,10 +153,23 @@ public class Blinky extends Ghost implements Serializable {
         return aux.get(random);
     }
 
+    /**
+     * Adds the last move to the list of positions.
+     * @param posX The X-coordinate of the last position.
+     * @param posY The Y-coordinate of the last position.
+     */
     private void addLastMove(Integer posX, Integer posY){
         pushLastPosition(posX,posY);
     }
 
+    /**
+     * Moves the ghost in the specified direction and distance.
+     *
+     * @param maze      The maze instance.
+     * @param direction The direction to move.
+     * @param distance  The distance to move.
+     * @return `true` if the ghost successfully moves, `false` otherwise.
+     */
     private boolean move(Maze maze, int direction, int distance){
         for (int i = 0; i < distance; i++) {
             int nextPosX = getPosX();
@@ -142,6 +196,13 @@ public class Blinky extends Ghost implements Serializable {
         return true;
     }
 
+    /**
+     * Checks if the ghost is at a crossroad in the maze.
+     *
+     * @param maze      The maze instance.
+     * @param direction The current direction of the ghost.
+     * @return `true` if the ghost is at a crossroad, `false` otherwise.
+     */
     private boolean cruzamento(Maze maze, int direction){
 
         IMazeElement up = maze.get(getPosY() - 1 ,getPosX());
@@ -192,6 +253,12 @@ public class Blinky extends Ghost implements Serializable {
     }
 
 
+    /**
+     * Checks if the ghost is in the ghost cave or near the portal and determines the possible directions to move.
+     *
+     * @param maze The maze instance.
+     * @return A list of possible directions to move.
+     */
     private ArrayList<Integer> verifyGhostCave(Maze maze){
 
         ArrayList<Integer> possibleDirections = new ArrayList<>();
@@ -236,6 +303,12 @@ public class Blinky extends Ghost implements Serializable {
     }
 
 
+    /**
+     * Retrieves the valid directions that the ghost can take in the maze.
+     *
+     * @param maze The maze instance.
+     * @return A list of valid directions.
+     */
     private ArrayList<Integer> getValidDirections(Maze maze) {
         ArrayList<Integer> possibleDirections = new ArrayList<>();
 
@@ -277,6 +350,10 @@ public class Blinky extends Ghost implements Serializable {
     }
 
 
+    /**
+     * Returns the symbol representing Blinky.
+     * @return The symbol representing Blinky.
+     */
     @Override
     public char getSymbol() {
         return Obstacles.BLINKY.getSymbol();

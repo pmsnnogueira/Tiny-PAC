@@ -45,8 +45,8 @@ public class Game implements Serializable {
      * Constructs a new instance of the `Game` class with default values.
      */
     public Game(){
-        this.level = 2;
-        this.lives = 1;
+        this.level = 1;
+        this.lives = 3;
         this.score = 0;
         this.maze = null;
         this.ghosts = new ArrayList<>();
