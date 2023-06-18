@@ -6,27 +6,55 @@ import pt.isec.pa.tinypac.model.fsm.State;
 import pt.isec.pa.tinypac.model.fsm.StateAdapter;
 import pt.isec.pa.tinypac.utils.Direction;
 
+/**
+ * The GhostVulnerableState class represents the state where the ghosts are vulnerable.
+ * It extends the stateAdapter class
+ *
+ * @author Pedro Nogueira
+ * @version 1.0
+ * @since 06/2023
+ */
 public class GhostVulnerableState extends StateAdapter {
 
     private static final long LOCKTIME = 10;         //Seconds
     private long initialTime;
     private long maxTime;
-
+    /**
+     * Constructs a GhostVulnerableState object with the specified context and game manager.
+     * @param context The game context.
+     * @param data The game manager.
+     */
     public GhostVulnerableState(Context context, GameManager data){
         super(context, data);
         this.initialTime = 0;
         this.maxTime = 0;
     }
 
+    /**
+     * Retrieves the state of this state object.
+     * @return The state GHOST_VULNERABLE.
+     */
     @Override
     public State getState() {
         return State.GHOST_VULNERABLE;
     }
 
+    /**
+     * Changes the direction of the pacman based on the player's input direction.
+     * @param direction The new direction to change to.
+     * @return true if the direction was successfully changed, false otherwise.
+     */
     @Override
     public boolean changeDirection(Direction direction) {
         return data.changeDirection(direction);
     }
+
+    /**
+     * Evolves the game.
+     * If the ghosts' vulnerability time has ended, transitions to the GAME state.
+     * @param currentTime The current time.
+     * @return true if the game state was successfully evolved, false otherwise.
+     */
     @Override
     public boolean evolve(long currentTime) {
         boolean needUpdate = data.evolve(currentTime);
@@ -53,6 +81,11 @@ public class GhostVulnerableState extends StateAdapter {
         return seconds * 1000000000;
     }
 
+    /**
+     * Unlocks the ghosts if the specified time has passed.
+     * @param currentTime The current time.
+     * @return true if the ghosts were unlocked, false otherwise.
+     */
     private boolean unlockGhosts(long currentTime){
         if(initialTime == 0){
             initialTime = currentTime;
@@ -69,6 +102,10 @@ public class GhostVulnerableState extends StateAdapter {
         return false;
     }
 
+    /**
+     * Pauses the game by transitioning to the PAUSE state.
+     * @return true if the game was successfully paused, false otherwise.
+     */
     @Override
     public boolean pause() {
         changeState(State.PAUSE);
