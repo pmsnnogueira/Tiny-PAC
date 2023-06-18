@@ -8,6 +8,13 @@ import pt.isec.pa.tinypac.utils.Position;
 import java.io.Serial;
 import java.io.Serializable;
 
+/**
+ * The Pacman class represents the Pacman in the game.
+ *
+ * @author Pedro Nogueira
+ * @version 1.0
+ * @since 06/2023
+ */
 public class Pacman extends GameObjects implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
@@ -19,6 +26,12 @@ public class Pacman extends GameObjects implements Serializable {
 
     private Integer ticksToMove;
 
+    /**
+     * Constructs a Pacman object.
+     * @param game The game instance.
+     * @param posX The initial X position of Pacman.
+     * @param posY The initial Y position of Pacman.
+     */
     public Pacman(Game game,Integer posX, Integer posY){
         super(game);
         this.pacmanPosition = new PacmanPosition(posX, posY, game.getMazeRows(), game.getMazeColumns());
@@ -34,14 +47,18 @@ public class Pacman extends GameObjects implements Serializable {
         this.power = pacman.getPower();
     }*/
 
-    public PacmanPosition getInitialPositon() {
-        return initialPositon;
-    }
-
+    /**
+     * Retrieves the current position of Pacman.
+     * @return The current position of Pacman.
+     */
     public PacmanPosition getCurrentPosition(){
         return new PacmanPosition(pacmanPosition);
     }
 
+    /**
+     * Move the pacman
+     * @return true if the pacman was moved, false otherwise
+     */
     @Override
     public boolean evolve() {
 
@@ -78,6 +95,12 @@ public class Pacman extends GameObjects implements Serializable {
         return;
     }
 
+
+    /**
+     * Sets the direction of Pacman.
+     * @param direction The direction to be set.
+     * @return True if the direction is valid, false otherwise.
+     */
     public boolean setDirection(Direction direction) {
 
         PacmanPosition aux = new PacmanPosition(getPosX() , getPosY() , game.getMazeRows() , game.getMazeColumns());
@@ -106,18 +129,34 @@ public class Pacman extends GameObjects implements Serializable {
         return true;
     }
 
+    /**
+     * Retrieves the X position of Pacman.
+     * @return The X position of Pacman.
+     */
     public int getPosX(){
         return pacmanPosition.getPosX();
     }
 
+    /**
+     * Retrieves the Y position of Pacman.
+     * @return The Y position of Pacman.
+     */
     public int getPosY(){
         return pacmanPosition.getPosY();
     }
 
+    /**
+     * Retrieves the power status of Pacman.
+     * @return True if Pacman has power, false otherwise.
+     */
     public boolean getPower(){
         return power;
     }
 
+    /**
+     * Sets the power status of Pacman.
+     * @param power The power status to be set.
+     */
     public void setPower(boolean power) {
         this.power = power;
     }
@@ -127,14 +166,25 @@ public class Pacman extends GameObjects implements Serializable {
         return Obstacles.PACMAN.getSymbol();
     }
 
+    /**
+     * Resets Pacman to its initial position.
+     */
     public void reset() {
         this.pacmanPosition = new PacmanPosition(initialPositon);
     }
 
+    /**
+     * Retrieves the direction of Pacman.
+     * @return The direction of Pacman.
+     */
     public Direction getDirection() {
         return pacmanPosition.getDirection();
     }
 
+    /**
+     * Retrieves the number of ticks to move for Pacman.
+     * @return The number of ticks to move for Pacman.
+     */
     public Integer getTicksToMove() {
         return ticksToMove;
     }
