@@ -112,7 +112,7 @@ public class Context {
      * Pauses the game
      * @return True if the game was successfully paused, false otherwise
      */
-    public boolean pause(){
+    public boolean pause(long currentTime){
         if(getState() != State.PAUSE)
             this.previousState = getState();
         return state.pause();
