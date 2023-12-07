@@ -2,6 +2,7 @@ package pt.isec.pa.tinypac.model.fsm;
 
 import pt.isec.pa.tinypac.model.data.GameManager;
 import pt.isec.pa.tinypac.utils.Direction;
+import pt.isec.pa.tinypac.utils.GameStatus;
 
 /**
  * The StateAdapter class is an abstract implementation of the IState interface.
@@ -42,8 +43,8 @@ public abstract class StateAdapter implements IState {
     }
 
     @Override
-    public boolean evolve(long currentTime) {
-        return false;
+    public GameStatus evolve(long currentTime) {
+        return null;
     }
 
     @Override

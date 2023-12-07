@@ -6,6 +6,7 @@ import pt.isec.pa.tinypac.model.data.Top5Data;
 import pt.isec.pa.tinypac.model.fsm.Context;
 import pt.isec.pa.tinypac.model.fsm.State;
 import pt.isec.pa.tinypac.utils.Direction;
+import pt.isec.pa.tinypac.utils.GameStatus;
 import pt.isec.pa.tinypac.utils.UIManager;
 
 import java.beans.PropertyChangeListener;
@@ -25,6 +26,7 @@ public class ModelManager {
 
     public static final String PROP_MENU = "_menu_";
     public static final String PROP_GAME = "_gameMenu_";
+    public static final String PROP_BOARD = "_gameBoard_";
 
     private static final Integer GAME_ENGINE_TIME = 100;
 
@@ -122,9 +124,12 @@ public class ModelManager {
      * @param currentTime the current Time
      */
     public void evolve(long currentTime) {
-        if(context.evolve(currentTime)) {
-            pcs.firePropertyChange(PROP_GAME, null, null);
+        GameStatus gameStatus = context.evolve(currentTime);
+        if(gameStatus == GameStatus.NEXT_LEVEL) {
+            pcs.firePropertyChange(PROP_BOARD, null, null);
         }
+
+        pcs.firePropertyChange(PROP_GAME, null, null);
     }
 
     /**

@@ -4,6 +4,7 @@ import pt.isec.pa.tinypac.model.data.Game;
 import pt.isec.pa.tinypac.model.data.GameManager;
 import pt.isec.pa.tinypac.model.fsm.states.WaitForDirectionState;
 import pt.isec.pa.tinypac.utils.Direction;
+import pt.isec.pa.tinypac.utils.GameStatus;
 
 import java.io.*;
 
@@ -104,7 +105,7 @@ public class Context {
      * @param currentTime The current Time, is used to free the ghosts
      * @return true if the game was successfully evolved, false otherwise
      */
-    public boolean evolve(long currentTime) {
+    public GameStatus evolve(long currentTime) {
         return state.evolve(currentTime);
     }
 

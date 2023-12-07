@@ -6,6 +6,7 @@ import pt.isec.pa.tinypac.model.data.ghosts.Inky;
 import pt.isec.pa.tinypac.model.data.ghosts.Pinky;
 import pt.isec.pa.tinypac.model.data.obstacles.*;
 import pt.isec.pa.tinypac.utils.Direction;
+import pt.isec.pa.tinypac.utils.GameStatus;
 import pt.isec.pa.tinypac.utils.Obstacles;
 import pt.isec.pa.tinypac.utils.Position;
 
@@ -338,11 +339,10 @@ public class GameManager{
      * @param currentTime The current time in milliseconds.
      * @return True if the game state is successfully evolved, false otherwise.
      */
-    public boolean evolve(long currentTime) {
+    public GameStatus evolve(long currentTime) {
         if(game != null)
             return game.evolve();
-
-        return false;
+        return GameStatus.ERROR;
     }
 
     /**

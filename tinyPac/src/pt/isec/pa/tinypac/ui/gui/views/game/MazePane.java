@@ -21,6 +21,7 @@ public class MazePane extends VBox {
     private static final double CELL_HEIGHT = 12.5;
     private TilePane tilePane;
     private ImageView[] images;
+    private FlowPane flowPane;
     private Label lbGameInfo;
 
     public MazePane(ModelManager manager) {
@@ -33,39 +34,45 @@ public class MazePane extends VBox {
 
     private void createViews() {
         this.setBackground(new Background(new BackgroundFill(Color.BLACK, CornerRadii.EMPTY, Insets.EMPTY)));
+        initializeGameInfo();
         initializeImagesGrid();
     }
 
     private void registerHandlers() {
         //manager.addPropertyChangeListener(ModelManager.PROP_GAME, evt -> updateState());
-        manager.addPropertyChangeListener(ModelManager.PROP_GAME, evt -> Platform.runLater(() -> update()));                 //TESTAR ISTO
-        //manager.addPropertyChangeListener(ModelManager.PROP_DATA, evt -> Platform.runLater(() -> updateState()));
+        manager.addPropertyChangeListener(ModelManager.PROP_GAME, evt -> Platform.runLater(() -> update()));
+        manager.addPropertyChangeListener(ModelManager.PROP_BOARD, evt -> Platform.runLater(() -> updateBoard()));
 
     }
+
 
     private void updateMazeView(){
 
         for(int i = 0 ;i < images.length; i++) {
-
             Image image = getImageViewInPosition((i / manager.getMazeColumns()),(i % manager.getMazeColumns()));
             images[i].setImage(image);
         }
     }
 
-    private void initializeImagesGrid(){
+    private void initializeGameInfo(){
 
         lbGameInfo = new Label();
         lbGameInfo.getStyleClass().add("gameInfoLabel");
         lbGameInfo.setPadding(new Insets(0,0,5,0));
         lbGameInfo.setAlignment(Pos.CENTER);
         this.getChildren().add(lbGameInfo);
+    }
+
+    private void initializeImagesGrid(){
+
 
         tilePane = new TilePane(Orientation.HORIZONTAL);
         tilePane.setPrefColumns(manager.getMazeColumns());
+        tilePane.setPrefRows(manager.getMazeRows());
         tilePane.setPrefTileHeight(CELL_HEIGHT);
         tilePane.setPrefTileWidth(CELL_WIDTH);
 
-        FlowPane flowPane = new FlowPane(tilePane);
+        flowPane = new FlowPane(tilePane);
         flowPane.setAlignment(Pos.CENTER);
         AnchorPane.setTopAnchor(flowPane,0.0);
         AnchorPane.setBottomAnchor(flowPane,0.0);
@@ -174,4 +181,12 @@ public class MazePane extends VBox {
 
         this.setVisible(true);
     }
+
+
+    private void updateBoard() {
+        getChildren().remove(flowPane);
+        initializeImagesGrid();
+
+    }
+
 }

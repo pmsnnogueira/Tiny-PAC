@@ -5,7 +5,7 @@ import pt.isec.pa.tinypac.model.fsm.Context;
 import pt.isec.pa.tinypac.model.fsm.State;
 import pt.isec.pa.tinypac.model.fsm.StateAdapter;
 import pt.isec.pa.tinypac.utils.Direction;
-
+import pt.isec.pa.tinypac.utils.GameStatus;
 
 
 /**
@@ -59,7 +59,8 @@ public class LockedGhostsState extends StateAdapter {
      * @param currentTime The current time.
      * @return true if the game state was successfully evolved, false otherwise.
      */
-    public boolean evolve(long currentTime) {
+    @Override
+    public GameStatus evolve(long currentTime) {
         if(unlockGhosts(currentTime))
             changeState(State.GAME);
 

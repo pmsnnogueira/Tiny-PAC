@@ -1,10 +1,12 @@
 package pt.isec.pa.tinypac.model.fsm.states;
 
+import pt.isec.pa.tinypac.model.data.Game;
 import pt.isec.pa.tinypac.model.data.GameManager;
 import pt.isec.pa.tinypac.model.fsm.Context;
 import pt.isec.pa.tinypac.model.fsm.State;
 import pt.isec.pa.tinypac.model.fsm.StateAdapter;
 import pt.isec.pa.tinypac.utils.Direction;
+import pt.isec.pa.tinypac.utils.GameStatus;
 
 
 /**
@@ -52,9 +54,9 @@ public class GameState extends StateAdapter {
      * @return true if the game state was successfully evolved, false otherwise.
      */
     @Override
-    public boolean evolve(long currentTime) {
-        boolean needUpdate;
-        needUpdate = data.evolve(currentTime);
+    public GameStatus evolve(long currentTime) {
+        GameStatus gameStatus;
+        gameStatus = data.evolve(currentTime);
 
         int result = data.controlGameState();
         if(result == -1){
@@ -73,10 +75,11 @@ public class GameState extends StateAdapter {
         }else if(result == 2){
             //EndLevel
             System.out.println("End Level");
+            gameStatus = GameStatus.NEXT_LEVEL;
             changeState(State.WAIT_FOR_DIRECTIONS);
         }
 
-        return needUpdate;
+        return gameStatus;
     }
 
     /**

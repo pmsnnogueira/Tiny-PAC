@@ -2,10 +2,7 @@ package pt.isec.pa.tinypac.model.data;
 
 import pt.isec.pa.tinypac.model.data.obstacles.*;
 import pt.isec.pa.tinypac.ui.gui.resources.SoundManager;
-import pt.isec.pa.tinypac.utils.Direction;
-import pt.isec.pa.tinypac.utils.Obstacles;
-import pt.isec.pa.tinypac.utils.PacmanPosition;
-import pt.isec.pa.tinypac.utils.Position;
+import pt.isec.pa.tinypac.utils.*;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -380,25 +377,25 @@ public class Game implements Serializable {
      * Evolves the game state by moving the Pacman and ghosts.
      * @return true if the game state was updated, false otherwise.
      */
-    public boolean evolve() {
+    public GameStatus evolve() {
         boolean pacmanRes = false, ghostRes = false;
-        boolean update = false;
+        GameStatus gameStatus = GameStatus.IN_GAME;
 
         if(ghosts == null || pacman == null)
-            return false;
+            return GameStatus.ERROR;
 
         if (tickAtBeginningOfFunction <= maxTick){
             if(currentTick % pacman.getTicksToMove() == 0){
                 evolvePacman();
                 eatFood();
                 pacmanRes = true;
-                update = true;
+                gameStatus = GameStatus.EVOLVE;
             }
 
             ghostRes = evolveGhosts();
 
             if(ghostRes || pacmanRes)
-                update = true;
+                gameStatus = GameStatus.EVOLVE;
             tickAtBeginningOfFunction++;
             currentTick++;
         }
@@ -408,7 +405,7 @@ public class Game implements Serializable {
             currentTick = 1;
         }
 
-        return update;
+        return gameStatus;
     }
 
     /**

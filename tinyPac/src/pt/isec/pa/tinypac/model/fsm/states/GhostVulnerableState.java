@@ -5,6 +5,7 @@ import pt.isec.pa.tinypac.model.fsm.Context;
 import pt.isec.pa.tinypac.model.fsm.State;
 import pt.isec.pa.tinypac.model.fsm.StateAdapter;
 import pt.isec.pa.tinypac.utils.Direction;
+import pt.isec.pa.tinypac.utils.GameStatus;
 
 /**
  * The GhostVulnerableState class represents the state where the ghosts are vulnerable.
@@ -56,8 +57,8 @@ public class GhostVulnerableState extends StateAdapter {
      * @return true if the game state was successfully evolved, false otherwise.
      */
     @Override
-    public boolean evolve(long currentTime) {
-        boolean needUpdate = data.evolve(currentTime);
+    public GameStatus evolve(long currentTime) {
+        GameStatus gameStatus = data.evolve(currentTime);
         int res;
 
         res = data.controlGameVulnerableState();
@@ -71,9 +72,9 @@ public class GhostVulnerableState extends StateAdapter {
                 changeState(State.WAIT_FOR_DIRECTIONS);
         }
 
-        if(unlockGhosts(currentTime)){}
+        unlockGhosts(currentTime);
 
-        return needUpdate;
+        return gameStatus;
     }
 
 

@@ -1,6 +1,7 @@
 package pt.isec.pa.tinypac.model.fsm;
 
 import pt.isec.pa.tinypac.utils.Direction;
+import pt.isec.pa.tinypac.utils.GameStatus;
 
 /**
  * The IState interface defines the method managing the game State
@@ -28,7 +29,7 @@ public interface IState {
      * @param currentTime the current Time, is used to free the ghosts
      * @return if the game was evolved, false otherwise
      */
-    boolean evolve(long currentTime);
+    GameStatus evolve(long currentTime);
 
     /**
      * Pauses the game

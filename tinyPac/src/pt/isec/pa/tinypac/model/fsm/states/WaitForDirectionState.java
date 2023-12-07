@@ -1,10 +1,12 @@
 package pt.isec.pa.tinypac.model.fsm.states;
 
+import pt.isec.pa.tinypac.model.data.Game;
 import pt.isec.pa.tinypac.model.data.GameManager;
 import pt.isec.pa.tinypac.model.fsm.Context;
 import pt.isec.pa.tinypac.model.fsm.State;
 import pt.isec.pa.tinypac.model.fsm.StateAdapter;
 import pt.isec.pa.tinypac.utils.Direction;
+import pt.isec.pa.tinypac.utils.GameStatus;
 
 /**
  * The WaitForDirectonState class represents the state
@@ -58,8 +60,8 @@ public class WaitForDirectionState extends StateAdapter {
      * @return
      */
     @Override
-    public boolean evolve(long currentTime) {
-        return true;
+    public GameStatus evolve(long currentTime) {
+        return GameStatus.WAIT_FOR_KEY_DIRECTION;
     }
 
     /**
