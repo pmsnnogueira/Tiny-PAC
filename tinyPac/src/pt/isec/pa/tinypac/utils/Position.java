@@ -1,95 +1,111 @@
 package pt.isec.pa.tinypac.utils;
 
-public class Position {
+import java.io.Serial;
+import java.io.Serializable;
 
+/**
+ * Represents a position with x and y coordinates.
+ * Positions are serializable.
+ */
+public class Position implements Serializable {
+    @Serial
+    private static final long serialVersionUID = 1L;
     private int posX;
     private int posY;
-    private int mazeHeigth;
-    private int mazeWidth;
 
-    private Direction direction;
-
-    public Position(int posX , int posY, int mazeHeigth, int mazeWidth){
+    /**
+     * Constructs a position with the given x and y coordinates.
+     * @param posX The x coordinate of the position.
+     * @param posY The y coordinate of the position.
+     */
+    public Position(int posX , int posY){
         this.posX = posX;
         this.posY = posY;
-        this.mazeHeigth = mazeHeigth;
-        this.mazeWidth = mazeWidth;
-        this.direction = null;
     }
 
+    /**
+     * Constructs a position with the same coordinates as the given position.
+     * @param position The position to copy the coordinates from.
+     */
     public Position(Position position){
-         this.posX = position.posX;
-         this.posY = position.posY;
-         this.mazeHeigth = position.mazeHeigth;
-         this.mazeWidth = position.mazeWidth;
-         this.direction = position.direction;
+        this.posX = position.getPosX();
+        this.posY = position.getPosY();
     }
 
-    public int[] getNextPosition(){
-        return nextPosition(this.direction);
-    }
-
-    private int[] nextPosition(Direction direction){
-
-        int[] pos = new int[2];
-        pos[0] = posX;
-        pos[1] = posY;
-
-        if(direction != null){
-            if(direction == Direction.UP){
-                //System.out.println("UP");
-                if(posY - 1 < mazeHeigth) {
-                    pos[1] = posY - 1;
-                }
-            }else if(direction == Direction.DOWN){
-                //System.out.println("DOWN");
-                if(posY + 1 < mazeHeigth) {
-                    pos[1] = posY + 1;
-                }
-            } else if(direction == Direction.LEFT){
-                //System.out.println("LEFT");
-                if(posX - 1 < mazeWidth) {
-                    pos[0] = posX - 1;
-                }
-            }else if(direction == Direction.RIGHT){
-                //System.out.println("RIGHT");
-                if(posX + 1 < mazeWidth) {
-                    pos[0] = posX + 1;
-                }
-            }
-        }
-
-        return pos;
-    }
-
+    /**
+     * Sets the x and y coordinates of the position.
+     * @param posX The new x coordinate.
+     * @param posY The new y coordinate.
+     */
     public void setPos(int posX , int posY){
         this.posX = posX;
         this.posY = posY;
     }
 
-
-
-    public void setDirection(Direction direction) {
-        this.direction = direction;
-    }
-
-    public Direction getDirection() {
-        return direction;
-    }
-
+    /**
+     * Gets the x coordinate of the position.
+     * @return The x coordinate.
+     */
     public int getPosX() {
         return posX;
     }
 
+    /**
+     * Gets the y coordinate of the position.
+     * @return The y coordinate.
+     */
     public int getPosY() {
         return posY;
     }
 
+    /**
+     * Sets the y coordinate of the position.
+     * @param posY The new y coordinate.
+     */
     public void setPosY(int posY) {
         this.posY = posY;
     }
 
+    /**
+     * Sets the x coordinate of the position.
+     * @param posX The new x coordinate.
+     */
     public void setPosX(int posX) {
         this.posX = posX;
+    }
+
+    /**
+     * Compares this position to the specified object.
+     * The result is {@code true} if and only if the argument is not null
+     * and is a Position object that has the same coordinates as this position.
+     * @param obj The object to compare this position against.
+     * @return {@code true} if the objects are equal, {@code false} otherwise.
+     */
+    @Override
+    public boolean equals(Object obj) {
+
+        if (obj == this)
+            return true;
+
+        if (obj == null)
+            return false;
+
+        /*if (this.getClass() == obj.getClass()) {
+            return (((Position) obj).getPosX() == this.getPosX() && ((Position) obj).getPosY() == this.getPosY());
+        }*/
+
+        if(!(obj instanceof Position aux))
+            return false;
+
+        return (aux.getPosX() == this.getPosX() && aux.getPosY() == this.getPosY());
+    }
+
+    /**
+     * Computes a hash code for this position.
+     * @return The hash code value for this position.
+     */
+    @Override
+    public int hashCode() {
+        return getPosY() + getPosX();
     }
 }

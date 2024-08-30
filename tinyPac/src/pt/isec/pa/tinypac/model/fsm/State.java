@@ -8,6 +8,7 @@ public enum State {
     WAIT_FOR_DIRECTIONS,
     GAME,
     LOCKED_GHOSTS,
+    GHOST_VULNERABLE,
     PAUSE,
     GameOver;
 
@@ -16,6 +17,7 @@ public enum State {
             case WAIT_FOR_DIRECTIONS -> new WaitForDirectionState(context, data);
             case GAME -> new GameState(context, data);
             case LOCKED_GHOSTS -> new LockedGhostsState(context, data);
+            case GHOST_VULNERABLE -> new GhostVulnerableState(context, data);
             case PAUSE -> new PauseState(context, data);
             case GameOver -> new GameOverState(context,data);
         };
